@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const REVIEWS = [
   {
@@ -91,6 +92,7 @@ function ReviewCard({
 }
 
 export default function Reviews() {
+  const t = useTranslations("Home");
   const [active, setActive] = useState(1);
   const total = REVIEWS.length;
 
@@ -108,7 +110,7 @@ export default function Reviews() {
   return (
     <section
       id="reviews"
-      className="flex items-center py-14 px-6 sm:px-8 lg:px-10"
+      className="flex items-center pt-32 py-14 px-6 sm:px-8 lg:px-10"
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
@@ -125,10 +127,10 @@ export default function Reviews() {
             <div className="flex flex-col items-center gap-4">
               <div className="flex flex-col items-center gap-1">
                 <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  Reviews
+                  {t("Reviews")}
                 </span>
-                <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground text-center">
-                  What clients say
+                <h2 className="text-3xl font-bold tracking-tight text-foreground text-center">
+                  {t("WhatClientsSay")}
                 </h2>
               </div>
 
@@ -173,11 +175,10 @@ export default function Reviews() {
             <Button
               render={<Link href="/projects" />}
               nativeButton={false}
-              variant="outline"
+              variant="default"
               size="sm"
             >
-              <Plus />
-              Add Review
+              {t("AddReview")}
             </Button>
           </div>
         </div>

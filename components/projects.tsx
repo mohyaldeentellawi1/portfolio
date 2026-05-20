@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getTranslations } from "next-intl/server";
 
 const SKILLS = [
   // Languages
@@ -51,11 +52,12 @@ const FEATURED_PROJECTS = [
   },
 ] as const;
 
-export default function Projects() {
+export default async function Projects() {
+  const t = await getTranslations("Home");
   return (
     <section
       id="project"
-      className="flex items-center py-14 px-6 sm:px-8 lg:px-10"
+      className="flex items-center pt-32 py-14 px-6 sm:px-8 lg:px-10"
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
@@ -63,10 +65,10 @@ export default function Projects() {
           <div className="mb-10">
             <div className="flex flex-col gap-1 mb-4">
               <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Skills
+                {t("Skills")}
               </span>
               <h3 className="text-lg font-semibold tracking-tight text-foreground">
-                Technologies I work with
+                {t("TechnologiesIworkwith")}
               </h3>
             </div>
 
@@ -108,26 +110,26 @@ export default function Projects() {
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-10">
             <div className="flex flex-col gap-2">
               <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Projects
+                {t("Projects")}
               </span>
-              <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-                A new way to showcase software
-              </h2>
-              <p className="text-base text-muted-foreground max-w-xl">
-                Selected work — each project is a problem solved, a skill
-                sharpened, and a story worth telling.
+              {/* <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+                {t("Anewwaytoshowcasesoftware")}
+              </h2> */}
+              <p className="text-3xl font-bold tracking-tight text-foreground max-w-2xl leading-snug">
+                {t(
+                  "eachprojectisaproblemsolvedaskillsharpenedandastoryworthtelling",
+                )}
               </p>
             </div>
 
             <Button
               render={<Link href="/projects" />}
               nativeButton={false}
-              variant="outline"
+              variant="default"
               size="sm"
               className="shrink-0 self-start"
             >
-              View All
-              <ArrowRight />
+              {t("ViewAll")}
             </Button>
           </div>
 

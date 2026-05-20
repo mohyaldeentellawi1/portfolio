@@ -4,21 +4,23 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { Button } from "./ui/button";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-
-const LINKS = [
-  { label: "About Me", href: "#about" },
-  { label: "Project", href: "#project" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "Contact", href: "#contact" },
-] as const;
-
-type Href = (typeof LINKS)[number]["href"];
+import { setLocale } from "@/app/actions";
 
 export default function Nav() {
   const t = useTranslations("Home");
 
+  const LINKS = [
+    { label: t("AboutMe"), href: "#about" },
+    { label: t("Project"), href: "#project" },
+    { label: t("Reviews"), href: "#reviews" },
+    { label: t("Contact"), href: "#contact" },
+  ] as const;
+
+  type Href = (typeof LINKS)[number]["href"];
+
+  const locale = useLocale();
   const { resolvedTheme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -94,13 +96,15 @@ export default function Nav() {
             className="hidden md:inline-flex items-center bg-primary px-4 text-sm font-medium
                        text-primary-foreground transition-colors duration-200 hover:bg-primary/85 active:scale-[0.97]"
           >
-            Download CV
+            {t("DownloadCV")}
           </Button>
 
           {/* Theme toggle */}
           <button
             type="button"
-            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            onClick={() =>
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
+            }
             aria-label="Toggle theme"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-border
                        text-foreground transition-colors duration-200 hover:bg-muted
@@ -108,6 +112,18 @@ export default function Nav() {
           >
             <Sun size={16} className="hidden dark:block" />
             <Moon size={16} className="dark:hidden" />
+          </button>
+
+          {/* Locale toggle */}
+          <button
+            type="button"
+            onClick={() => setLocale(locale === "en" ? "ar" : "en")}
+            aria-label="Toggle language"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-border
+                       text-foreground text-xs font-semibold transition-colors duration-200 hover:bg-muted
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {locale === "en" ? "AR" : "EN"}
           </button>
 
           {/* Mobile hamburger */}
@@ -157,7 +173,7 @@ export default function Nav() {
             );
           })}
 
-          <Button className="w-full mt-4">Download CV</Button>
+          <Button className="w-full mt-4">{t("DownloadCV")}</Button>
         </div>
       </div>
     </header>

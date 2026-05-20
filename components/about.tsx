@@ -1,8 +1,11 @@
 import { Play } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 import Image from "next/image";
 
-export default function About() {
+export default async function About() {
+  const t = await getTranslations("Home");
+
   return (
     <section
       id="about"
@@ -74,41 +77,28 @@ export default function About() {
             {/* Bio text */}
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  About Me
-                </span>
-                <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-                  I don’t just write code — I craft software.
+                <h2 className="text-3xl font-bold tracking-tight text-foreground leading-snug">
+                  {t("IdontjustwritecodeIcraftsoftware")}
                 </h2>
               </div>
-
               <div className="flex flex-col gap-4">
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  I&apos;m a full-stack developer passionate about crafting
-                  modern web and mobile applications that feel fast, intuitive,
-                  and genuinely enjoyable to use. I build scalable digital
-                  products that combine robust architecture with seamless user
-                  experiences.
+                  {t("AboutBio1")}
                 </p>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  I care as much about the details behind the scenes as the
-                  experience users see on the surface — blending clean
-                  engineering with refined design to create products that are
-                  both functional and elegant.
+                  {t("AboutBio2")}
                 </p>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  For me, development is more than writing code; it’s about
-                  transforming ideas into meaningful experiences through
-                  thoughtful technology, performance, and design.
+                  {t("AboutBio3")}
                 </p>
               </div>
 
               {/* Quick stats */}
               <div className="grid grid-cols-3 gap-4 pt-2 border-t border-border/40">
                 {[
-                  { value: "4+", label: "Years Exp." },
-                  { value: "20+", label: "Projects" },
-                  { value: "100%", label: "Dedication" },
+                  { value: "4+", label: t("YearsExp") },
+                  { value: "20+", label: t("Projects") },
+                  { value: "100%", label: t("Dedication") },
                 ].map(({ value, label }) => (
                   <div key={label} className="flex flex-col gap-0.5 pt-4">
                     <span className="text-2xl font-bold tracking-tight text-foreground">
@@ -130,10 +120,10 @@ export default function About() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Introduction Video
+                {t("Introduction")}
               </span>
               <p className="text-sm text-muted-foreground">
-                A short walkthrough of who I am and what I build.
+                {t("AShortWalkthroughOfWhoIAmAndWhatIBuild")}
               </p>
             </div>
 
@@ -148,7 +138,7 @@ export default function About() {
                   <Play className="text-primary" />
                 </div>
                 <span className="text-sm font-medium text-muted-foreground">
-                  Watch Introduction
+                  {t("WatchIntroduction")}
                 </span>
               </div>
             </div>

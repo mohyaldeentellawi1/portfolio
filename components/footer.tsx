@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { getTranslations } from "next-intl/server";
 
-export default function Footer() {
+export default async function Footer() {
+  const t = await getTranslations("Home");
   return (
     <footer className="border-t border-border bg-card px-6 sm:px-8 lg:px-10 py-12">
       <div className="mx-auto max-w-7xl flex flex-col gap-8">
@@ -9,11 +11,10 @@ export default function Footer() {
           {/* Copy — start side */}
           <div className="flex flex-col gap-1">
             <p className="text-base font-semibold text-foreground">
-              Stay in the loop
+              {t("Stayintheloop")}
             </p>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Get notified about the latest projects and the newest
-              technological trends — straight to your inbox.
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+              {t("Getnotifiedaboutmylatestprojects")}
             </p>
           </div>
 
@@ -27,12 +28,12 @@ export default function Footer() {
             >
               <input
                 type="email"
-                placeholder="Your email address"
+                placeholder={t("YourEmailAddress")}
                 className="h-full flex-1 bg-transparent px-4 text-sm text-foreground
                            placeholder:text-muted-foreground outline-none"
               />
               <Button type="submit" className="shrink-0">
-                Subscribe
+                {t("Subscribe")}
               </Button>
             </div>
           </form>
@@ -40,8 +41,9 @@ export default function Footer() {
 
         {/* ── Bottom line ── */}
         <div className="border-t border-border/60 pt-6">
-          <p className="text-xs text-muted-foreground text-center">
-            © {new Date().getFullYear()} Muheddin Tellawi. All rights reserved.
+          <p dir="ltr" className="text-xs text-muted-foreground text-center">
+            © {new Date().getFullYear()} Mohyaldeen Tellawi. All rights
+            reserved.
           </p>
         </div>
       </div>

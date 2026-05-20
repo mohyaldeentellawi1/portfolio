@@ -1,5 +1,37 @@
 {
   "Home": {
-    "Name": "Mohyaldeen Tellawi"
+    "Name": "Mohyaldeen Tellawi",
+    "AboutMe": "About Me",
+    "Project": "Project",
+    "Reviews": "Reviews",
+    "Contact": "Contact",
+    "IdontjustwritecodeIcraftsoftware": "I don’t just write code — I craft software.",
+    "AboutBio1": "I’m a full-stack developer passionate about crafting modern web and mobile applications that feel fast, intuitive, and genuinely enjoyable to use. I build scalable digital products that combine robust architecture with seamless user experiences.",
+    "AboutBio2": "I care as much about the details behind the scenes as the experience users see on the surface — blending clean engineering with refined design to create products that are both functional and elegant.",
+    "AboutBio3": "For me, development is more than writing code; it’s about transforming ideas into meaningful experiences through thoughtful technology, performance, and design.",
+    "YearsExp": "Years Exp.",
+    "Projects": "Projects",
+    "Dedication": "Dedication",
+    "Introduction": "Introduction",
+    "AShortWalkthroughOfWhoIAmAndWhatIBuild": "A short walkthrough of who I am and what I build.",
+    "WatchIntroduction": "Watch Introduction",
+    "DownloadCV": "Download CV",
+    "Skills": "Skills",
+    "TechnologiesIworkwith": "Technologies I work with",
+    "eachprojectisaproblemsolvedaskillsharpenedandastoryworthtelling": "Each project is a problem solved, a skill sharpened, and a story worth telling.",
+    "ViewAll": "View All",
+    "WhatClientsSay": "What clients say",
+    "AddReview": "Add Review",
+    "Getintouch": "Get in touch",
+    "Yourideacouldbethenextbigthing": "Your idea could be the next big thing — let’s build it together. Send a message and let’s start refining the small details and turn them into a powerful digital product.",
+    "SendMessage": "Send Message",
+    "name": "Name",
+    "Email": "Email",
+    "Subject": "Subject",
+    "Message": "Message",
+    "Stayintheloop": "Stay in the loop",
+    "Getnotifiedaboutmylatestprojects": "Get notified about my latest projects and the newest trends in technology. Straight to your inbox",
+    "YourEmailAddress": "Your email address",
+    "Subscribe": "Subscribe"
   }
 }
