@@ -33,7 +33,7 @@ export default async function Contact() {
   return (
     <section
       id="contact"
-      className="flex items-center pt-32 py-14 px-6 sm:px-8 lg:px-10"
+      className="flex items-center pt-25 py-14 px-6 sm:px-8 lg:px-10"
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
@@ -42,7 +42,7 @@ export default async function Contact() {
             <div className="flex flex-col gap-8">
               {/* Heading */}
               <div className="flex flex-col gap-2">
-                <h2 className="text-3xl font-bold tracking-tight text-foreground leading-snug">
+                <h2 className="text-3xl font-bold tracking-tight text-foreground leading-relaxed">
                   {t("Getintouch")}
                 </h2>
                 <p className="text-base text-muted-foreground leading-relaxed">

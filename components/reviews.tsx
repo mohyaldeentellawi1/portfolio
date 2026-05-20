@@ -110,7 +110,7 @@ export default function Reviews() {
   return (
     <section
       id="reviews"
-      className="flex items-center pt-32 py-14 px-6 sm:px-8 lg:px-10"
+      className="flex items-center pt-25 py-14 px-6 sm:px-8 lg:px-10"
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
@@ -126,9 +126,6 @@ export default function Reviews() {
 
             <div className="flex flex-col items-center gap-4">
               <div className="flex flex-col items-center gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  {t("Reviews")}
-                </span>
                 <h2 className="text-3xl font-bold tracking-tight text-foreground text-center">
                   {t("WhatClientsSay")}
                 </h2>

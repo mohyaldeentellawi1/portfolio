@@ -13,7 +13,7 @@ export default async function Footer() {
             <p className="text-base font-semibold text-foreground">
               {t("Stayintheloop")}
             </p>
-            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+            <p className="text-sm text-muted-foreground max-w-s leading-relaxed">
               {t("Getnotifiedaboutmylatestprojects")}
             </p>
           </div>

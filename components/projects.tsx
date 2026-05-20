@@ -57,16 +57,13 @@ export default async function Projects() {
   return (
     <section
       id="project"
-      className="flex items-center pt-32 py-14 px-6 sm:px-8 lg:px-10"
+      className="flex items-center pt-25 py-14 px-6 sm:px-8 lg:px-10"
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
           {/* ── Skills scroll strip ── */}
           <div className="mb-10">
             <div className="flex flex-col gap-1 mb-4">
-              <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                {t("Skills")}
-              </span>
               <h3 className="text-lg font-semibold tracking-tight text-foreground">
                 {t("TechnologiesIworkwith")}
               </h3>
@@ -109,13 +106,7 @@ export default async function Projects() {
           {/* ── Section header ── */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-10">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                {t("Projects")}
-              </span>
-              {/* <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-                {t("Anewwaytoshowcasesoftware")}
-              </h2> */}
-              <p className="text-3xl font-bold tracking-tight text-foreground max-w-2xl leading-snug">
+              <p className="text-3xl font-bold tracking-tight text-foreground max-w-2xl leading-relaxed">
                 {t(
                   "eachprojectisaproblemsolvedaskillsharpenedandastoryworthtelling",
                 )}
