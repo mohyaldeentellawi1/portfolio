@@ -127,7 +127,7 @@ export default async function About() {
               </p>
             </div>
 
-            <div className="group relative w-full max-w-2xl mx-auto aspect-video overflow-hidden rounded-2xl border border-border bg-muted cursor-pointer">
+            <div className="group relative w-full mx-auto aspect-video overflow-hidden rounded-2xl border border-border bg-muted cursor-pointer">
               {/* Centered play button */}
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 transition-transform duration-300 group-hover:scale-105">
                 <div
