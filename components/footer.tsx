@@ -4,10 +4,8 @@ export default function Footer() {
   return (
     <footer className="border-t border-border bg-card px-6 sm:px-8 lg:px-10 py-12">
       <div className="mx-auto max-w-7xl flex flex-col gap-8">
-
         {/* ── Copy + Form in same row ── */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-
           {/* Copy — start side */}
           <div className="flex flex-col gap-1">
             <p className="text-base font-semibold text-foreground">
@@ -20,7 +18,7 @@ export default function Footer() {
           </div>
 
           {/* Subscribe form — end side, button inside input */}
-          <form className="w-full lg:w-auto lg:min-w-96">
+          <form className="w-full lg:w-auto lg:min-w-100">
             {/* Outer wrapper acts as the visual input container */}
             <div
               className="flex h-13 w-full items-center rounded border border-input
@@ -38,7 +36,6 @@ export default function Footer() {
               </Button>
             </div>
           </form>
-
         </div>
 
         {/* ── Bottom line ── */}
@@ -47,7 +44,6 @@ export default function Footer() {
             © {new Date().getFullYear()} Muheddin Tellawi. All rights reserved.
           </p>
         </div>
-
       </div>
     </footer>
   );
