@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 
 const LINKS = [
   { label: "About Me", href: "#about" },
@@ -17,6 +18,8 @@ type Href = (typeof LINKS)[number]["href"];
 
 export default function Nav() {
   const t = useTranslations("Home");
+
+  const { resolvedTheme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeHref, setActiveHref] = useState<Href>("#about");
@@ -84,7 +87,7 @@ export default function Nav() {
           })}
         </ul>
 
-        {/* RIGHT — Desktop CTA + Mobile hamburger */}
+        {/* RIGHT — Desktop CTA + Theme toggle + Mobile hamburger */}
         <div className="flex items-center gap-3">
           {/* Desktop CTA */}
           <Button
@@ -93,6 +96,18 @@ export default function Nav() {
           >
             Download CV
           </Button>
+
+          {/* Theme toggle */}
+          <button
+            type="button"
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            aria-label="Toggle theme"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-border
+                       text-foreground transition-colors duration-200 hover:bg-muted
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {resolvedTheme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
 
           {/* Mobile hamburger */}
           <button

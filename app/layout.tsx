@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { ThemeProvider } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -31,6 +32,7 @@ export default async function RootLayout({ children, params }: Props) {
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
+      suppressHydrationWarning
       className={cn(
         "h-full scroll-smooth",
         "antialiased",
@@ -40,9 +42,11 @@ export default async function RootLayout({ children, params }: Props) {
       )}
     >
       <body className="min-h-full flex flex-col">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <ThemeProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
