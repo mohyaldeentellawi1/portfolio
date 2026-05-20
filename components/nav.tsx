@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { Button } from "./ui/button";
 
 const LINKS = [
   { label: "About Me", href: "#about" },
@@ -84,14 +85,12 @@ export default function Nav() {
         {/* RIGHT — Desktop CTA + Mobile hamburger */}
         <div className="flex items-center gap-3">
           {/* Desktop CTA */}
-          <a
-            href="/cv.pdf"
-            download
-            className="hidden md:inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium
+          <Button
+            className="hidden md:inline-flex items-center bg-primary px-4 text-sm font-medium
                        text-primary-foreground transition-colors duration-200 hover:bg-primary/85 active:scale-[0.97]"
           >
             Download CV
-          </a>
+          </Button>
 
           {/* Mobile hamburger */}
           <button
@@ -140,15 +139,7 @@ export default function Nav() {
             );
           })}
 
-          <a
-            href="/cv.pdf"
-            download
-            className="mt-4 flex h-10 w-full items-center justify-center rounded-md bg-primary
-                       text-sm font-medium text-primary-foreground transition-colors duration-200
-                       hover:bg-primary/85 active:scale-[0.98]"
-          >
-            Download CV
-          </a>
+          <Button className="w-full mt-4">Download CV</Button>
         </div>
       </div>
     </header>
