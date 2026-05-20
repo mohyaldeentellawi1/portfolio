@@ -12,8 +12,8 @@ export default function About() {
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
           {/* ── Top row: image + bio ── */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
-            {/* Developer image */}
-            <div className="flex justify-center lg:justify-start">
+            {/* Developer image + socials */}
+            <div className="flex flex-col items-center lg:items-start gap-6">
               <div className="relative h-64 w-64 sm:h-72 sm:w-72 md:h-80 md:w-80 lg:h-96 lg:w-full lg:max-w-sm rounded-full overflow-hidden border border-border/40 shadow-md">
                 <Image
                   src="/myImage.svg"
@@ -22,6 +22,45 @@ export default function About() {
                   className="object-cover"
                   priority
                 />
+              </div>
+
+              {/* Social links */}
+              <div className="flex items-center gap-3">
+                {[
+                  {
+                    href: "https://github.com/mohyaldeentellawi1",
+                    src: "/github.svg",
+                    label: "GitHub",
+                  },
+                  {
+                    href: "https://www.linkedin.com/in/mohyaldeentellawi",
+                    src: "/linkedin.svg",
+                    label: "LinkedIn",
+                  },
+                  {
+                    href: "https://t.me/MohyaldeenT",
+                    src: "/telegram.svg",
+                    label: "Telegram",
+                  },
+                  {
+                    href: "https://www.instagram.com/MohyaldeenT",
+                    src: "/instagram.svg",
+                    label: "Instagram",
+                  },
+                ].map(({ href, src, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex h-10 w-10 items-center justify-center rounded border border-border bg-background
+                               transition-colors duration-200 hover:bg-muted hover:border-border/80
+                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <Image src={src} alt={label} width={18} height={18} />
+                  </a>
+                ))}
               </div>
             </div>
 

@@ -1,6 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const SKILLS = [
+  // Languages
+  { src: "/javascript.svg",  label: "JavaScript" },
+  { src: "/typescript.svg",  label: "TypeScript" },
+  { src: "/python.svg",      label: "Python" },
+  { src: "/html.svg",        label: "HTML" },
+  { src: "/dart.svg",        label: "Dart" },
+  // Frameworks & Libraries
+  { src: "/react.svg",       label: "React" },
+  { src: "/next.svg",        label: "Next.js" },
+  { src: "/node.svg",        label: "Node.js" },
+  { src: "/express.svg",     label: "Express" },
+  { src: "/nest.svg",        label: "NestJS" },
+  { src: "/flutter.svg",     label: "Flutter" },
+  { src: "/tailwindcss.svg", label: "Tailwind CSS" },
+  // Databases & Tools
+  { src: "/mongo.svg",       label: "MongoDB" },
+  { src: "/mysql.svg",       label: "MySQL" },
+  { src: "/prisma.svg",      label: "Prisma" },
+  { src: "/github.svg",      label: "GitHub" },
+] as const;
 
 const FEATURED_PROJECTS = [
   {
@@ -34,6 +57,39 @@ export default function Projects() {
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+
+          {/* ── Skills scroll strip ── */}
+          <div className="mb-10">
+            <div className="flex flex-col gap-1 mb-4">
+              <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+                Skills
+              </span>
+              <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                Technologies I work with
+              </h3>
+            </div>
+
+            <div className="overflow-x-auto pb-2 -mb-2">
+              <div className="flex gap-3 w-max">
+                {SKILLS.map(({ src, label }) => (
+                  <div
+                    key={label}
+                    className="flex flex-col items-center gap-2 h-20 w-20 shrink-0
+                               rounded-lg bg-background justify-center
+                               transition-colors duration-200 hover:bg-muted"
+                  >
+                    <Image src={src} alt={label} width={34} height={34} />
+                    <span className="text-[10px] font-medium text-muted-foreground text-center leading-tight">
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ── Divider ── */}
+          <div className="border-t border-border/40 mb-10" />
 
           {/* ── Section header ── */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-10">
