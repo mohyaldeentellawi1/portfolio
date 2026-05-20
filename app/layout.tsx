@@ -24,7 +24,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        "h-full",
+        "h-full scroll-smooth",
         "antialiased",
         geistSans.variable,
         "font-sans",

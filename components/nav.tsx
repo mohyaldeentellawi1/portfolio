@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -104,11 +103,7 @@ export default function Nav() {
                        text-foreground transition-colors duration-200 hover:bg-muted focus-visible:outline-none
                        focus-visible:ring-2 focus-visible:ring-ring"
           >
-            {menuOpen ? (
-              <X className="text-foreground" />
-            ) : (
-              <Menu className="text-foreground" />
-            )}
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </nav>
@@ -145,16 +140,15 @@ export default function Nav() {
             );
           })}
 
-          <Button
-            style={{
-              borderRadius: "4px",
-            }}
-            render={<a href="/cv.pdf" download />}
-            nativeButton={false}
-            className="mt-4 w-full"
+          <a
+            href="/cv.pdf"
+            download
+            className="mt-4 flex h-10 w-full items-center justify-center rounded-md bg-primary
+                       text-sm font-medium text-primary-foreground transition-colors duration-200
+                       hover:bg-primary/85 active:scale-[0.98]"
           >
             Download CV
-          </Button>
+          </a>
         </div>
       </div>
     </header>
