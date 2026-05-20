@@ -106,7 +106,8 @@ export default function Nav() {
                        text-foreground transition-colors duration-200 hover:bg-muted
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            {resolvedTheme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            <Sun size={16} className="hidden dark:block" />
+            <Moon size={16} className="dark:hidden" />
           </button>
 
           {/* Mobile hamburger */}

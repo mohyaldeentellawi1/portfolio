@@ -59,7 +59,13 @@ export default function About() {
                                transition-colors duration-200 hover:bg-muted hover:border-border/80
                                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
-                    <Image src={src} alt={label} width={18} height={18} />
+                    <Image
+                      src={src}
+                      alt={label}
+                      width={18}
+                      height={18}
+                      className={label === "GitHub" ? "dark:invert" : ""}
+                    />
                   </a>
                 ))}
               </div>

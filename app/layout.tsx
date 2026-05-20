@@ -4,7 +4,9 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { ThemeProvider } from "next-themes";
+import Providers from "./providers";
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -42,11 +44,13 @@ export default async function RootLayout({ children, params }: Props) {
       )}
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider>
+        <Providers>
           <NextIntlClientProvider locale={locale} messages={messages}>
+            <Nav />
             {children}
+            <Footer />
           </NextIntlClientProvider>
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

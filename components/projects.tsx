@@ -79,7 +79,19 @@ export default function Projects() {
                                rounded-lg bg-background justify-center
                                transition-colors duration-200 hover:bg-muted"
                   >
-                    <Image src={src} alt={label} width={36} height={36} />
+                    <Image
+                      src={src}
+                      alt={label}
+                      width={36}
+                      height={36}
+                      className={
+                        label === "GitHub" ||
+                        label === "Next.js" ||
+                        label === "Express"
+                          ? "dark:invert"
+                          : ""
+                      }
+                    />
                     <span className="text-[10px] font-medium text-muted-foreground text-center leading-none whitespace-nowrap">
                       {label}
                     </span>
