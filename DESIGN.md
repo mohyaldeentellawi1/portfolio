@@ -3,6 +3,7 @@
 > **Rule #1:** Never hardcode pixel values as arbitrary Tailwind classes (e.g. `h-[72px]`) when a canonical class exists (`h-18`). Always use the canonical class. Check Tailwind docs before reaching for brackets.
 > **Rule #2:** Never hardcode colors. Always use CSS variable tokens via Tailwind (`text-foreground`, `bg-primary`, etc.).
 > **Rule #3:** Every interactive element must have a `transition-*` class and a visible focus state (`focus-visible:ring-2 focus-visible:ring-ring`).
+> **Rule #4:** Border radius is **4px** (`rounded`) for all buttons and interactive elements. Containers use `rounded-lg` maximum. Never use `rounded-xl`, `rounded-2xl`, `rounded-3xl`, or `rounded-4xl` anywhere in the codebase. Circles (avatars, icon buttons) use `rounded-full`.
 
 ---
 
@@ -115,18 +116,15 @@ chart-5: oklch(0.443 0.11  240.79)   ← darkest blue
 
 ## Border Radius
 
-Base unit: `--radius: 0.625rem` (10px)
+**Standard: 4px everywhere.** The global `--radius` CSS variable exists but is intentionally kept small. Do not escalate to `xl` or above — that creates an overly soft, bubbly look that breaks the design language.
 
-| Token | Multiplier | Computed | Tailwind Class |
+| Use case | Class | px | When to use |
 |---|---|---|---|
-| `radius-sm` | ×0.6 | ~6px | `rounded-sm` |
-| `radius-md` | ×0.8 | ~8px | `rounded-md` |
-| `radius-lg` | ×1.0 | 10px | `rounded-lg` |
-| `radius-xl` | ×1.4 | ~14px | `rounded-xl` |
-| `radius-2xl` | ×1.8 | ~18px | `rounded-2xl` |
-| `radius-3xl` | ×2.2 | ~22px | `rounded-3xl` |
-| `radius-4xl` | ×2.6 | ~26px | `rounded-4xl` |
-| full circle | — | 9999px | `rounded-full` |
+| Buttons, inputs, badges, tags | `rounded` | 4px | All interactive elements |
+| Small dropdowns, tooltips, chips | `rounded-md` | ~8px | Only when `rounded` feels too sharp |
+| Cards, panels, large containers | `rounded-lg` | 10px | Section containers, video frame, image frame |
+| Circular elements | `rounded-full` | 9999px | Avatars, icon-only buttons, play buttons |
+| **NEVER use** | `rounded-xl` `rounded-2xl` `rounded-3xl` `rounded-4xl` | — | Banned — breaks design consistency |
 
 ---
 
@@ -226,23 +224,23 @@ Use `focus-visible:` (not `focus:`) so keyboard users see the ring but mouse cli
 | Brand text | `text-xl font-bold tracking-tight text-foreground` |
 | Nav links | `text-sm font-medium text-muted-foreground hover:text-foreground` + underline slide effect |
 | Link gap | `gap-8` |
-| Desktop CTA | `h-9 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.97]` |
+| Desktop CTA | `h-9 rounded bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.97]` |
 | Mobile breakpoint | Links/CTA hidden below `md` (768px) |
-| Hamburger size | `h-9 w-9`, SVG `18×18`, stroke `1.6`, rounded-md |
+| Hamburger size | `h-9 w-9`, SVG `18×18`, stroke `1.6`, `rounded` |
 | Mobile drawer bg | Inherits header backdrop |
 | Mobile link padding | `py-3`, `border-b border-border/40 last:border-0` |
-| Mobile CTA | `h-10 w-full rounded-md`, full-width |
+| Mobile CTA | `h-10 w-full rounded`, full-width |
 | Body scroll lock | Lock `overflow: hidden` on body when drawer open |
 
 ### Buttons
 
 | Variant | Classes |
 |---|---|
-| Primary | `h-9 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.97] transition-colors duration-200` |
-| Primary Full-width | `h-10 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.98] transition-colors duration-200` |
-| Ghost | `h-9 rounded-md px-4 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200` |
-| Outline | `h-9 rounded-md border border-border px-4 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200` |
-| Icon | `h-9 w-9 rounded-md flex items-center justify-center text-foreground hover:bg-muted transition-colors duration-200` |
+| Primary | `h-9 rounded bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.97] transition-colors duration-200` |
+| Primary Full-width | `h-10 w-full rounded bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.98] transition-colors duration-200` |
+| Ghost | `h-9 rounded px-4 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200` |
+| Outline | `h-9 rounded border border-border px-4 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200` |
+| Icon | `h-9 w-9 rounded flex items-center justify-center text-foreground hover:bg-muted transition-colors duration-200` |
 
 All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`
 
@@ -255,9 +253,9 @@ All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring
 | Background orbs | 3× `absolute rounded-full bg-primary/10 blur-3xl`, `pointer-events-none`, `aria-hidden` |
 | Orb sizes | top-left `h-125 w-125`, bottom-right `h-96 w-96`, center `h-72 w-72 bg-primary/5` |
 | Content wrapper | `relative z-10 mx-auto w-full max-w-7xl` |
-| **Blur container** | `backdrop-blur-xl bg-background/50 border border-border/40 rounded-3xl p-8 md:p-10 lg:p-14 shadow-sm` |
+| **Container** | `bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm` |
 | Top grid | `grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center` |
-| Image frame | `relative h-64 w-64` → `md:h-80 md:w-80` → `lg:h-96 lg:w-full lg:max-w-sm`, `rounded-2xl overflow-hidden border border-border/40 shadow-md` |
+| Image frame | `relative h-64 w-64` → `md:h-80 md:w-80` → `lg:h-96 lg:w-full lg:max-w-sm`, `rounded-full overflow-hidden border border-border/40 shadow-md` (circle portrait) |
 | Image | `next/image` with `fill` + `object-cover` + `priority` |
 | Section label | `text-xs font-semibold uppercase tracking-wide text-primary` |
 | Section heading | `text-3xl lg:text-4xl font-bold tracking-tight text-foreground` |
@@ -266,11 +264,10 @@ All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring
 | Stat value | `text-2xl font-bold tracking-tight text-foreground` |
 | Stat label | `text-xs text-muted-foreground` |
 | Divider | `my-10 border-t border-border/40` |
-| **Video placeholder** | `relative w-full aspect-video overflow-hidden rounded-2xl border border-border/40 bg-muted/50 cursor-pointer` |
-| Video play button | `h-16 w-16 rounded-full bg-primary/10 border border-primary/20 group-hover:bg-primary/20` |
-| Video play icon | SVG `22×22`, `fill="currentColor"`, `ml-1` for optical center, `text-primary` |
+| **Video placeholder** | `group relative w-full max-w-2xl mx-auto aspect-video overflow-hidden rounded-lg border border-border bg-muted cursor-pointer` |
+| Video play button | `h-16 w-16 rounded-full bg-primary/10 border border-primary/20 group-hover:bg-primary/20` (circle — `rounded-full` is correct here) |
+| Video play icon | Lucide `<Play />`, `text-primary`, `ml-1` for optical center |
 | Video hover | `group` on container, `group-hover:scale-105 transition-transform duration-300` on inner |
-| Grid texture | `backgroundImage` inline style with 40px grid, `opacity-[0.03]` |
 
 ### Cards
 
@@ -278,7 +275,7 @@ All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring
 |---|---|
 | Background | `bg-card text-card-foreground` |
 | Border | `border border-border` |
-| Radius | `rounded-xl` (preferred) or `rounded-lg` |
+| Radius | `rounded-lg` (max allowed for containers) |
 | Padding | `p-6` |
 | Shadow | `shadow-sm` |
 | Hover elevation | `hover:shadow-md transition-shadow duration-200` |
@@ -307,7 +304,7 @@ All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring
 |---|---|
 | Height | `h-9` (small) / `h-10` (default) |
 | Border | `border border-input` |
-| Radius | `rounded-md` |
+| Radius | `rounded` (4px) |
 | Padding | `px-3` |
 | Text | `text-sm text-foreground placeholder:text-muted-foreground` |
 | Focus | `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring` |

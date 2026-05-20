@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
 const LINKS = [
   { label: "About Me", href: "#about" },
@@ -25,7 +27,9 @@ export default function Nav() {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   function handleLinkClick(href: Href) {
@@ -44,7 +48,6 @@ export default function Nav() {
     >
       {/* ── Desktop & Mobile bar ── */}
       <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-10">
-
         {/* LEFT — Brand */}
         <Link
           href="#"
@@ -102,13 +105,9 @@ export default function Nav() {
                        focus-visible:ring-2 focus-visible:ring-ring"
           >
             {menuOpen ? (
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <path d="M3 3L15 15M15 3L3 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
+              <X className="text-foreground" />
             ) : (
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-                <path d="M2 5H16M2 9H16M2 13H16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
+              <Menu className="text-foreground" />
             )}
           </button>
         </div>
@@ -118,7 +117,9 @@ export default function Nav() {
       <div
         className={[
           "md:hidden overflow-hidden transition-all duration-300 ease-in-out",
-          menuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0 pointer-events-none",
+          menuOpen
+            ? "max-h-screen opacity-100"
+            : "max-h-0 opacity-0 pointer-events-none",
         ].join(" ")}
         aria-hidden={!menuOpen}
       >
@@ -134,7 +135,9 @@ export default function Nav() {
                 className={[
                   "block py-3 text-sm font-medium transition-colors duration-200",
                   "border-b border-border/40 last:border-0",
-                  isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                  isActive
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 ].join(" ")}
               >
                 {label}
@@ -142,15 +145,16 @@ export default function Nav() {
             );
           })}
 
-          <a
-            href="/cv.pdf"
-            download
-            className="mt-4 flex h-10 w-full items-center justify-center rounded-md bg-primary
-                       text-sm font-medium text-primary-foreground transition-colors duration-200
-                       hover:bg-primary/85 active:scale-[0.98]"
+          <Button
+            style={{
+              borderRadius: "4px",
+            }}
+            render={<a href="/cv.pdf" download />}
+            nativeButton={false}
+            className="mt-4 w-full"
           >
             Download CV
-          </a>
+          </Button>
         </div>
       </div>
     </header>

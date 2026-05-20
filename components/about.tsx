@@ -1,29 +1,15 @@
+import { Play } from "lucide-react";
 import Image from "next/image";
 
 export default function About() {
   return (
     <section
       id="about"
-      className="relative min-h-screen overflow-hidden flex items-center py-24 px-6 sm:px-8 lg:px-10"
+      className="min-h-screen flex items-center py-24 px-6 sm:px-8 lg:px-10"
     >
-      {/* Background gradient orbs — give the blur container something to blur against */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 -left-40 h-125 w-125 rounded-full bg-primary/10 blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-72 w-72 rounded-full bg-primary/5 blur-3xl"
-      />
-
-      {/* Content */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl">
-        {/* ── Blur container ── */}
-        <div className="backdrop-blur-xl bg-background/50 border border-border/40 rounded-3xl p-8 md:p-10 lg:p-14 shadow-sm">
+      <div className="mx-auto w-full max-w-7xl">
+        {/* ── Container ── */}
+        <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
           {/* ── Top row: image + bio ── */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
             {/* Developer image */}
@@ -41,7 +27,6 @@ export default function About() {
 
             {/* Bio text */}
             <div className="flex flex-col gap-6">
-              {/* Label + heading */}
               <div className="flex flex-col gap-2">
                 <span className="text-xs font-semibold uppercase tracking-wide text-primary">
                   About Me
@@ -51,7 +36,6 @@ export default function About() {
                 </h2>
               </div>
 
-              {/* Bio paragraphs */}
               <div className="flex flex-col gap-4">
                 <p className="text-base text-muted-foreground leading-relaxed">
                   I&apos;m a full-stack developer passionate about building
@@ -100,19 +84,7 @@ export default function About() {
               </p>
             </div>
 
-            {/* Video frame */}
-            <div className="group relative w-full aspect-video overflow-hidden rounded-2xl border border-border/40 bg-muted/50 cursor-pointer">
-              {/* Subtle grid texture */}
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 opacity-[0.03]"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)",
-                  backgroundSize: "40px 40px",
-                }}
-              />
-
+            <div className="group relative w-full max-w-2xl mx-auto aspect-video overflow-hidden rounded-2xl border border-border bg-muted cursor-pointer">
               {/* Centered play button */}
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 transition-transform duration-300 group-hover:scale-105">
                 <div
@@ -120,17 +92,7 @@ export default function About() {
                              bg-primary/10 border border-primary/20
                              transition-colors duration-200 group-hover:bg-primary/20"
                 >
-                  {/* Play icon — offset by 2px to account for optical centering */}
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 22 22"
-                    fill="none"
-                    aria-hidden="true"
-                    className="ml-1 text-primary"
-                  >
-                    <path d="M7 4.5l12 6.5-12 6.5V4.5z" fill="currentColor" />
-                  </svg>
+                  <Play className="text-primary" />
                 </div>
                 <span className="text-sm font-medium text-muted-foreground">
                   Watch Introduction
