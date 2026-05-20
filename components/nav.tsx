@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useSyncExternalStore, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, Moon, Sun, X } from "lucide-react";
@@ -48,6 +48,8 @@ export default function Nav() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const isProgrammaticScroll = useRef(false);
+  const scrollEndTimer = useRef<ReturnType<typeof setTimeout>>(null);
 
   // Server snapshot → "about" (matches SSR, no hydration mismatch).
   // Client snapshot → reads sessionStorage (correct persisted value).
@@ -63,6 +65,15 @@ export default function Nav() {
 
       // Only run scroll-spy when sections are present on this page
       if (!document.getElementById(SECTION_IDS[0])) return;
+
+      // Suppress scroll-spy while a programmatic scroll is in progress
+      if (isProgrammaticScroll.current) {
+        if (scrollEndTimer.current) clearTimeout(scrollEndTimer.current);
+        scrollEndTimer.current = setTimeout(() => {
+          isProgrammaticScroll.current = false;
+        }, 150);
+        return;
+      }
 
       let current: SectionId = "about";
       for (const id of SECTION_IDS) {
@@ -99,6 +110,7 @@ export default function Nav() {
     setMenuOpen(false);
     _setSection(id);
     if (document.getElementById(id)) {
+      isProgrammaticScroll.current = true;
       document.getElementById(id)!.scrollIntoView({ behavior: "smooth" });
     } else {
       sessionStorage.setItem(PENDING_KEY, id);
