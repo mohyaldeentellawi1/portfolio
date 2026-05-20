@@ -132,15 +132,13 @@ export default function Nav() {
             return (
               <li key={id}>
                 <button
-                  type="button"
                   onClick={() => scrollTo(id)}
                   className={[
                     "relative text-sm font-medium transition-colors duration-200",
-                    "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:bg-primary",
-                    "after:transition-transform after:duration-200",
+                    "after:absolute after:inset-x-0 after:-bottom-2 after:h-px after:bg-primary",
                     isActive
-                      ? "text-foreground after:scale-x-100"
-                      : "text-muted-foreground hover:text-foreground after:scale-x-0 hover:after:scale-x-100",
+                      ? "text-foreground after:opacity-100"
+                      : "text-muted-foreground hover:text-foreground after:opacity-0",
                   ].join(" ")}
                   aria-current={isActive ? "page" : undefined}
                 >

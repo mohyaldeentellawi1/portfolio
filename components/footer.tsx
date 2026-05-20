@@ -32,7 +32,7 @@ export default async function Footer() {
                 className="h-full flex-1 bg-transparent px-4 text-sm text-foreground
                            placeholder:text-muted-foreground outline-none"
               />
-              <Button type="submit" className="shrink-0">
+              <Button type="submit" className="shrink-0 h-9 mx-1.5">
                 {t("Subscribe")}
               </Button>
             </div>
