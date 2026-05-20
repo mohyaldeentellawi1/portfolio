@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas   = ["SCH_PROJECT"]
+  
+}
+
+enum ProjectType {
+  WEB_FORNTEND
+  WEB_BACKEND
+  MOBILE
+  OTHER
+
+  @@schema("SCH_PROJECT")
+}
+
+enum ProjectMediaType {
+  IMAGE
+  VIDEO
+
+  @@schema("SCH_PROJECT")
+}
+
+model Project {
+  id            String   @id @default(uuid())
+  title         String
+  titleEn       String
+  description   String
+  descriptionEn String
+  liveUrl       String?
+  type          ProjectType @default(OTHER)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+
+  media         ProjectMedia[]
+  tags          ProjectTag[]
+
+  
+  @@schema("SCH_PROJECT")
+}
+
+model ProjectTag {
+  id        String   @id @default(uuid())
+  projectId String
+  tag       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  project   Project  @relation(fields: [projectId], references: [id])
+
+  @@schema("SCH_PROJECT")
+}
+
+
+model ProjectMedia {
+  id           String   @id @default(uuid())
+  projectId    String
+  url          String
+  type         ProjectMediaType @default(IMAGE)
+  cloudId      String
+  fileName     String?
+  thumbnailUrl String?
+  order        Int      @default(0)
+  isMain       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  project      Project  @relation(fields: [projectId], references: [id])
+
+  @@schema("SCH_PROJECT")
+}
