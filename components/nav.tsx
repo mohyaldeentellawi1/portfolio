@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { Button } from "./ui/button";
@@ -8,29 +9,84 @@ import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { setLocale } from "@/app/actions";
 
+const SECTION_IDS = ["about", "project", "reviews", "contact"] as const;
+type SectionId = (typeof SECTION_IDS)[number];
+
+// ── Active-section store ─────────────────────────────────────────────────────
+// Lives outside React so useSyncExternalStore can subscribe to it.
+// sessionStorage is the backing store; listeners notify React of changes.
+const STORAGE_KEY = "nav-active-section";
+const PENDING_KEY = "nav-pending-scroll";
+const _listeners = new Set<() => void>();
+
+function _getSection(): SectionId {
+  return (sessionStorage.getItem(STORAGE_KEY) as SectionId) ?? "about";
+}
+function _setSection(id: SectionId) {
+  sessionStorage.setItem(STORAGE_KEY, id);
+  _listeners.forEach((fn) => fn());
+}
+function _subscribe(cb: () => void) {
+  _listeners.add(cb);
+  return () => _listeners.delete(cb);
+}
+
 export default function Nav() {
   const t = useTranslations("Home");
 
-  const LINKS = [
-    { label: t("AboutMe"), href: "#about" },
-    { label: t("Project"), href: "#project" },
-    { label: t("Reviews"), href: "#reviews" },
-    { label: t("Contact"), href: "#contact" },
-  ] as const;
-
-  type Href = (typeof LINKS)[number]["href"];
+  const LINKS: { label: string; id: SectionId }[] = [
+    { label: t("AboutMe"), id: "about" },
+    { label: t("Project"), id: "project" },
+    { label: t("Reviews"), id: "reviews" },
+    { label: t("Contact"), id: "contact" },
+  ];
 
   const locale = useLocale();
   const { resolvedTheme, setTheme } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeHref, setActiveHref] = useState<Href>("#about");
+
+  // Server snapshot → "about" (matches SSR, no hydration mismatch).
+  // Client snapshot → reads sessionStorage (correct persisted value).
+  const activeId = useSyncExternalStore(
+    _subscribe,
+    _getSection,
+    () => "about" as SectionId,
+  );
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+
+      // Only run scroll-spy when sections are present on this page
+      if (!document.getElementById(SECTION_IDS[0])) return;
+
+      let current: SectionId = "about";
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 80) current = id;
+      }
+      _setSection(current);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // When arriving at home, execute any pending section scroll
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const pending = sessionStorage.getItem(PENDING_KEY) as SectionId | null;
+    if (!pending) return;
+    sessionStorage.removeItem(PENDING_KEY);
+    const timer = setTimeout(() => {
+      document.getElementById(pending)?.scrollIntoView({ behavior: "smooth" });
+      _setSection(pending);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -39,9 +95,15 @@ export default function Nav() {
     };
   }, [menuOpen]);
 
-  function handleLinkClick(href: Href) {
-    setActiveHref(href);
+  function scrollTo(id: SectionId) {
     setMenuOpen(false);
+    _setSection(id);
+    if (document.getElementById(id)) {
+      document.getElementById(id)!.scrollIntoView({ behavior: "smooth" });
+    } else {
+      sessionStorage.setItem(PENDING_KEY, id);
+      router.push("/");
+    }
   }
 
   return (
@@ -65,13 +127,13 @@ export default function Nav() {
 
         {/* CENTER — Desktop links */}
         <ul className="hidden md:flex items-center gap-8" role="list">
-          {LINKS.map(({ label, href }) => {
-            const isActive = activeHref === href;
+          {LINKS.map(({ label, id }) => {
+            const isActive = activeId === id;
             return (
-              <li key={label}>
-                <Link
-                  href={href}
-                  onClick={() => handleLinkClick(href)}
+              <li key={id}>
+                <button
+                  type="button"
+                  onClick={() => scrollTo(id)}
                   className={[
                     "relative text-sm font-medium transition-colors duration-200",
                     "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:bg-primary",
@@ -83,7 +145,7 @@ export default function Nav() {
                   aria-current={isActive ? "page" : undefined}
                 >
                   {label}
-                </Link>
+                </button>
               </li>
             );
           })}
@@ -96,7 +158,7 @@ export default function Nav() {
             className="hidden md:inline-flex items-center bg-primary px-4 text-sm font-medium
                        text-primary-foreground transition-colors duration-200 hover:bg-primary/85 active:scale-[0.97]"
           >
-            {t("DownloadCV")}
+            {t("LogIn")}
           </Button>
 
           {/* Theme toggle */}
@@ -152,16 +214,16 @@ export default function Nav() {
         aria-hidden={!menuOpen}
       >
         <div className="border-t border-border/60 px-6 sm:px-8 pb-6 pt-4 flex flex-col gap-1">
-          {LINKS.map(({ label, href }) => {
-            const isActive = activeHref === href;
+          {LINKS.map(({ label, id }) => {
+            const isActive = activeId === id;
             return (
-              <Link
-                key={label}
-                href={href}
-                onClick={() => handleLinkClick(href)}
+              <button
+                key={id}
+                type="button"
+                onClick={() => scrollTo(id)}
                 aria-current={isActive ? "page" : undefined}
                 className={[
-                  "block py-3 text-sm font-medium transition-colors duration-200",
+                  "block w-full text-left py-3 text-sm font-medium transition-colors duration-200",
                   "border-b border-border/40 last:border-0",
                   isActive
                     ? "text-foreground"
@@ -169,11 +231,11 @@ export default function Nav() {
                 ].join(" ")}
               >
                 {label}
-              </Link>
+              </button>
             );
           })}
 
-          <Button className="w-full mt-4">{t("DownloadCV")}</Button>
+          <Button className="w-full mt-4">{t("LogIn")}</Button>
         </div>
       </div>
     </header>

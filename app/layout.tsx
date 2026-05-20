@@ -36,6 +36,7 @@ export default async function RootLayout({
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={cn(
         "h-full scroll-smooth antialiased",
         inter.variable,
