@@ -5,7 +5,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="min-h-screen flex items-center py-24 px-6 sm:px-8 lg:px-10"
+      className="flex items-center pt-32 pb-14 px-6 sm:px-8 lg:px-10"
     >
       <div className="mx-auto w-full max-w-7xl">
         {/* ── Container ── */}

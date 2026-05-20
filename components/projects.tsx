@@ -53,7 +53,7 @@ export default function Projects() {
   return (
     <section
       id="project"
-      className="min-h-screen flex items-center py-24 px-6 sm:px-8 lg:px-10"
+      className="flex items-center py-14 px-6 sm:px-8 lg:px-10"
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
