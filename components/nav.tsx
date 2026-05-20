@@ -12,6 +12,10 @@ import { setLocale } from "@/app/actions";
 const SECTION_IDS = ["about", "project", "reviews", "contact"] as const;
 type SectionId = (typeof SECTION_IDS)[number];
 
+type NavLink =
+  | { label: string; sectionId: SectionId }
+  | { label: string; href: string };
+
 // ── Active-section store ─────────────────────────────────────────────────────
 // Lives outside React so useSyncExternalStore can subscribe to it.
 // sessionStorage is the backing store; listeners notify React of changes.
@@ -34,11 +38,12 @@ function _subscribe(cb: () => void) {
 export default function Nav() {
   const t = useTranslations("Home");
 
-  const LINKS: { label: string; id: SectionId }[] = [
-    { label: t("AboutMe"), id: "about" },
-    { label: t("Project"), id: "project" },
-    { label: t("Reviews"), id: "reviews" },
-    { label: t("Contact"), id: "contact" },
+  const LINKS: NavLink[] = [
+    { label: t("AboutMe"), sectionId: "about" },
+    { label: t("Project"), sectionId: "project" },
+    { label: t("Reviews"), sectionId: "reviews" },
+    { label: t("Contact"), sectionId: "contact" },
+    { label: t("TechBlog"), href: "/tech-blog" },
   ];
 
   const locale = useLocale();
@@ -89,13 +94,36 @@ export default function Nav() {
   // When arriving at home, execute any pending section scroll
   useEffect(() => {
     if (pathname !== "/") return;
+
+    // Suppress scroll-spy immediately so the browser's scroll restoration
+    // (back navigation) doesn't overwrite the stored active section.
+    isProgrammaticScroll.current = true;
+
     const pending = sessionStorage.getItem(PENDING_KEY) as SectionId | null;
-    if (!pending) return;
-    sessionStorage.removeItem(PENDING_KEY);
+
+    if (pending) {
+      sessionStorage.removeItem(PENDING_KEY);
+      const timer = setTimeout(() => {
+        document
+          .getElementById(pending)
+          ?.scrollIntoView({ behavior: "smooth" });
+        _setSection(pending);
+        // isProgrammaticScroll stays true; the scroll-end debounce clears it.
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+
+    // No pending scroll (e.g. browser back) — wait for scroll to settle,
+    // then sync activeId to the actual visible section.
     const timer = setTimeout(() => {
-      document.getElementById(pending)?.scrollIntoView({ behavior: "smooth" });
-      _setSection(pending);
-    }, 100);
+      let current: SectionId = "about";
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 80) current = id;
+      }
+      _setSection(current);
+      isProgrammaticScroll.current = false;
+    }, 300);
     return () => clearTimeout(timer);
   }, [pathname]);
 
@@ -113,6 +141,7 @@ export default function Nav() {
       isProgrammaticScroll.current = true;
       document.getElementById(id)!.scrollIntoView({ behavior: "smooth" });
     } else {
+      isProgrammaticScroll.current = true;
       sessionStorage.setItem(PENDING_KEY, id);
       router.push("/");
     }
@@ -139,23 +168,38 @@ export default function Nav() {
 
         {/* CENTER — Desktop links */}
         <ul className="hidden md:flex items-center gap-8" role="list">
-          {LINKS.map(({ label, id }) => {
-            const isActive = activeId === id;
+          {LINKS.map((link) => {
+            const isActive =
+              "sectionId" in link
+                ? pathname === "/" && activeId === link.sectionId
+                : pathname === link.href;
+            const className = [
+              "relative text-sm font-medium transition-colors duration-200",
+              "after:absolute after:inset-x-0 after:-bottom-2 after:h-px after:bg-primary",
+              isActive
+                ? "text-foreground after:opacity-100"
+                : "text-muted-foreground hover:text-foreground after:opacity-0",
+            ].join(" ");
             return (
-              <li key={id}>
-                <button
-                  onClick={() => scrollTo(id)}
-                  className={[
-                    "relative text-sm font-medium transition-colors duration-200",
-                    "after:absolute after:inset-x-0 after:-bottom-2 after:h-px after:bg-primary",
-                    isActive
-                      ? "text-foreground after:opacity-100"
-                      : "text-muted-foreground hover:text-foreground after:opacity-0",
-                  ].join(" ")}
-                  aria-current={isActive ? "page" : undefined}
-                >
-                  {label}
-                </button>
+              <li key={link.label}>
+                {"sectionId" in link ? (
+                  <button
+                    onClick={() => scrollTo(link.sectionId)}
+                    className={className}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {link.label}
+                  </button>
+                ) : (
+                  <Link
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={className}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {link.label}
+                  </Link>
+                )}
               </li>
             );
           })}
@@ -224,24 +268,38 @@ export default function Nav() {
         aria-hidden={!menuOpen}
       >
         <div className="border-t border-border/60 px-6 sm:px-8 pb-6 pt-4 flex flex-col gap-1">
-          {LINKS.map(({ label, id }) => {
-            const isActive = activeId === id;
-            return (
+          {LINKS.map((link) => {
+            const isActive =
+              "sectionId" in link
+                ? pathname === "/" && activeId === link.sectionId
+                : pathname === link.href;
+            const className = [
+              "block w-full text-left py-3 text-sm font-medium transition-colors duration-200",
+              "border-b border-border/40 last:border-0",
+              isActive
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            ].join(" ");
+            return "sectionId" in link ? (
               <button
-                key={id}
+                key={link.label}
                 type="button"
-                onClick={() => scrollTo(id)}
+                onClick={() => scrollTo(link.sectionId)}
                 aria-current={isActive ? "page" : undefined}
-                className={[
-                  "block w-full text-left py-3 text-sm font-medium transition-colors duration-200",
-                  "border-b border-border/40 last:border-0",
-                  isActive
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground",
-                ].join(" ")}
+                className={className}
               >
-                {label}
+                {link.label}
               </button>
+            ) : (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                aria-current={isActive ? "page" : undefined}
+                className={className}
+              >
+                {link.label}
+              </Link>
             );
           })}
 
