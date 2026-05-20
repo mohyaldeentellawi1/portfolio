@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
 
 const LINKS = [
   { label: "About Me", href: "#about" },
@@ -15,6 +16,7 @@ const LINKS = [
 type Href = (typeof LINKS)[number]["href"];
 
 export default function Nav() {
+  const t = useTranslations("Home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeHref, setActiveHref] = useState<Href>("#about");
@@ -53,7 +55,7 @@ export default function Nav() {
           href="#"
           className="shrink-0 text-xl font-bold tracking-tight text-foreground transition-opacity duration-200 hover:opacity-80"
         >
-          Muheddin Tellawi
+          {t("Name")}
         </Link>
 
         {/* CENTER — Desktop links */}

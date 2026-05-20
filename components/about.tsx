@@ -1,4 +1,5 @@
 import { Play } from "lucide-react";
+
 import Image from "next/image";
 
 export default function About() {
@@ -71,28 +72,35 @@ export default function About() {
                   About Me
                 </span>
                 <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-                  Crafting digital experiences that matter
+                  I don’t just write code — I craft software.
                 </h2>
               </div>
 
               <div className="flex flex-col gap-4">
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  I&apos;m a full-stack developer passionate about building
-                  clean, performant, and accessible web applications. I
-                  specialise in React and Next.js ecosystems, with a focus on
-                  delivering pixel-perfect UIs backed by solid architecture.
+                  I&apos;m a full-stack developer passionate about crafting
+                  modern web and mobile applications that feel fast, intuitive,
+                  and genuinely enjoyable to use. I build scalable digital
+                  products that combine robust architecture with seamless user
+                  experiences.
                 </p>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  With a strong eye for design and a deep understanding of
-                  modern tooling, I bridge the gap between engineering and
-                  aesthetics — turning ideas into products people love to use.
+                  I care as much about the details behind the scenes as the
+                  experience users see on the surface — blending clean
+                  engineering with refined design to create products that are
+                  both functional and elegant.
+                </p>
+                <p className="text-base text-muted-foreground leading-relaxed">
+                  For me, development is more than writing code; it’s about
+                  transforming ideas into meaningful experiences through
+                  thoughtful technology, performance, and design.
                 </p>
               </div>
 
               {/* Quick stats */}
               <div className="grid grid-cols-3 gap-4 pt-2 border-t border-border/40">
                 {[
-                  { value: "3+", label: "Years Exp." },
+                  { value: "4+", label: "Years Exp." },
                   { value: "20+", label: "Projects" },
                   { value: "100%", label: "Dedication" },
                 ].map(({ value, label }) => (
