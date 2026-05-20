@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const REVIEWS = [
   {
@@ -54,7 +55,10 @@ function ReviewCard({
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-primary"
-          style={{ borderRadius: "2.5rem", transform: `rotate(${rotation}deg)` }}
+          style={{
+            borderRadius: "2.5rem",
+            transform: `rotate(${rotation}deg)`,
+          }}
         />
       )}
 
@@ -70,15 +74,17 @@ function ReviewCard({
             isCenter ? "text-sm line-clamp-5" : "line-clamp-5 text-xs",
           )}
         >
-          <span aria-hidden="true" className="font-serif text-primary">&ldquo;</span>
+          <span aria-hidden="true" className="font-serif text-primary">
+            &ldquo;
+          </span>
           {review.quote}
-          <span aria-hidden="true" className="font-serif text-primary">&rdquo;</span>
+          <span aria-hidden="true" className="font-serif text-primary">
+            &rdquo;
+          </span>
         </p>
 
         {/* Author name */}
-        <p className="text-sm font-semibold text-primary">
-          — {review.name}
-        </p>
+        <p className="text-sm font-semibold text-primary">— {review.name}</p>
       </div>
     </div>
   );
@@ -106,10 +112,13 @@ export default function Reviews() {
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
-
           {/* ── Header: [prev] | title + dots | [next] ── */}
           <div className="flex items-start justify-between gap-4 mb-16">
-            <button onClick={prev} aria-label="Previous review" className={navBtn}>
+            <button
+              onClick={prev}
+              aria-label="Previous review"
+              className={navBtn}
+            >
               <ChevronLeft size={18} />
             </button>
 
@@ -161,12 +170,16 @@ export default function Reviews() {
 
           {/* ── Add Review ── */}
           <div className="mt-8 flex justify-end">
-            <Button variant="outline" size="sm">
+            <Button
+              render={<Link href="/projects" />}
+              nativeButton={false}
+              variant="outline"
+              size="sm"
+            >
               <Plus />
               Add Review
             </Button>
           </div>
-
         </div>
       </div>
     </section>
