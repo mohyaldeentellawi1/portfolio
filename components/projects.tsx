@@ -1,34 +1,25 @@
 import Link from "next/link";
-import { ArrowRight, Code2, ExternalLink } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const FEATURED_PROJECTS = [
   {
     slug: "project-alpha",
-    index: "01",
     title: "Project Alpha",
-    description:
-      "A modern web application built with Next.js and TypeScript, featuring real-time data updates and a fully accessible UI.",
     tags: ["Next.js", "TypeScript", "Tailwind CSS"],
     github: "https://github.com",
     live: "https://example.com",
   },
   {
     slug: "project-beta",
-    index: "02",
     title: "Project Beta",
-    description:
-      "Full-stack e-commerce platform with seamless checkout, inventory management, and a powerful admin dashboard.",
     tags: ["React", "Node.js", "PostgreSQL"],
     github: "https://github.com",
     live: "https://example.com",
   },
   {
     slug: "project-gamma",
-    index: "03",
     title: "Project Gamma",
-    description:
-      "Mobile-first data dashboard with interactive charts, advanced filters, and one-click export capabilities.",
     tags: ["React", "D3.js", "REST API"],
     github: "https://github.com",
     live: null,
@@ -42,10 +33,9 @@ export default function Projects() {
       className="min-h-screen flex items-center py-24 px-6 sm:px-8 lg:px-10"
     >
       <div className="mx-auto w-full max-w-7xl">
-        {/* ── Container — same pattern as About ── */}
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
 
-          {/* ── Header ── */}
+          {/* ── Section header ── */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-10">
             <div className="flex flex-col gap-2">
               <span className="text-xs font-semibold uppercase tracking-wide text-primary">
@@ -60,7 +50,6 @@ export default function Projects() {
               </p>
             </div>
 
-            {/* View All button */}
             <Button
               render={<Link href="/projects" />}
               nativeButton={false}
@@ -75,76 +64,60 @@ export default function Projects() {
 
           {/* ── Cards grid ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {FEATURED_PROJECTS.map(
-              ({ slug, index, title, description, tags, github, live }) => (
-                <article
-                  key={slug}
-                  className="group relative flex flex-col bg-background border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
-                >
-                  {/* Stretched card link — covers the whole card */}
+            {FEATURED_PROJECTS.map(({ slug, title, tags, github, live }) => (
+              <article
+                key={slug}
+                className="group flex flex-col rounded-lg border border-border bg-background shadow-sm transition-shadow duration-300 hover:shadow-md overflow-hidden"
+              >
+                {/* ── Image — full width, flush to card edges ── */}
+                <div className="relative">
+                  {/* Placeholder image */}
+                  <div className="aspect-square w-full bg-linear-to-br from-primary/10 via-muted to-muted/60" />
+
+                  {/* Tech tags — overlaid top-left */}
+                  <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center rounded bg-card/90 backdrop-blur-sm
+                                   border border-border/40 px-2 py-0.5
+                                   text-[11px] font-medium text-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Creative "Go to Link" — overlaid top-right */}
+                  <a
+                    href={live ?? github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Open ${title}`}
+                    className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center
+                               rounded-full bg-card/90 backdrop-blur-sm border border-border/40
+                               text-foreground transition-all duration-200
+                               hover:bg-foreground hover:text-background hover:border-foreground hover:scale-110
+                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <ArrowUpRight size={14} strokeWidth={2} />
+                  </a>
+
+                  {/* Title — overlaid bottom-left */}
                   <Link
                     href={`/projects/${slug}`}
-                    className="absolute inset-0 z-0"
-                    aria-label={`View ${title} details`}
-                  />
-
-                  {/* ── Card header: index + action links ── */}
-                  <div className="relative flex items-start justify-between p-5 border-b border-border/60 bg-muted/40">
-                    <span className="text-4xl font-bold tracking-tighter text-border select-none">
-                      {index}
-                    </span>
-
-                    {/* Action links — z-10 to sit above the stretched card link */}
-                    <div className="relative z-10 flex gap-1">
-                      <a
-                        href={github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${title} source on GitHub`}
-                        className="flex h-8 w-8 items-center justify-center rounded text-muted-foreground
-                                   hover:text-foreground hover:bg-muted transition-colors duration-200"
-                      >
-                        <Code2 size={15} />
-                      </a>
-                      {live && (
-                        <a
-                          href={live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${title} live demo`}
-                          className="flex h-8 w-8 items-center justify-center rounded text-muted-foreground
-                                     hover:text-foreground hover:bg-muted transition-colors duration-200"
-                        >
-                          <ExternalLink size={15} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* ── Card body ── */}
-                  <div className="flex flex-col gap-3 p-5 flex-1">
-                    <h3 className="text-base font-semibold text-foreground transition-colors duration-200 group-hover:text-primary">
+                    className="absolute bottom-3 left-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+                  >
+                    <h3 className="inline-flex items-center rounded bg-card/90 backdrop-blur-sm
+                                   border border-border/40 px-2.5 py-1
+                                   text-sm font-semibold text-foreground transition-colors duration-200
+                                   group-hover:text-primary">
                       {title}
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                      {description}
-                    </p>
-
-                    {/* Tech tags */}
-                    <div className="flex flex-wrap gap-1.5 pt-2">
-                      {tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              )
-            )}
+                  </Link>
+                </div>
+              </article>
+            ))}
           </div>
 
         </div>
