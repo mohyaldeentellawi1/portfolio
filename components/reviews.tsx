@@ -47,7 +47,7 @@ function ReviewCard({
   return (
     <div
       className={cn(
-        "relative shrink-0 w-72 transition-all duration-500 ease-in-out",
+        "relative shrink-0 w-80 transition-all duration-500 ease-in-out",
         isCenter ? "z-10 scale-100 opacity-100" : "z-0 scale-90 opacity-50",
       )}
     >
@@ -65,14 +65,14 @@ function ReviewCard({
 
       {/* Card body */}
       <div
-        className="relative flex flex-col gap-6 border border-border bg-card p-8"
+        className="relative flex flex-col justify-center gap-6 border border-border bg-card p-8 h-80"
         style={{ borderRadius: "2.5rem" }}
       >
         {/* Quote text with inline opening and closing marks */}
         <p
           className={cn(
             "flex-1 leading-relaxed text-foreground",
-            isCenter ? "text-sm line-clamp-5" : "line-clamp-5 text-xs",
+            isCenter ? "text-base line-clamp-6" : "line-clamp-6 text-sm",
           )}
         >
           <span aria-hidden="true" className="font-serif text-primary">
@@ -114,6 +114,18 @@ export default function Reviews() {
     >
       <div className="mx-auto w-full max-w-7xl">
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+          {/* ── Top bar: Add Review ── */}
+          <div className="flex justify-end mb-6">
+            <Button
+              render={<Link href="/review" />}
+              nativeButton={false}
+              variant="default"
+              size="sm"
+            >
+              {t("AddReview")}
+            </Button>
+          </div>
+
           {/* ── Header: [prev] | title + dots | [next] ── */}
           <div className="flex items-start justify-between gap-4 mb-16">
             <button
@@ -155,7 +167,7 @@ export default function Reviews() {
           </div>
 
           {/* ── Cards ── */}
-          <div className="flex items-center justify-center gap-4 overflow-hidden">
+          <div className="flex items-center justify-center gap-8 overflow-hidden">
             <div className="hidden md:block">
               <ReviewCard review={REVIEWS[leftIdx]} position="left" />
             </div>
@@ -165,18 +177,6 @@ export default function Reviews() {
             <div className="hidden md:block">
               <ReviewCard review={REVIEWS[rightIdx]} position="right" />
             </div>
-          </div>
-
-          {/* ── Add Review ── */}
-          <div className="mt-8 flex justify-end">
-            <Button
-              render={<Link href="/projects" />}
-              nativeButton={false}
-              variant="default"
-              size="sm"
-            >
-              {t("AddReview")}
-            </Button>
           </div>
         </div>
       </div>
