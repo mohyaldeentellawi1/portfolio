@@ -48,7 +48,11 @@ export async function getProjectByIdAction({ id }: { id: number }): Promise<{
       where: { id },
       include: {
         media: true,
-        sections: true,
+        sections: {
+          include: {
+            media: true,
+          },
+        },
         tags: {
           include: {
             tag: true,

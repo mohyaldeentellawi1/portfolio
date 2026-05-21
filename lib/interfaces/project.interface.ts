@@ -17,6 +17,20 @@ interface ProjectTag {
   tag: Tag;
 }
 
+interface ProjectSection {
+  id: number;
+  projectId: number;
+  title: string;
+  titleEn?: string;
+  description: string;
+  descriptionEn?: string;
+  imageRight: boolean;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+
+  media: ProjectMedia[];
+}
 interface ProjectMedia {
   id: number;
   projectId: number;
@@ -29,6 +43,8 @@ interface ProjectMedia {
   isMain: boolean;
   createdAt: Date;
   updatedAt: Date;
+
+  section?: ProjectSection;
 }
 
 export interface Project {
@@ -45,5 +61,6 @@ export interface Project {
   updatedAt: Date;
 
   media: ProjectMedia[];
+  sections: ProjectSection[];
   tags: ProjectTag[];
 }

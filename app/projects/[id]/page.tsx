@@ -15,61 +15,6 @@ import { getTranslations } from "next-intl/server";
 import { getArabicTextServer } from "@/lib/utils/arabic-helper-server";
 import { getProjectByIdAction } from "@/lib/actions/projects/action";
 
-const PROJECT = {
-  title: "UrbanNest",
-  label: "Mobile App",
-  tags: ["React Native", "Expo", "Node.js", "PostgreSQL"],
-  description:
-    "A modern real estate platform that connects buyers, sellers, and renters through intelligent property matching and immersive virtual tours — built for speed, clarity, and delight.",
-  liveUrl: "https://example.com",
-  githubUrl: "https://github.com",
-  year: "2024",
-  duration: "4 months",
-  role: "Full-Stack Developer",
-  sections: [
-    {
-      step: "01",
-      title: "The Problem",
-      description:
-        "Finding the right property was overwhelming. Users drowned in endless listings with no context, no narrative, and no way to feel a space before visiting it in person. We set out to change that entirely — starting from how people search.",
-      imageRight: false,
-    },
-    {
-      step: "02",
-      title: "Smart Search & Filters",
-      description:
-        "We built an intelligent filter system that learns from user behavior. The more you interact, the better the results — surfacing properties that match your lifestyle, budget, and commute, not just square footage.",
-      imageRight: true,
-    },
-    {
-      step: "03",
-      title: "Immersive Virtual Tours",
-      description:
-        "Before booking a visit, users walk through any property via an interactive 3D tour. Built with a custom renderer, each tour loads in under two seconds — even on a mid-range mobile connection.",
-      imageRight: false,
-    },
-    {
-      step: "04",
-      title: "The Result",
-      description:
-        "Within 3 months of launch, UrbanNest reached 12,000 active users with a 4.8-star rating. Booking conversion improved by 340% compared to the client's previous platform, validated by an independent audit.",
-      imageRight: true,
-    },
-  ],
-  tech: [
-    "React Native",
-    "Expo",
-    "TypeScript",
-    "Node.js",
-    "Express",
-    "PostgreSQL",
-    "Prisma",
-    "Cloudinary",
-    "Google Maps API",
-    "Stripe",
-  ],
-};
-
 export default async function ProjectPage({
   params,
 }: {
@@ -152,7 +97,7 @@ export default async function ProjectPage({
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <Button
                   render={
                     <a
@@ -182,7 +127,7 @@ export default async function ProjectPage({
                     {t("SourceCode")}
                   </Button>
                 ) : (
-                  <span className="inline-flex items-center gap-2 rounded border border-border bg-transparent px-4 py-2 text-sm font-medium text-muted-foreground cursor-not-allowed opacity-60">
+                  <span className="inline-flex items-center gap-2 rounded border border-border bg-transparent px-4 py-2 text-sm font-medium text-muted-foreground cursor-not-allowed opacity-60 whitespace-nowrap">
                     <Lock size={15} />
                     {t("Proprietary")} — {t("SourceNotPublic")}
                   </span>
@@ -215,6 +160,7 @@ export default async function ProjectPage({
                             fill
                             className="object-contain"
                             sizes="(max-width: 768px) 112px, 144px"
+                            loading="eager"
                           />
                         )}
                       </div>
@@ -227,41 +173,76 @@ export default async function ProjectPage({
         </div>
 
         {/* ── Story sections ── */}
-        <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm flex flex-col gap-16">
-          {PROJECT.sections.map((section) => (
-            <div
-              key={section.step}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center"
-            >
-              {/* Text — always first in DOM (top on mobile) */}
-              <FadeIn
-                className={`flex flex-col gap-3${!section.imageRight ? " lg:order-2" : ""}`}
-              >
-                <span className="text-5xl font-bold tracking-tight text-border select-none">
-                  {section.step}
-                </span>
-                <h2 className="text-2xl font-bold tracking-tight text-foreground">
-                  {section.title}
-                </h2>
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  {section.description}
-                </p>
-              </FadeIn>
+        {data?.sections && data.sections.length > 0 && (
+          <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm flex flex-col gap-16">
+            {[...data.sections]
+              .sort((a, b) => a.order - b.order)
+              .map((section) => {
+                const isPortrait = data.techType === "MOBILE";
+                const aspectClass = isPortrait ? "aspect-9/19" : "aspect-video";
+                const images = [...(section.media ?? [])].sort(
+                  (a, b) => a.order - b.order,
+                );
+                return (
+                  <div
+                    key={section.id}
+                    className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center"
+                  >
+                    {/* Text */}
+                    <FadeIn
+                      className={`flex flex-col gap-3${!section.imageRight ? " lg:order-2" : ""}`}
+                    >
+                      <span className="text-5xl font-bold tracking-tight text-border select-none">
+                        {String(section.order).padStart(2, "0")}
+                      </span>
+                      <h2 className="text-2xl font-bold tracking-tight text-foreground">
+                        {getLocalizedText(section.titleEn ?? "", section.title)}
+                      </h2>
+                      <p className="text-base text-muted-foreground leading-relaxed">
+                        {getLocalizedText(
+                          section.descriptionEn ?? "",
+                          section.description,
+                        )}
+                      </p>
+                    </FadeIn>
 
-              {/* 2 portrait screenshots */}
-              <FadeIn
-                delay={150}
-                className={`flex items-end justify-center gap-4${!section.imageRight ? " lg:order-1" : ""}`}
-              >
-                <div className="w-32 aspect-9/19 rounded-lg overflow-hidden border border-border bg-linear-to-br from-primary/10 via-muted to-muted/60 shadow-sm" />
-                <div className="w-32 aspect-9/19 rounded-lg overflow-hidden border border-border bg-linear-to-br from-muted via-primary/5 to-primary/15 shadow-sm" />
-              </FadeIn>
-            </div>
-          ))}
-        </div>
+                    {/* Images */}
+                    <FadeIn
+                      delay={150}
+                      className={`flex items-end justify-center gap-4${!section.imageRight ? " lg:order-1" : ""}`}
+                    >
+                      {images.length > 0 ? (
+                        images.map((img) => (
+                          <div
+                            key={img.id}
+                            className={`w-48 ${aspectClass} relative`}
+                          >
+                            {img.url && (
+                              <Image
+                                src={img.thumbnailUrl ?? img.url}
+                                alt=""
+                                fill
+                                className="object-contain"
+                                sizes="192px"
+                              />
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <>
+                          <div className={`w-48 ${aspectClass} rounded-lg bg-muted`} />
+                          <div className={`w-48 ${aspectClass} rounded-lg bg-muted`} />
+                        </>
+                      )}
+                    </FadeIn>
+                  </div>
+                );
+              })}
+          </div>
+        )}
 
         {/* ── Tech stack ── */}
-        <div className="bg-card border border-border rounded-lg p-8 md:p-10 shadow-sm">
+        {/* <div className="bg-card border border-border rounded-lg p-8 md:p-10 shadow-sm">
           <div className="flex flex-col gap-4">
             <span className="text-xs font-semibold uppercase tracking-wide text-primary">
               Tech Stack
@@ -278,7 +259,7 @@ export default async function ProjectPage({
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </main>
   );
