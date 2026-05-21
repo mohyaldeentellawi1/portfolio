@@ -10,13 +10,14 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  schemas   = ["SCH_PROJECT"]
+  schemas   = ["SCH_PROJECT" , "SCH_REVIEW", "SCH_USER"]
   
 }
 
 enum ProjectType {
   WEB_FORNTEND
   WEB_BACKEND
+  WEB_FULLSTACK
   MOBILE
   OTHER
 
@@ -30,8 +31,23 @@ enum ProjectMediaType {
   @@schema("SCH_PROJECT")
 }
 
+
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectTags ProjectTag[]
+
+  
+  @@schema("SCH_PROJECT")
+}
+
 model Project {
-  id            String   @id @default(uuid())
+  id            Int      @id @default(autoincrement())
   title         String
   titleEn       String
   description   String
@@ -50,21 +66,23 @@ model Project {
 }
 
 model ProjectTag {
-  id        String   @id @default(uuid())
-  projectId String
-  tag       String
+  id        Int   @id @default(autoincrement())
+  projectId Int
+  tagId     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  project   Project  @relation(fields: [projectId], references: [id])
 
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, tagId])
   @@schema("SCH_PROJECT")
 }
 
 
 model ProjectMedia {
-  id           String   @id @default(uuid())
-  projectId    String
+  id           Int   @id @default(autoincrement())
+  projectId    Int
   url          String
   type         ProjectMediaType @default(IMAGE)
   cloudId      String
@@ -79,3 +97,55 @@ model ProjectMedia {
 
   @@schema("SCH_PROJECT")
 }
+
+
+model Review {
+  id        Int   @id @default(autoincrement())
+  userId    Int?  @unique
+  name      String
+  nameEn    String?
+  email     String?
+  content   String
+  contentEn String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@schema("SCH_REVIEW")
+}
+
+
+model Subscription {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  userId    Int?     @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@schema("SCH_USER")
+}
+
+
+
+model User {
+  id           Int        @id @default(autoincrement())
+  googleId     Int?
+  firstName    String
+  lastName     String?
+  email        String        @unique
+  password     String
+  bio          String?
+  imageUrl     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  reviews       Review[]
+  subscriptions Subscription[]
+
+  @@schema("SCH_USER")
+}
+
