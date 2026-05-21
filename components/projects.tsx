@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getTranslations } from "next-intl/server";
+import ProjectItem from "./project-item";
+import { getProjectsAction } from "@/lib/actions/projects/action";
 
 const SKILLS = [
   // Languages
@@ -28,32 +29,10 @@ const SKILLS = [
   { src: "/github.svg", label: "GitHub" },
 ] as const;
 
-const FEATURED_PROJECTS = [
-  {
-    slug: "project-alpha",
-    title: "Project Alpha",
-    tags: ["Next.js", "TypeScript", "Tailwind CSS"],
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-  {
-    slug: "project-beta",
-    title: "Project Beta",
-    tags: ["React", "Node.js", "PostgreSQL"],
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-  {
-    slug: "project-gamma",
-    title: "Project Gamma",
-    tags: ["React", "D3.js", "REST API"],
-    github: "https://github.com",
-    live: null,
-  },
-] as const;
-
 export default async function Projects() {
   const t = await getTranslations("Home");
+
+  const { data: projects } = await getProjectsAction();
   return (
     <section
       id="project"
@@ -126,61 +105,8 @@ export default async function Projects() {
 
           {/* ── Cards grid ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {FEATURED_PROJECTS.map(({ slug, title, tags, github, live }) => (
-              <article
-                key={slug}
-                className="group flex flex-col rounded-lg border border-border bg-background shadow-sm transition-shadow duration-300 hover:shadow-md overflow-hidden"
-              >
-                {/* ── Image — full width, flush to card edges ── */}
-                <div className="relative">
-                  {/* Placeholder image */}
-                  <div className="aspect-square w-full bg-linear-to-br from-primary/10 via-muted to-muted/60" />
-
-                  {/* Tech tags — overlaid top-left */}
-                  <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    {tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center rounded bg-card/90 backdrop-blur-sm
-                                   border border-border/40 px-2 py-0.5
-                                   text-[11px] font-medium text-foreground"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Creative "Go to Link" — overlaid top-right */}
-                  <a
-                    href={live ?? github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Open ${title}`}
-                    className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center
-                               rounded-full bg-card/90 backdrop-blur-sm border border-border/40
-                               text-foreground transition-all duration-200
-                               hover:bg-foreground hover:text-background hover:border-foreground hover:scale-110
-                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <ArrowUpRight size={14} strokeWidth={2} />
-                  </a>
-
-                  {/* Title — overlaid bottom-left */}
-                  <Link
-                    href={`/projects/${slug}`}
-                    className="absolute bottom-3 left-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
-                  >
-                    <h3
-                      className="inline-flex items-center rounded bg-card/90 backdrop-blur-sm
-                                   border border-border/40 px-2.5 py-1
-                                   text-sm font-semibold text-foreground transition-colors duration-200
-                                   group-hover:text-primary"
-                    >
-                      {title}
-                    </h3>
-                  </Link>
-                </div>
-              </article>
+            {projects.map((project) => (
+              <ProjectItem key={project.id} project={project} />
             ))}
           </div>
         </div>

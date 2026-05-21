@@ -33,6 +33,11 @@
     "Stayintheloop": "Stay in the loop",
     "Getnotifiedaboutmylatestprojects": "Get notified about my latest projects and the newest trends in technology. Straight to your inbox",
     "YourEmailAddress": "Your email address",
-    "Subscribe": "Subscribe"
+    "Subscribe": "Subscribe",
+    "ViewLive": "View Live",
+    "SourceCode": "Source Code",
+    "Proprietary": "Proprietary",
+    "SourceNotPublic": "Source Code not public",
+    "months": "months"
   }
 }

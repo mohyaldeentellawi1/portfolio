@@ -67,13 +67,15 @@ model Project {
   description   String
   descriptionEn String
   liveUrl       String?
-  techType      TechType    @default(OTHER)
-  projectType   ProjectType @default(MARKETPLACE)
+  githubUrl     String?
+  techType      TechType      @default(OTHER)
+  projectTypes  ProjectType[]
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
 
   media         ProjectMedia[]
+  sections      ProjectSection[]
   tags          ProjectTag[]
 
   
@@ -95,9 +97,28 @@ model ProjectTag {
 }
 
 
+model ProjectSection {
+  id            Int      @id @default(autoincrement())
+  projectId     Int
+  title         String
+  titleEn       String?
+  description   String
+  descriptionEn String?
+  imageRight    Boolean  @default(true)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  project       Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  media         ProjectMedia[]
+
+  @@schema("SCH_PROJECT")
+}
+
 model ProjectMedia {
   id           Int   @id @default(autoincrement())
   projectId    Int
+  sectionId    Int?
   url          String
   type         ProjectMediaType @default(IMAGE)
   cloudId      String
@@ -108,7 +129,8 @@ model ProjectMedia {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  project      Project  @relation(fields: [projectId], references: [id])
+  project      Project         @relation(fields: [projectId], references: [id])
+  section      ProjectSection? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
 
   @@schema("SCH_PROJECT")
 }

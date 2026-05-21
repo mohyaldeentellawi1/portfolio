@@ -33,6 +33,11 @@
     "Stayintheloop": "ابقَ على اطلاع",
     "Getnotifiedaboutmylatestprojects": "احصل على إشعارات بأحدث مشاريعي وأحدث التوجهات في مجال التكنولوجيا. مباشرة إلى بريدك الإلكتروني",
     "YourEmailAddress": "عنوان بريدك الإلكتروني",
-    "Subscribe": "اشترك"
+    "Subscribe": "اشترك",
+    "ViewLive": "عرض مباشر",
+    "SourceCode": "كود المصدر",
+    "Proprietary": "ملكية خاصة",
+    "SourceNotPublic": "كود المصدر غير متاح",
+    "months": "أشهر"
   }
 }

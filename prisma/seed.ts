@@ -80,9 +80,72 @@
 //   },
 // ];
 
+// const projectData: Prisma.ProjectCreateInput[] = [
+//   {
+//     title: "SMART NERO",
+//     titleEn: "SMART NERO",
+//     description:
+//       "منصة Social Trading متكاملة تربط بين المتداولين المحترفين والمستخدمين الراغبين بالاستثمار دون الحاجة لخبرة متقدمة في التداول. تتيح المنصة استعراض الاستراتيجيات، تحليل الأداء، متابعة الإحصائيات والأرباح، ثم ربط حساب التداول مباشرة مع الاستراتيجية المختارة لتنفيذ عمليات البيع والشراء تلقائيًا وبشكل لحظي.",
+//     descriptionEn:
+//       "A full-featured Social Trading platform designed to connect professional traders with users who want to invest without advanced trading experience. The platform enables users to explore trading strategies, analyze performance metrics, monitor profitability, and seamlessly link their trading accounts to automatically replicate trades in real time.",
+//     liveUrl: "https://app.smartnero.net/",
+//     techType: "MOBILE",
+//     projectTypes: ["TRADING", "COMMUNITY"],
+//   },
+// ];
+
+// const projectTagData: Prisma.ProjectTagCreateInput[] = [
+//   {
+//     project: { connect: { id: 1 } },
+//     tag: { connect: { id: 5 } },
+//   },
+//   {
+//     project: { connect: { id: 1 } },
+//     tag: { connect: { id: 12 } },
+//   },
+// ];
+
+// const projectMediaData: Prisma.ProjectMediaCreateInput[] = [
+//   {
+//     project: { connect: { id: 1 } },
+//     url: "https://res.cloudinary.com/dbkjwdazc/image/upload/v1779370006/ltqbryow8q7dqgwbzbhi.png",
+//     type: "IMAGE",
+//     cloudId: "ltqbryow8q7dqgwbzbhi",
+//     fileName: "SMART NERO LOGO",
+//     order: 1,
+//     isMain: true,
+//   },
+//   {
+//     project: { connect: { id: 1 } },
+//     url: "https://res.cloudinary.com/dbkjwdazc/image/upload/v1779372052/ztt43gaorsvatu9qcisf.png",
+//     type: "IMAGE",
+//     cloudId: "ztt43gaorsvatu9qcisf",
+//     fileName: "SMART NERO LOGIN",
+//     order: 2,
+//     isMain: false,
+//   },
+//   {
+//     project: { connect: { id: 1 } },
+//     url: "https://res.cloudinary.com/dbkjwdazc/image/upload/v1779372053/bfqqzofpjy8w6romblbr.png",
+//     type: "IMAGE",
+//     cloudId: "bfqqzofpjy8w6romblbr",
+//     fileName: "SMART NERO HOME",
+//     order: 3,
+//     isMain: false,
+//   },
+// ];
 // export async function main() {
 //   for (const u of tagData) {
 //     await prisma.tag.create({ data: u });
+//   }
+//   for (const p of projectData) {
+//     await prisma.project.create({ data: p });
+//   }
+//   for (const m of projectMediaData) {
+//     await prisma.projectMedia.create({ data: m });
+//   }
+//   for (const pt of projectTagData) {
+//     await prisma.projectTag.create({ data: pt });
 //   }
 // }
 
