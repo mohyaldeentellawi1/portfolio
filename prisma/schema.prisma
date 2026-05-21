@@ -14,8 +14,22 @@ datasource db {
   
 }
 
+
 enum ProjectType {
-  WEB_FORNTEND
+  MARKETPLACE
+  ECOMMERCE
+  BLOG
+  COMMUNITY
+  PORTFOLIO
+  SOCIALMEDIA
+  TRADING
+  
+
+  @@schema("SCH_PROJECT")
+}
+
+enum TechType {
+  WEB_FRONTEND
   WEB_BACKEND
   WEB_FULLSTACK
   MOBILE
@@ -53,7 +67,8 @@ model Project {
   description   String
   descriptionEn String
   liveUrl       String?
-  type          ProjectType @default(OTHER)
+  techType      TechType    @default(OTHER)
+  projectType   ProjectType @default(MARKETPLACE)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 

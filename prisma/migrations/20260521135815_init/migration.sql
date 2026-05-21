@@ -1,57 +1,20 @@
-/*
-  Warnings:
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "SCH_PROJECT";
 
-  - The primary key for the `Project` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - The `id` column on the `Project` table would be dropped and recreated. This will lead to data loss if there is data in the column.
-  - The primary key for the `ProjectMedia` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - The `id` column on the `ProjectMedia` table would be dropped and recreated. This will lead to data loss if there is data in the column.
-  - The primary key for the `ProjectTag` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `tag` on the `ProjectTag` table. All the data in the column will be lost.
-  - The `id` column on the `ProjectTag` table would be dropped and recreated. This will lead to data loss if there is data in the column.
-  - A unique constraint covering the columns `[projectId,tagId]` on the table `ProjectTag` will be added. If there are existing duplicate values, this will fail.
-  - Changed the type of `projectId` on the `ProjectMedia` table. No cast exists, the column would be dropped and recreated, which cannot be done if there is data, since the column is required.
-  - Added the required column `tagId` to the `ProjectTag` table without a default value. This is not possible if the table is not empty.
-  - Changed the type of `projectId` on the `ProjectTag` table. No cast exists, the column would be dropped and recreated, which cannot be done if there is data, since the column is required.
-
-*/
 -- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "SCH_REVIEW";
 
 -- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "SCH_USER";
 
--- AlterEnum
-ALTER TYPE "SCH_PROJECT"."ProjectType" ADD VALUE 'WEB_FULLSTACK';
+-- CreateEnum
+CREATE TYPE "SCH_PROJECT"."ProjectType" AS ENUM ('MARKETPLACE', 'ECOMMERCE', 'BLOG', 'COMMUNITY', 'PORTFOLIO', 'SOCIALMEDIA', 'TRADING');
 
--- DropForeignKey
-ALTER TABLE "SCH_PROJECT"."ProjectMedia" DROP CONSTRAINT "ProjectMedia_projectId_fkey";
+-- CreateEnum
+CREATE TYPE "SCH_PROJECT"."TechType" AS ENUM ('WEB_FRONTEND', 'WEB_BACKEND', 'WEB_FULLSTACK', 'MOBILE', 'OTHER');
 
--- DropForeignKey
-ALTER TABLE "SCH_PROJECT"."ProjectTag" DROP CONSTRAINT "ProjectTag_projectId_fkey";
-
--- AlterTable
-ALTER TABLE "SCH_PROJECT"."Project" DROP CONSTRAINT "Project_pkey",
-DROP COLUMN "id",
-ADD COLUMN     "id" SERIAL NOT NULL,
-ADD CONSTRAINT "Project_pkey" PRIMARY KEY ("id");
-
--- AlterTable
-ALTER TABLE "SCH_PROJECT"."ProjectMedia" DROP CONSTRAINT "ProjectMedia_pkey",
-DROP COLUMN "id",
-ADD COLUMN     "id" SERIAL NOT NULL,
-DROP COLUMN "projectId",
-ADD COLUMN     "projectId" INTEGER NOT NULL,
-ADD CONSTRAINT "ProjectMedia_pkey" PRIMARY KEY ("id");
-
--- AlterTable
-ALTER TABLE "SCH_PROJECT"."ProjectTag" DROP CONSTRAINT "ProjectTag_pkey",
-DROP COLUMN "tag",
-ADD COLUMN     "tagId" INTEGER NOT NULL,
-DROP COLUMN "id",
-ADD COLUMN     "id" SERIAL NOT NULL,
-DROP COLUMN "projectId",
-ADD COLUMN     "projectId" INTEGER NOT NULL,
-ADD CONSTRAINT "ProjectTag_pkey" PRIMARY KEY ("id");
+-- CreateEnum
+CREATE TYPE "SCH_PROJECT"."ProjectMediaType" AS ENUM ('IMAGE', 'VIDEO');
 
 -- CreateTable
 CREATE TABLE "SCH_PROJECT"."Tag" (
@@ -62,6 +25,50 @@ CREATE TABLE "SCH_PROJECT"."Tag" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SCH_PROJECT"."Project" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "titleEn" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "descriptionEn" TEXT NOT NULL,
+    "liveUrl" TEXT,
+    "techType" "SCH_PROJECT"."TechType" NOT NULL DEFAULT 'OTHER',
+    "projectType" "SCH_PROJECT"."ProjectType" NOT NULL DEFAULT 'MARKETPLACE',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SCH_PROJECT"."ProjectTag" (
+    "id" SERIAL NOT NULL,
+    "projectId" INTEGER NOT NULL,
+    "tagId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ProjectTag_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SCH_PROJECT"."ProjectMedia" (
+    "id" SERIAL NOT NULL,
+    "projectId" INTEGER NOT NULL,
+    "url" TEXT NOT NULL,
+    "type" "SCH_PROJECT"."ProjectMediaType" NOT NULL DEFAULT 'IMAGE',
+    "cloudId" TEXT NOT NULL,
+    "fileName" TEXT,
+    "thumbnailUrl" TEXT,
+    "order" INTEGER NOT NULL DEFAULT 0,
+    "isMain" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ProjectMedia_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -110,6 +117,9 @@ CREATE TABLE "SCH_USER"."User" (
 CREATE UNIQUE INDEX "Tag_slug_key" ON "SCH_PROJECT"."Tag"("slug");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "ProjectTag_projectId_tagId_key" ON "SCH_PROJECT"."ProjectTag"("projectId", "tagId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Review_userId_key" ON "SCH_REVIEW"."Review"("userId");
 
 -- CreateIndex
@@ -120,9 +130,6 @@ CREATE UNIQUE INDEX "Subscription_userId_key" ON "SCH_USER"."Subscription"("user
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "SCH_USER"."User"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ProjectTag_projectId_tagId_key" ON "SCH_PROJECT"."ProjectTag"("projectId", "tagId");
 
 -- AddForeignKey
 ALTER TABLE "SCH_PROJECT"."ProjectTag" ADD CONSTRAINT "ProjectTag_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "SCH_PROJECT"."Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

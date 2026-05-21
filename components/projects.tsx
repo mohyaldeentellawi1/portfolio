@@ -69,7 +69,7 @@ export default async function Projects() {
               </h3>
             </div>
 
-            <div className="overflow-x-auto scrollbar-none">
+            <div dir="ltr" className="overflow-x-auto scrollbar-none">
               <div className="flex gap-3 w-max">
                 {SKILLS.map(({ src, label }) => (
                   <div
