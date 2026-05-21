@@ -157,7 +157,7 @@ export default function Nav() {
       ].join(" ")}
     >
       {/* ── Desktop & Mobile bar ── */}
-      <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-10">
+      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-10">
         {/* LEFT — Brand */}
         <Link
           href="#"
@@ -209,6 +209,8 @@ export default function Nav() {
         <div className="flex items-center gap-3">
           {/* Desktop CTA */}
           <Button
+            render={<Link href="/auth" />}
+            nativeButton={false}
             className="hidden md:inline-flex items-center bg-primary px-4 text-sm font-medium
                        text-primary-foreground transition-colors duration-200 hover:bg-primary/85 active:scale-[0.97]"
           >
@@ -274,7 +276,7 @@ export default function Nav() {
                 ? pathname === "/" && activeId === link.sectionId
                 : pathname === link.href;
             const className = [
-              "block w-full text-left py-3 text-sm font-medium transition-colors duration-200",
+              "block w-full text-start py-3 text-sm font-medium transition-colors duration-200",
               "border-b border-border/40 last:border-0",
               isActive
                 ? "text-foreground"
@@ -303,7 +305,14 @@ export default function Nav() {
             );
           })}
 
-          <Button className="w-full mt-4">{t("LogIn")}</Button>
+          <Button
+            render={<Link href="/auth" />}
+            onClick={() => setMenuOpen(false)}
+            nativeButton={false}
+            className="w-full mt-4"
+          >
+            {t("LogIn")}
+          </Button>
         </div>
       </div>
     </header>

@@ -54,8 +54,8 @@ export default async function Projects() {
                   <div
                     key={label}
                     className="flex flex-col items-center gap-2 h-20 w-20 shrink-0
-                               rounded-lg bg-background justify-center
-                               transition-colors duration-200 hover:bg-muted"
+                               justify-center
+                               transition-colors duration-200 hover:scale-105"
                   >
                     <Image
                       src={src}
