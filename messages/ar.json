@@ -38,6 +38,10 @@
     "SourceCode": "كود المصدر",
     "Proprietary": "ملكية خاصة",
     "SourceNotPublic": "كود المصدر غير متاح",
-    "months": "أشهر"
+    "months": "أشهر",
+    "Builtbydevelopersfordevelopers": "بُنيت بواسطة مطورين، للمطورين.",
+    "TechBlogDescription": "فضاء مجتمعي لمشاركة التحليلات المعمّقة، الدروس التعليمية، الآراء، والاكتشافات. اكتب ما تعرفه. تعلّم ما لا تعرفه.",
+
+    "WriteaPost": "اكتب منشورًا"
   }
 }

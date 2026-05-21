@@ -38,6 +38,10 @@
     "SourceCode": "Source Code",
     "Proprietary": "Proprietary",
     "SourceNotPublic": "Source Code not public",
-    "months": "months"
+    "months": "months",
+    "Builtbydevelopersfordevelopers": "Built by developers, for developers.",
+    "TechBlogDescription": "A community space to share deep-dives, tutorials, opinions, and discoveries. Write what you know. Learn what you don't.",
+
+    "WriteaPost": "Write a Post"
   }
 }
