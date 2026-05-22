@@ -80,19 +80,87 @@ const prisma = new PrismaClient({
 //   },
 // ];
 
-// const projectData: Prisma.ProjectCreateInput[] = [
-//   {
-//     title: "SMART NERO",
-//     titleEn: "SMART NERO",
-//     description:
-//       "منصة Social Trading متكاملة تربط بين المتداولين المحترفين والمستخدمين الراغبين بالاستثمار دون الحاجة لخبرة متقدمة في التداول. تتيح المنصة استعراض الاستراتيجيات، تحليل الأداء، متابعة الإحصائيات والأرباح، ثم ربط حساب التداول مباشرة مع الاستراتيجية المختارة لتنفيذ عمليات البيع والشراء تلقائيًا وبشكل لحظي.",
-//     descriptionEn:
-//       "A full-featured Social Trading platform designed to connect professional traders with users who want to invest without advanced trading experience. The platform enables users to explore trading strategies, analyze performance metrics, monitor profitability, and seamlessly link their trading accounts to automatically replicate trades in real time.",
-//     liveUrl: "https://app.smartnero.net/",
-//     techType: "MOBILE",
-//     projectTypes: ["TRADING", "COMMUNITY"],
-//   },
-// ];
+const projectData: Prisma.ProjectCreateInput[] = [
+  {
+    title: "ToDO",
+    titleEn: "ToDO",
+    description:
+      "تطبيق لإدارة المهام اليومية يساعد المستخدمين على تنظيم أعمالهم وتتبع المهام بسهولة من خلال واجهة بسيطة وعملية. يتيح التطبيق إنشاء المهام، تحديد المواعيد والأولويات، مع نظام إشعارات ذكي يرسل تنبيهات قبل موعد المهمة بوقت محدد لضمان عدم تفويت أي نشاط مهم.",
+    descriptionEn:
+      "A task management application designed to help users organize their daily activities and track tasks through a simple and intuitive interface. The app allows users to create tasks, set schedules and priorities, and receive smart reminder notifications before task deadlines to ensure nothing important is missed.",
+    githubUrl: "https://github.com/mohyaldeentellawi1/Todo",
+    techType: "MOBILE",
+    projectTypes: ["PRODUCTIVITY", "UTILITY"],
+  },
+  {
+    title: "LAZA UI",
+    titleEn: "LAZA UI",
+    description:
+      "تطبيق متجر أزياء إلكتروني بتصميم عصري وأنيق يتيح للمستخدمين استعراض وشراء الملابس بسهولة عبر تجربة استخدام سلسة وحديثة. يتضمن التطبيق تصنيفات متنوعة للمنتجات، صفحات تفصيلية للملابس، سلة مشتريات، وإدارة للطلبات، مع التركيز على تقديم تجربة تسوق مريحة وجذابة بصريًا.",
+    descriptionEn:
+      "A modern fashion e-commerce application with an elegant and stylish design, allowing users to browse and purchase clothing through a smooth and intuitive shopping experience. The app includes categorized products, detailed fashion item pages, a shopping cart, and order management features, all focused on delivering a visually appealing and seamless user experience.",
+    githubUrl: "https://github.com/MohyaldeenTellawi/E_commerce_App",
+    techType: "MOBILE",
+    projectTypes: ["ECOMMERCE"],
+  },
+  {
+    title: "Video Downloader UI",
+    titleEn: "Video Downloader UI",
+    description:
+      "تطبيق بواجهات بسيطة وعصرية مستوحاة من تجربة YouTube، يتيح للمستخدمين استعراض الفيديوهات وتحميلها بسهولة عبر واجهة استخدام سريعة وسلسة. يتضمن التطبيق شاشة مخصصة لإدارة التحميلات وعرض حالة التنزيل والتقدم بشكل مباشر مع تصميم يركز على البساطة وتجربة المستخدم.",
+    descriptionEn:
+      "A modern and minimal video downloader application inspired by YouTube-like interfaces, allowing users to browse and download videos through a fast and intuitive user experience. The app includes a dedicated downloads screen for managing files and tracking download progress in real time, with a strong focus on simplicity and usability.",
+    githubUrl: "https://github.com/MohyaldeenTellawi/youtube_downloader",
+    techType: "MOBILE",
+    projectTypes: ["MEDIA", "UTILITY"],
+  },
+  {
+    title: "راديو حلمنا",
+    titleEn: "Radio Helmna",
+    description:
+      "تطبيق إذاعي ومجتمعي متكامل يتيح للمستخدمين الاستماع إلى البث المباشر للراديو ومتابعة البرامج الصوتية المنظمة ضمن حلقات متعددة. يتضمن التطبيق مجتمعًا تفاعليًا يتيح نشر المنشورات والتفاعل عبر التعليقات، بالإضافة إلى قسم مخصص للأخبار وآخر المستجدات ضمن تجربة استخدام حديثة وسلسة.",
+    descriptionEn:
+      "An integrated radio and community platform that allows users to listen to live radio broadcasts and explore audio programs organized into multiple episodes. The app also features an interactive social community with posts and comments, alongside a dedicated news section for the latest updates, all delivered through a modern and seamless user experience.",
+    liveUrl: "",
+    techType: "MOBILE",
+    projectTypes: ["MEDIA", "STREAMING", "COMMUNITY"],
+  },
+  {
+    title: "BLAST",
+    titleEn: "BLAST",
+    description:
+      "منهجية وأداة عمل تم تطويرها لتكون إطارًا واضحًا يساعد على إدارة وبناء المشاريع الرقمية بشكل منظم وقابل للتوسع. تعتمد BLAST على خمس مراحل أساسية تبدأ ببناء المنتج، ثم إطلاقه، وتسريع نموه، وتوسيع نطاقه، وصولًا إلى التحول والتطوير المستمر. تم تصميمها لتكون مرجعًا عمليًا يمكن تطبيقه على مختلف أنواع المشاريع التقنية والشركات الناشئة.",
+    descriptionEn:
+      "A workflow framework and methodology designed to provide a structured and scalable approach for building and managing digital products. BLAST is based on five core stages: Build, Launch, Accelerate, Scale, and Transform. It was created as a practical system that can be applied across startups, digital platforms, and modern technology projects to streamline growth and long-term evolution.",
+    liveUrl: "",
+    techType: "TOOL",
+    projectTypes: ["PRODUCTIVITY", "BUSINESS"],
+  },
+  {
+    title: "سوق سوريا",
+    titleEn: "Syria Souq",
+    description:
+      "منصة إعلانات مبوبة مخصصة للسوق السوري تتيح للمستخدمين نشر واستعراض الإعلانات بسهولة ضمن عدة فئات تشمل السيارات، العقارات، الأراضي الزراعية، الدراجات النارية، والمركبات البحرية. توفر المنصة تجربة بسيطة وسريعة لربط البائعين بالمشترين داخل سوريا مع إمكانية البحث والتصفية حسب الفئة والموقع.",
+    descriptionEn:
+      "A classified ads platform designed for the Syrian market, allowing users to post and browse listings across multiple categories including cars, real estate, agricultural land, motorcycles, and marine vehicles. The platform provides a simple and fast experience that connects buyers and sellers within Syria, with search and filtering by category and location.",
+    liveUrl:
+      "https://play.google.com/store/apps/details?id=com.syriasouq.app&pcampaignid=web_share",
+    techType: "MOBILE",
+    projectTypes: ["MARKETPLACE"],
+  },
+  {
+    title: "سوق سوريا - الإصدار الثاني",
+    titleEn: "Syria Market - Version 2",
+    description:
+      "النسخة الثانية من منصة سوق سوريا للإعلانات المبوبة، بتصميم واجهات حديثة وتجربة استخدام محسّنة بشكل كامل. يدعم التطبيق جميع فئات الإعلانات الأساسية مثل السيارات والعقارات والأراضي الزراعية والدراجات النارية والقوارب، مع تحسينات كبيرة في الأداء وسهولة التصفح. يتضمن الإصدار الجديد ميزة الريلز كمساحة إعلانية مبتكرة لعرض الإعلانات بشكل فيديو قصير وتفاعلي لزيادة الوصول والمشاهدات.",
+    descriptionEn:
+      "The second version of Syria Market classifieds platform, featuring a fully redesigned modern UI and significantly improved user experience. The platform continues to support core listing categories such as cars, real estate, agricultural land, motorcycles, and boats, with major enhancements in performance and navigation. The new version introduces a Reels feature as an innovative advertising space for short, engaging video ads to increase reach and visibility.",
+    liveUrl:
+      "https://play.google.com/store/apps/details?id=com.syriasouq.app&pcampaignid=web_share",
+    techType: "MOBILE",
+    projectTypes: ["MARKETPLACE"],
+  },
+];
 
 // const projectTagData: Prisma.ProjectTagCreateInput[] = [
 //   {
@@ -302,25 +370,27 @@ export async function main() {
   //   for (const u of tagData) {
   //     await prisma.tag.create({ data: u });
   //   }
-  //   for (const p of projectData) {
-  //     await prisma.project.create({ data: p });
-  //   }
+  for (const p of projectData) {
+    const exists = await prisma.project.findFirst({ where: { titleEn: p.titleEn } });
+    if (!exists) {
+      await prisma.project.create({ data: p });
+    }
+  }
   //   for (const pt of projectTagData) {
   //     await prisma.projectTag.create({ data: pt });
   //   }
   //   for (const ps of projectSectionsData) {
   //     await prisma.projectSection.create({ data: ps });
   //   }
-
-  for (const { cloudId, data } of projectMediaUpdates) {
-    const record = await prisma.projectMedia.findFirst({ where: { cloudId } });
-    if (record) {
-      await prisma.projectMedia.update({ where: { id: record.id }, data });
-    }
-  }
-  for (const m of projectMediaNew) {
-    await prisma.projectMedia.create({ data: m });
-  }
+  // for (const { cloudId, data } of projectMediaUpdates) {
+  //   const record = await prisma.projectMedia.findFirst({ where: { cloudId } });
+  //   if (record) {
+  //     await prisma.projectMedia.update({ where: { id: record.id }, data });
+  //   }
+  // }
+  // for (const m of projectMediaNew) {
+  //   await prisma.projectMedia.create({ data: m });
+  // }
 }
 
 main()

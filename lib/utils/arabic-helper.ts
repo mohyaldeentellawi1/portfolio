@@ -1,18 +1,12 @@
 "use client";
 
-import { cookies } from "next/headers";
+import { useLocale } from "next-intl";
 
-// Custom hook for Arabic text detection
-export async function useArabicText() {
-  const store = await cookies();
-  const locale = store.get("locale")?.value ?? "ar";
+export function useArabicText() {
+  const locale = useLocale();
 
   const getLocalizedText = (text: string, textArabic: string): string => {
-    const isArabic = locale === "ar";
-    if (isArabic) {
-      return textArabic;
-    }
-    return text;
+    return locale === "ar" ? textArabic : text;
   };
 
   return {

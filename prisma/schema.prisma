@@ -23,6 +23,11 @@ enum ProjectType {
   PORTFOLIO
   SOCIALMEDIA
   TRADING
+  PRODUCTIVITY
+  BUSINESS
+  UTILITY
+  STREAMING
+  MEDIA
   
 
   @@schema("SCH_PROJECT")
@@ -33,6 +38,7 @@ enum TechType {
   WEB_BACKEND
   WEB_FULLSTACK
   MOBILE
+  TOOL
   OTHER
 
   @@schema("SCH_PROJECT")

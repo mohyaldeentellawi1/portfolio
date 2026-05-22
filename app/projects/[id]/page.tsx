@@ -1,14 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import {
-  ArrowLeft,
-  ArrowUpRight,
-  Code2,
-  Calendar,
-  Clock,
-  ArrowRight,
-  Lock,
-} from "lucide-react";
+import { ArrowUpRight, Code2, Calendar, Clock, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FadeIn from "@/components/fade-in";
 import { getTranslations } from "next-intl/server";
@@ -22,7 +13,7 @@ export default async function ProjectPage({
 }) {
   const { id } = await params;
   const t = await getTranslations("Home");
-  const { isArabic, getLocalizedText } = await getArabicTextServer();
+  const { getLocalizedText } = await getArabicTextServer();
 
   const { data } = await getProjectByIdAction({
     id: Number(id),
@@ -31,17 +22,6 @@ export default async function ProjectPage({
   return (
     <main className="pt-24 pb-14 px-6 sm:px-8 lg:px-10">
       <div className="mx-auto max-w-7xl flex flex-col gap-8">
-        {/* ── Back link ── */}
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground self-end
-                     transition-colors duration-200 hover:text-foreground w-fit rounded
-                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          {t("Projects")}
-          {isArabic ? <ArrowLeft size={15} /> : <ArrowRight size={15} />}
-        </Link>
-
         {/* ── Hero ── */}
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
@@ -224,14 +204,19 @@ export default async function ProjectPage({
                                 fill
                                 className="object-contain"
                                 sizes="192px"
+                                loading="eager"
                               />
                             )}
                           </div>
                         ))
                       ) : (
                         <>
-                          <div className={`w-48 ${aspectClass} rounded-lg bg-muted`} />
-                          <div className={`w-48 ${aspectClass} rounded-lg bg-muted`} />
+                          <div
+                            className={`w-48 ${aspectClass} rounded-lg bg-muted`}
+                          />
+                          <div
+                            className={`w-48 ${aspectClass} rounded-lg bg-muted`}
+                          />
                         </>
                       )}
                     </FadeIn>

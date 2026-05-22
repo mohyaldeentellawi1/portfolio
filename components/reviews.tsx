@@ -6,8 +6,10 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import ReviewItem from "./review-item";
+import { useArabicText } from "@/lib/utils/arabic-helper";
 
-const REVIEWS = [
+export const REVIEWS = [
   {
     id: 1,
     name: "Alex Johnson",
@@ -34,65 +36,10 @@ const REVIEWS = [
   },
 ] as const;
 
-function ReviewCard({
-  review,
-  position,
-}: {
-  review: (typeof REVIEWS)[number];
-  position: "left" | "center" | "right";
-}) {
-  const isCenter = position === "center";
-  const rotation = position === "left" ? 7.35 : -7.35;
-
-  return (
-    <div
-      className={cn(
-        "relative shrink-0 w-80 transition-all duration-500 ease-in-out",
-        isCenter ? "z-10 scale-100 opacity-100" : "z-0 scale-90 opacity-50",
-      )}
-    >
-      {/* Primary accent layer — side cards only */}
-      {!isCenter && (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-primary"
-          style={{
-            borderRadius: "2.5rem",
-            transform: `rotate(${rotation}deg)`,
-          }}
-        />
-      )}
-
-      {/* Card body */}
-      <div
-        className="relative flex flex-col justify-center gap-6 border border-border bg-card p-8 h-80"
-        style={{ borderRadius: "2.5rem" }}
-      >
-        {/* Quote text with inline opening and closing marks */}
-        <p
-          className={cn(
-            "flex-1 leading-relaxed text-foreground",
-            isCenter ? "text-base line-clamp-6" : "line-clamp-6 text-sm",
-          )}
-        >
-          <span aria-hidden="true" className="font-serif text-primary">
-            &ldquo;
-          </span>
-          {review.quote}
-          <span aria-hidden="true" className="font-serif text-primary">
-            &rdquo;
-          </span>
-        </p>
-
-        {/* Author name */}
-        <p className="text-sm font-semibold text-primary">— {review.name}</p>
-      </div>
-    </div>
-  );
-}
-
 export default function Reviews() {
   const t = useTranslations("Home");
+
+  const { isArabic } = useArabicText();
   const [active, setActive] = useState(1);
   const total = REVIEWS.length;
 
@@ -120,7 +67,7 @@ export default function Reviews() {
               render={<Link href="/review" />}
               nativeButton={false}
               variant="default"
-              size="sm"
+              size="default"
             >
               {t("AddReview")}
             </Button>
@@ -133,7 +80,11 @@ export default function Reviews() {
               aria-label="Previous review"
               className={navBtn}
             >
-              <ChevronLeft size={18} />
+              {isArabic ? (
+                <ChevronRight size={18} />
+              ) : (
+                <ChevronLeft size={18} />
+              )}
             </button>
 
             <div className="flex flex-col items-center gap-4">
@@ -153,8 +104,8 @@ export default function Reviews() {
                     className={cn(
                       "rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                       i === active
-                        ? "h-2 w-5 bg-primary"
-                        : "h-2 w-2 bg-border hover:bg-muted-foreground",
+                        ? "h-1 w-5 bg-primary"
+                        : "h-1 w-5 bg-border hover:bg-muted-foreground",
                     )}
                   />
                 ))}
@@ -162,20 +113,24 @@ export default function Reviews() {
             </div>
 
             <button onClick={next} aria-label="Next review" className={navBtn}>
-              <ChevronRight size={18} />
+              {isArabic ? (
+                <ChevronLeft size={18} />
+              ) : (
+                <ChevronRight size={18} />
+              )}
             </button>
           </div>
 
           {/* ── Cards ── */}
           <div className="flex items-center justify-center gap-8 overflow-hidden">
             <div className="hidden md:block">
-              <ReviewCard review={REVIEWS[leftIdx]} position="left" />
+              <ReviewItem review={REVIEWS[leftIdx]} position="left" />
             </div>
 
-            <ReviewCard review={REVIEWS[active]} position="center" />
+            <ReviewItem review={REVIEWS[active]} position="center" />
 
             <div className="hidden md:block">
-              <ReviewCard review={REVIEWS[rightIdx]} position="right" />
+              <ReviewItem review={REVIEWS[rightIdx]} position="right" />
             </div>
           </div>
         </div>

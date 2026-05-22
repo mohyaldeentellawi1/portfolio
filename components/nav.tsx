@@ -3,7 +3,7 @@
 import { useEffect, useRef, useSyncExternalStore, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { Menu, MessageSquareCode, Moon, Sun, X } from "lucide-react";
 import { Button } from "./ui/button";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
@@ -209,12 +209,13 @@ export default function Nav() {
         <div className="flex items-center gap-3">
           {/* Desktop CTA */}
           <Button
-            render={<Link href="/auth" />}
+            render={<Link href="/projects/request-project" />}
             nativeButton={false}
             className="hidden md:inline-flex items-center bg-primary px-4 text-sm font-medium
                        text-primary-foreground transition-colors duration-200 hover:bg-primary/85 active:scale-[0.97]"
           >
-            {t("LogIn")}
+            {t("Requestyourproject")}
+            <MessageSquareCode size={16} className="ml-2" />
           </Button>
 
           {/* Theme toggle */}
@@ -306,12 +307,13 @@ export default function Nav() {
           })}
 
           <Button
-            render={<Link href="/auth" />}
+            render={<Link href="/projects/request-project" />}
             onClick={() => setMenuOpen(false)}
             nativeButton={false}
             className="w-full mt-4"
           >
-            {t("LogIn")}
+            <MessageSquareCode size={16} className="mr-2" />
+            {t("Requestyourproject")}
           </Button>
         </div>
       </div>

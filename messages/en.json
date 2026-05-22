@@ -16,7 +16,7 @@
     "Introduction": "Introduction",
     "AShortWalkthroughOfWhoIAmAndWhatIBuild": "A short walkthrough of who I am and what I build.",
     "WatchIntroduction": "Watch Introduction",
-    "LogIn": "Log In",
+    "Requestyourproject": "Request Your Project",
     "Skills": "Skills",
     "TechnologiesIworkwith": "Technologies I work with",
     "eachprojectisaproblemsolvedaskillsharpenedandastoryworthtelling": "Each project is a problem solved, a skill sharpened, and a story worth telling.",
@@ -39,9 +39,8 @@
     "Proprietary": "Proprietary",
     "SourceNotPublic": "Source Code not public",
     "months": "months",
-    "Builtbydevelopersfordevelopers": "Built by developers, for developers.",
-    "TechBlogDescription": "A community space to share deep-dives, tutorials, opinions, and discoveries. Write what you know. Learn what you don't.",
-
-    "WriteaPost": "Write a Post"
+    "Readarticle": "Read article",
+    "Noarticlesinthiscategoryyet": "No articles in this category yet.",
+    "Checkbacksoon": "Check back soon."
   }
 }

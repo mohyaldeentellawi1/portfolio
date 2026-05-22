@@ -1,0 +1,5 @@
+-- AlterEnum
+ALTER TYPE "SCH_PROJECT"."ProjectType" ADD VALUE 'BUSINESS';
+
+-- AlterEnum
+ALTER TYPE "SCH_PROJECT"."TechType" ADD VALUE 'TOOL';

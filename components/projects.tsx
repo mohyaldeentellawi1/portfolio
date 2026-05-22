@@ -1,9 +1,7 @@
-import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { getTranslations } from "next-intl/server";
-import ProjectItem from "./project-item";
 import { getProjectsAction } from "@/lib/actions/projects/action";
+import ProjectsGrid from "./projects-grid";
 
 const SKILLS = [
   // Languages
@@ -32,7 +30,10 @@ const SKILLS = [
 export default async function Projects() {
   const t = await getTranslations("Home");
 
-  const { data: projects } = await getProjectsAction();
+  const { data: projects, pagination } = await getProjectsAction({
+    page: 1,
+    limit: 3,
+  });
   return (
     <section
       id="project"
@@ -53,7 +54,7 @@ export default async function Projects() {
                 {SKILLS.map(({ src, label }) => (
                   <div
                     key={label}
-                    className="flex flex-col items-center gap-2 h-20 w-20 shrink-0
+                    className="bg-muted dark:bg-background rounded-sm flex flex-col items-center gap-2 h-20 w-20 shrink-0
                                justify-center
                                transition-colors duration-200 hover:scale-105"
                   >
@@ -69,6 +70,7 @@ export default async function Projects() {
                           ? "dark:invert"
                           : ""
                       }
+                      loading="eager"
                     />
                     <span className="text-[10px] font-medium text-muted-foreground text-center leading-none whitespace-nowrap">
                       {label}
@@ -91,24 +93,13 @@ export default async function Projects() {
                 )}
               </p>
             </div>
-
-            <Button
-              render={<Link href="/projects" />}
-              nativeButton={false}
-              variant="default"
-              size="sm"
-              className="shrink-0 self-start"
-            >
-              {t("ViewAll")}
-            </Button>
           </div>
 
-          {/* ── Cards grid ── */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
-              <ProjectItem key={project.id} project={project} />
-            ))}
-          </div>
+          {/* ── Cards grid + pagination ── */}
+          <ProjectsGrid
+            initialProjects={projects}
+            initialPagination={pagination ?? null}
+          />
         </div>
       </div>
     </section>

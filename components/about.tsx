@@ -68,6 +68,7 @@ export default async function About() {
                       width={18}
                       height={18}
                       className={label === "GitHub" ? "dark:invert" : ""}
+                      loading="eager"
                     />
                   </a>
                 ))}

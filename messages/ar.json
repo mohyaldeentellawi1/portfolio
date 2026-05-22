@@ -3,7 +3,7 @@
     "Name": "محي الدين تلاوي",
     "AboutMe": "من أنا",
     "Project": "المشاريع",
-    "Reviews": "المراجعات",
+    "Reviews": "التقييمات",
     "Contact": "اتصل بي",
     "TechBlog": "المدونة التقنية",
     "IdontjustwritecodeIcraftsoftware": "أنا لا أكتب الكود, أنا أصنع البرمجيات.",
@@ -16,7 +16,7 @@
     "Introduction": "مقدمة",
     "AShortWalkthroughOfWhoIAmAndWhatIBuild": "لمحة قصيرة عن من أنا وما أبنيه.",
     "WatchIntroduction": "شاهد المقدمة",
-    "LogIn": "تسجيل الدخول",
+    "Requestyourproject": "اطلب مشروعك",
     "Skills": "المهارات",
     "TechnologiesIworkwith": "التقنيات التي أعمل بها",
     "eachprojectisaproblemsolvedaskillsharpenedandastoryworthtelling": "كل مشروع يمثل مشكلة تم حلها، ومهارة تم صقلها، وقصة تستحق أن تُروى.",
@@ -39,9 +39,8 @@
     "Proprietary": "ملكية خاصة",
     "SourceNotPublic": "كود المصدر غير متاح",
     "months": "أشهر",
-    "Builtbydevelopersfordevelopers": "بُنيت بواسطة مطورين، للمطورين.",
-    "TechBlogDescription": "فضاء مجتمعي لمشاركة التحليلات المعمّقة، الدروس التعليمية، الآراء، والاكتشافات. اكتب ما تعرفه. تعلّم ما لا تعرفه.",
-
-    "WriteaPost": "اكتب منشورًا"
+    "Readarticle": "اقرأ المقال",
+    "Noarticlesinthiscategoryyet": "لا توجد مقالات في هذه الفئة بعد.",
+    "Checkbacksoon": "تحقق مرة أخرى قريبًا."
   }
 }

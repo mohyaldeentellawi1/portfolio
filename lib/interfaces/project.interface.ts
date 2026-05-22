@@ -59,8 +59,7 @@ export interface Project {
   projectTypes: string[]; // Consider using an enum for better type safety
   createdAt: Date;
   updatedAt: Date;
-
-  media: ProjectMedia[];
-  sections: ProjectSection[];
-  tags: ProjectTag[];
+  media?: ProjectMedia[];
+  sections?: ProjectSection[];
+  tags?: ProjectTag[];
 }
