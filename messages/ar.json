@@ -48,6 +48,9 @@
     "Thisemailisalreadysubscribed": "هذا البريد الإلكتروني مشترك بالفعل",
     "Subscriptionaddedsuccessfully": "تم الاشتراك بنجاح",
     "Failedtoaddsubscription": "فشل في إضافة الاشتراك",
-    "Anerroroccurred": "حدث خطأ"
+    "Anerroroccurred": "حدث خطأ",
+
+    "Failedtosendmessage": "فشل في إرسال الرسالة",
+    "Messagesentsuccessfully": "تم إرسال الرسالة بنجاح"
   }
 }

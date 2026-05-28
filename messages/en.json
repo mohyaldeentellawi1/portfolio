@@ -48,6 +48,9 @@
     "Thisemailisalreadysubscribed": "This email is already subscribed",
     "Subscriptionaddedsuccessfully": "Subscription added successfully",
     "Failedtoaddsubscription": "Failed to add subscription",
-    "Anerroroccurred": "An error occurred"
+    "Anerroroccurred": "An error occurred",
+
+    "Failedtosendmessage": "Failed to send message",
+    "Messagesentsuccessfully": "Message sent successfully"
   }
 }

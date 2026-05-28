@@ -1,6 +1,6 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { getTranslations } from "next-intl/server";
+import SendMessageForm from "./Send-Message-Form";
 
 const INFO = [
   {
@@ -22,11 +22,6 @@ const INFO = [
     href: null,
   },
 ] as const;
-
-const input =
-  "w-full h-10 rounded border border-input bg-background px-3 text-sm text-foreground " +
-  "placeholder:text-muted-foreground transition-colors duration-200 " +
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export default async function Contact() {
   const t = await getTranslations("Home");
@@ -84,45 +79,7 @@ export default async function Contact() {
                 {t("SendMessage")}
               </h3>
 
-              <form className="flex flex-col gap-4">
-                {/* Row 1: Name + Email */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <input
-                    className={input}
-                    type="text"
-                    placeholder={t("name")}
-                  />
-                  <input
-                    className={input}
-                    type="email"
-                    placeholder={t("Email")}
-                  />
-                </div>
-
-                {/* Row 2: Subject */}
-                <input
-                  className={input}
-                  type="text"
-                  placeholder={t("Subject")}
-                />
-
-                {/* Row 3: Message */}
-                <textarea
-                  placeholder={t("Message")}
-                  rows={6}
-                  className={
-                    "w-full resize-none rounded border border-input bg-background px-3 py-2.5 " +
-                    "text-sm text-foreground placeholder:text-muted-foreground " +
-                    "transition-colors duration-200 focus-visible:outline-none " +
-                    "focus-visible:ring-2 focus-visible:ring-ring"
-                  }
-                />
-
-                {/* Submit */}
-                <Button type="submit" className="w-full">
-                  {t("SendMessage")}
-                </Button>
-              </form>
+              <SendMessageForm />
             </div>
           </div>
         </div>

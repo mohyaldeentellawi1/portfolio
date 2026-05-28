@@ -13,14 +13,16 @@ export const useAddNewSubscription = () => {
     setEmail(e.target.value);
   };
 
-  const addNewSubscription = async (email: string) => {
+  const addNewSubscription = async () => {
     setIsAdding(true);
     try {
       const { success, message } = await addSubscriptionAction({ email });
       if (success) {
         toast.success(message);
+        setEmail("");
       } else {
         toast.error(message);
+        setEmail("");
       }
       return { success, message };
     } catch (error) {

@@ -11,10 +11,7 @@ export default function SubscribeForm() {
     useAddNewSubscription();
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        addNewSubscription(email);
-      }}
+      onSubmit={addNewSubscription}
       className="w-full lg:w-auto lg:min-w-100"
     >
       {/* Outer wrapper acts as the visual input container */}
