@@ -51,6 +51,9 @@
     "Anerroroccurred": "حدث خطأ",
 
     "Failedtosendmessage": "فشل في إرسال الرسالة",
-    "Messagesentsuccessfully": "تم إرسال الرسالة بنجاح"
+    "Messagesentsuccessfully": "تم إرسال الرسالة بنجاح",
+
+    "Reviewaddedsuccessfully": "تم إضافة التقييم بنجاح",
+    "Failedtoaddreview": "فشل في إضافة التقييم"
   }
 }

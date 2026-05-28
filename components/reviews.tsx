@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import ReviewItem from "./review-item";
 import { useArabicText } from "@/lib/utils/arabic-helper";
@@ -63,12 +62,7 @@ export default function Reviews() {
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
           {/* ── Top bar: Add Review ── */}
           <div className="flex justify-end mb-6">
-            <Button
-              render={<Link href="/review" />}
-              nativeButton={false}
-              variant="default"
-              size="default"
-            >
+            <Button variant="default" size="default">
               {t("AddReview")}
             </Button>
           </div>

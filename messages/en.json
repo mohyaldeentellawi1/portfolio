@@ -51,6 +51,9 @@
     "Anerroroccurred": "An error occurred",
 
     "Failedtosendmessage": "Failed to send message",
-    "Messagesentsuccessfully": "Message sent successfully"
+    "Messagesentsuccessfully": "Message sent successfully",
+
+    "Reviewaddedsuccessfully": "Review added successfully",
+    "Failedtoaddreview": "Failed to add review"
   }
 }
