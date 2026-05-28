@@ -12,8 +12,11 @@ import {
   ArrowRight,
   CheckCircle2,
   Send,
+  LogOut,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useArabicText } from "@/lib/utils/arabic-helper";
+import { Button } from "@/components/ui/button";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -378,6 +381,7 @@ function SuccessScreen({
 
 export default function RequestProjectPage() {
   const t = useTranslations("Home");
+  const { isArabic } = useArabicText();
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormData>({
@@ -425,10 +429,22 @@ export default function RequestProjectPage() {
       {/* ── Content ── */}
       <div className="flex-1 flex items-center justify-center px-6 sm:px-8 pt-28 pb-24">
         <div className="w-full max-w-2xl">
-          {/* Step label */}
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-5">
-            {t("STEP")} {step} {t("OF")} {TOTAL_STEPS}
-          </p>
+          {/* Top row: step label + Home link */}
+          <div className="flex items-center justify-between mb-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+              {t("STEP")} {step} {t("OF")} {TOTAL_STEPS}
+            </p>
+
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground
+                         hover:text-foreground transition-colors duration-200
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            >
+              {t("Home")}
+              <LogOut size={15} className={isArabic ? "rotate-180" : ""} />
+            </Link>
+          </div>
 
           {/* Step content — key triggers re-mount for animation */}
           <div
@@ -443,44 +459,30 @@ export default function RequestProjectPage() {
 
           {/* ── Navigation ── */}
           <div className="flex items-center justify-between mt-10">
-            {/* Back / Home */}
+            {/* Back */}
             {step > 1 ? (
-              <button
+              <Button
+                variant="outline"
                 type="button"
                 onClick={() => setStep((s) => s - 1)}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground
-                           hover:text-foreground transition-colors duration-200
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
               >
-                <ArrowLeft size={15} />
+                {isArabic ? <ArrowRight size={15} /> : <ArrowRight size={15} />}
                 {t("Back")}
-              </button>
+              </Button>
             ) : (
-              <Link
-                href="/"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground
-                           hover:text-foreground transition-colors duration-200
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
-              >
-                <ArrowLeft size={15} />
-                {t("Home")}
-              </Link>
+              <span />
             )}
 
             {/* Next / Submit */}
-            <button
-              type="button"
-              onClick={handleNext}
-              disabled={!canProceed()}
-              className="inline-flex items-center gap-2 h-9 rounded bg-primary px-5 text-sm font-medium
-                         text-primary-foreground hover:bg-primary/85 active:scale-[0.97]
-                         transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
-                         disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
-            >
+            <Button type="button" onClick={handleNext} disabled={!canProceed()}>
               {step < TOTAL_STEPS ? (
                 <>
                   {t("Next")}
-                  <ArrowRight size={15} />
+                  {isArabic ? (
+                    <ArrowLeft size={15} />
+                  ) : (
+                    <ArrowRight size={15} />
+                  )}
                 </>
               ) : (
                 <>
@@ -488,7 +490,7 @@ export default function RequestProjectPage() {
                   <Send size={14} />
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
