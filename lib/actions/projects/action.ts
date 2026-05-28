@@ -1,8 +1,21 @@
 "use server";
 
+import { z } from "zod";
 import { PaginationResult } from "@/lib/interfaces/pagination.interface";
 import { Project } from "@/lib/interfaces/project.interface";
 import prisma from "@/lib/prisma";
+import { getTranslations } from "next-intl/server";
+
+const projectRequestSchema = z.object({
+  projectType: z.string().min(1),
+  vision: z.string().min(20),
+  isMvp: z.boolean(),
+  budget: z.string().min(1),
+  timeLine: z.string().min(1),
+  name: z.string().min(1),
+  email: z.email(),
+  note: z.string().optional().nullable(),
+});
 
 // THIS ACTION TO GET ALL PROJECTS
 export async function getProjectsAction({
@@ -107,6 +120,67 @@ export async function getProjectByIdAction({ id }: { id: number }): Promise<{
       success: false,
       data: null,
       error: "Failed to fetch project",
+    };
+  }
+}
+
+// THIS ACTION TO ADD A NEW PROJECT REQUEST
+export async function addProjectRequestAction({
+  formData,
+}: {
+  formData: FormData;
+}): Promise<{
+  success: boolean;
+  message?: string;
+}> {
+  const t = await getTranslations("Actions");
+  try {
+    const data = projectRequestSchema.safeParse({
+      projectType: formData.get("projectType"),
+      vision: formData.get("vision"),
+      isMvp: formData.get("isMvp"),
+      budget: formData.get("budget"),
+      timeLine: formData.get("timeLine"),
+      name: formData.get("name"),
+      email: formData.get("email"),
+      note: formData.get("note"),
+    });
+
+    if (!data.success) {
+      return {
+        success: false,
+      };
+    }
+
+    const res = await prisma.projectRequest.create({
+      data: {
+        projectType: data.data.projectType,
+        vision: data.data.vision,
+        isMvp: data.data.isMvp,
+        budget: data.data.budget,
+        timeLine: data.data.timeLine,
+        name: data.data.name.trim(),
+        email: data.data.email.trim(),
+        note: data.data.note ? String(data.data.note).trim() : null,
+      },
+    });
+
+    if (!res) {
+      return {
+        success: false,
+        message: `${t("Failedtoaddprojectrequest")}`,
+      };
+    }
+
+    return {
+      success: true,
+      message: `${t("Projectrequestadded")}`,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : `${t("Anerroroccurred")}`,
     };
   }
 }

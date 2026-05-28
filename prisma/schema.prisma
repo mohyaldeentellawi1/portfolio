@@ -33,18 +33,7 @@ enum ProjectType {
   @@schema("SCH_PROJECT")
 }
 
-enum ProjectTypeForRequest {
-  MARKETPLACE
-  ECOMMERCE
-  BLOG
-  PORTFOLIO
-  MEDIA
-  DASHBOARD
-  OTHER
-  
 
-  @@schema("SCH_PROJECT")
-}
 
 enum BlogType {
   FRONTEND
@@ -169,10 +158,11 @@ model ProjectMedia {
 
 model ProjectRequest {
   id          Int   @id @default(autoincrement())
-  projectType ProjectTypeForRequest @default(OTHER)
+  projectType String
   vision      String
-  timeLine    String
   isMvp       Boolean  @default(false)
+  budget      String
+  timeLine    String
   name        String
   email       String
   note        String?

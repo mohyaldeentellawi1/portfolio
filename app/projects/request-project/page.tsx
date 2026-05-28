@@ -13,12 +13,12 @@ import {
   CheckCircle2,
   Send,
   LogOut,
+  Zap,
+  Layers,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useArabicText } from "@/lib/utils/arabic-helper";
 import { Button } from "@/components/ui/button";
-
-// ── Types ─────────────────────────────────────────────────────────────────────
 
 type ProjectType =
   | "web_app"
@@ -31,12 +31,13 @@ type Timeline = "under_1m" | "1_3m" | "3_6m" | "flexible";
 
 interface FormData {
   projectType: ProjectType | null;
-  description: string;
+  vision: string;
+  isMvp: boolean;
   budget: Budget | null;
-  timeline: Timeline | null;
+  timeLine: Timeline | null;
   name: string;
   email: string;
-  extra: string;
+  note: string;
 }
 
 const PROJECT_TYPES: {
@@ -77,18 +78,18 @@ const PROJECT_TYPES: {
   },
 ];
 
-const BUDGETS: { id: Budget; label: string }[] = [
-  { id: "under_5k", label: "< $5,000" },
-  { id: "5k_15k", label: "$5,000 – $15,000" },
-  { id: "15k_30k", label: "$15,000 – $30,000" },
-  { id: "over_30k", label: "> $30,000" },
+const BUDGETS: { id: Budget; labelKey: string }[] = [
+  { id: "under_5k", labelKey: "Budgetunder5k" },
+  { id: "5k_15k", labelKey: "Budget5kto15k" },
+  { id: "15k_30k", labelKey: "Budget15kto30k" },
+  { id: "over_30k", labelKey: "Budgetover30k" },
 ];
 
-const TIMELINES: { id: Timeline; label: string }[] = [
-  { id: "under_1m", label: "Under 1 month" },
-  { id: "1_3m", label: "1 – 3 months" },
-  { id: "3_6m", label: "3 – 6 months" },
-  { id: "flexible", label: "Flexible" },
+const TIMELINES: { id: Timeline; labelKey: string }[] = [
+  { id: "under_1m", labelKey: "Timelineunder1m" },
+  { id: "1_3m", labelKey: "Timeline1to3m" },
+  { id: "3_6m", labelKey: "Timeline3to6m" },
+  { id: "flexible", labelKey: "Timelineflexible" },
 ];
 
 const TOTAL_STEPS = 4;
@@ -178,7 +179,7 @@ function Step2({
   t: ReturnType<typeof useTranslations>;
 }) {
   const MIN = 20;
-  const remaining = Math.max(0, MIN - form.description.trim().length);
+  const remaining = Math.max(0, MIN - form.vision.trim().length);
 
   return (
     <>
@@ -192,10 +193,8 @@ function Step2({
       </p>
 
       <textarea
-        value={form.description}
-        onChange={(e) =>
-          setForm((f) => ({ ...f, description: e.target.value }))
-        }
+        value={form.vision}
+        onChange={(e) => setForm((f) => ({ ...f, vision: e.target.value }))}
         placeholder={t("Myprojectisaplatformthat")}
         rows={7}
         className={`${inputCls} py-2.5 resize-none`}
@@ -238,19 +237,77 @@ function Step3({
       </p>
 
       <div className="flex flex-col gap-8">
+        {/* MVP toggle */}
+        <div>
+          <p className="text-sm font-semibold text-foreground mb-3">
+            {t("Scopeapproach")}
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              {
+                value: true,
+                icon: Zap,
+                label: "MVP",
+                desc: t("MVPdesc"),
+              },
+              {
+                value: false,
+                icon: Layers,
+                label: t("FullProduct"),
+                desc: t("FullProductdesc"),
+              },
+            ].map(({ value, icon: Icon, label, desc }) => {
+              const selected = form.isMvp === value;
+              return (
+                <button
+                  key={String(value)}
+                  type="button"
+                  onClick={() => setForm((f) => ({ ...f, isMvp: value }))}
+                  className={[
+                    "text-start p-2 border transition-all duration-200",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    selected
+                      ? "border-primary bg-primary/10"
+                      : "border-border bg-card hover:border-primary/50 hover:bg-muted/50",
+                  ].join(" ")}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div
+                      className={[
+                        "p-1.5 rounded shrink-0",
+                        selected
+                          ? "bg-primary/15 text-primary"
+                          : "bg-muted text-muted-foreground",
+                      ].join(" ")}
+                    >
+                      <Icon size={10} />
+                    </div>
+                  </div>
+                  <p className="text-sm font-semibold text-foreground">
+                    {label}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                    {desc}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <div>
           <p className="text-sm font-semibold text-foreground mb-3">
             {t("Estimatedbudget")}
           </p>
           <div className="flex flex-wrap gap-2">
-            {BUDGETS.map(({ id, label }) => (
+            {BUDGETS.map(({ id, labelKey }) => (
               <button
                 key={id}
                 type="button"
                 onClick={() => setForm((f) => ({ ...f, budget: id }))}
                 className={pillCls(form.budget === id)}
               >
-                {label}
+                {t(labelKey)}
               </button>
             ))}
           </div>
@@ -261,14 +318,14 @@ function Step3({
             {t("Deliverytimeline")}
           </p>
           <div className="flex flex-wrap gap-2">
-            {TIMELINES.map(({ id, label }) => (
+            {TIMELINES.map(({ id, labelKey }) => (
               <button
                 key={id}
                 type="button"
-                onClick={() => setForm((f) => ({ ...f, timeline: id }))}
-                className={pillCls(form.timeline === id)}
+                onClick={() => setForm((f) => ({ ...f, timeLine: id }))}
+                className={pillCls(form.timeLine === id)}
               >
-                {label}
+                {t(labelKey)}
               </button>
             ))}
           </div>
@@ -331,7 +388,7 @@ function Step4({
             </span>
           </label>
           <textarea
-            value={form.extra}
+            value={form.note}
             onChange={(e) => setForm((f) => ({ ...f, extra: e.target.value }))}
             placeholder={t("Referencesspecificrequirementsquestions")}
             rows={3}
@@ -386,18 +443,19 @@ export default function RequestProjectPage() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormData>({
     projectType: null,
-    description: "",
+    vision: "",
+    isMvp: true,
     budget: null,
-    timeline: null,
+    timeLine: null,
     name: "",
     email: "",
-    extra: "",
+    note: "",
   });
 
   function canProceed() {
     if (step === 1) return !!form.projectType;
-    if (step === 2) return form.description.trim().length >= 20;
-    if (step === 3) return !!form.budget && !!form.timeline;
+    if (step === 2) return form.vision.trim().length >= 20;
+    if (step === 3) return !!form.budget && !!form.timeLine;
     if (step === 4)
       return form.name.trim().length > 0 && /\S+@\S+\.\S+/.test(form.email);
     return false;

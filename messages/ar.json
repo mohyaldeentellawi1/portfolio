@@ -69,7 +69,19 @@
     "Referencesspecificrequirementsquestions": "المراجع، المتطلبات المحددة، الأسئلة...",
     "Requestsent": "تم إرسال الطلب بنجاح",
     "ThanksIllreviewyourprojectbriefandgetbacktoyouwithinhours": "شكرًا! سأراجع ملخص مشروعك وأعود إليك خلال 24 ساعة.",
-    "Backtohome": "العودة إلى الصفحة الرئيسية"
+    "Backtohome": "العودة إلى الصفحة الرئيسية",
+    "Budgetunder5k": "أقل من $5,000",
+    "Budget5kto15k": "$5,000 – $15,000",
+    "Budget15kto30k": "$15,000 – $30,000",
+    "Budgetover30k": "أكثر من $30,000",
+    "Timelineunder1m": "أقل من شهر",
+    "Timeline1to3m": "1 – 3 أشهر",
+    "Timeline3to6m": "3 – 6 أشهر",
+    "Timelineflexible": "مرن",
+    "Scopeapproach": "النطاق والنهج",
+    "MVPdesc": "الميزات الأساسية فقط — أطلق بسرعة، تحقق مبكرًا",
+    "FullProduct": "منتج كامل",
+    "FullProductdesc": "مجموعة ميزات كاملة — مبني وفق المواصفات الكاملة"
   },
   "Actions": {
     "Invalidemailaddress": "عنوان البريد الإلكتروني غير صالح",
@@ -82,6 +94,9 @@
     "Messagesentsuccessfully": "تم إرسال الرسالة بنجاح",
 
     "Reviewaddedsuccessfully": "تم إضافة التقييم بنجاح",
-    "Failedtoaddreview": "فشل في إضافة التقييم"
+    "Failedtoaddreview": "فشل في إضافة التقييم",
+
+    "Failedtoaddprojectrequest": "فشل في إضافة طلب المشروع",
+    "Projectrequestadded": "تم إضافة طلب المشروع بنجاح"
   }
 }
