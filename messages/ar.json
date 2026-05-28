@@ -66,7 +66,10 @@
     "Yourname": "اسمك",
     "Anythingelse": "هل هناك أي شيء آخر ؟",
     "optional": "اختياري",
-    "Referencesspecificrequirementsquestions": "المراجع، المتطلبات المحددة، الأسئلة..."
+    "Referencesspecificrequirementsquestions": "المراجع، المتطلبات المحددة، الأسئلة...",
+    "Requestsent": "تم إرسال الطلب بنجاح",
+    "ThanksIllreviewyourprojectbriefandgetbacktoyouwithinhours": "شكرًا! سأراجع ملخص مشروعك وأعود إليك خلال 24 ساعة.",
+    "Backtohome": "العودة إلى الصفحة الرئيسية"
   },
   "Actions": {
     "Invalidemailaddress": "عنوان البريد الإلكتروني غير صالح",

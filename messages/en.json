@@ -67,7 +67,10 @@
     "Yourname": "Your name",
     "Anythingelse": "Anything else ?",
     "optional": "optional",
-    "Referencesspecificrequirementsquestions": "References, specific requirements, questions..."
+    "Referencesspecificrequirementsquestions": "References, specific requirements, questions...",
+    "Requestsent": "Request sent successfully",
+    "ThanksIllreviewyourprojectbriefandgetbacktoyouwithinhours": "Thanks! I'll review your project brief and get back to you within 24 hours.",
+    "Backtohome": "Back to home"
   },
   "Actions": {
     "Invalidemailaddress": "Invalid email address",

@@ -340,7 +340,13 @@ function Step4({
   );
 }
 
-function SuccessScreen({ name }: { name: string }) {
+function SuccessScreen({
+  name,
+  t,
+}: {
+  name: string;
+  t: ReturnType<typeof useTranslations>;
+}) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-6 pt-20">
       <div className="text-center max-w-md animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
@@ -349,11 +355,12 @@ function SuccessScreen({ name }: { name: string }) {
         </div>
 
         <h1 className="text-3xl font-bold tracking-tight text-foreground mb-3">
-          Request sent!
+          {t("Requestsent")}
         </h1>
         <p className="text-base text-muted-foreground mb-8">
-          Thanks{name ? `, ${name}` : ""}! I&apos;ll review your project brief
-          and get back to you within 24 hours.
+          {t("ThanksIllreviewyourprojectbriefandgetbacktoyouwithinhours", {
+            name: name ? `, ${name}` : "",
+          })}
         </p>
 
         <Link
@@ -362,8 +369,7 @@ function SuccessScreen({ name }: { name: string }) {
                      text-primary-foreground hover:bg-primary/85 active:scale-[0.97]
                      transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <ArrowLeft size={15} />
-          Back to home
+          {t("Backtohome")}
         </Link>
       </div>
     </div>
@@ -402,7 +408,7 @@ export default function RequestProjectPage() {
     }
   }
 
-  if (submitted) return <SuccessScreen name={form.name} />;
+  if (submitted) return <SuccessScreen name={form.name} t={t} />;
 
   const progress = (step / TOTAL_STEPS) * 100;
 
