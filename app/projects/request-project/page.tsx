@@ -19,29 +19,18 @@ import {
 import { useTranslations } from "next-intl";
 import { useArabicText } from "@/lib/utils/arabic-helper";
 import { Button } from "@/components/ui/button";
+import {
+  useAddNewReqProject,
+  type ReqProjectFormData,
+} from "@/lib/helpers/use-add-new-req-project";
 
-type ProjectType =
-  | "web_app"
-  | "mobile_app"
-  | "ecommerce"
-  | "dashboard"
-  | "other";
-type Budget = "under_5k" | "5k_15k" | "15k_30k" | "over_30k";
-type Timeline = "under_1m" | "1_3m" | "3_6m" | "flexible";
-
-interface FormData {
-  projectType: ProjectType | null;
-  vision: string;
-  isMvp: boolean;
-  budget: Budget | null;
-  timeLine: Timeline | null;
-  name: string;
-  email: string;
-  note: string;
-}
+type SetField = <K extends keyof ReqProjectFormData>(
+  key: K,
+  value: ReqProjectFormData[K],
+) => void;
 
 const PROJECT_TYPES: {
-  id: ProjectType;
+  id: ReqProjectFormData["projectType"];
   icon: React.ElementType;
   label: string;
   desc: string;
@@ -78,14 +67,14 @@ const PROJECT_TYPES: {
   },
 ];
 
-const BUDGETS: { id: Budget; labelKey: string }[] = [
+const BUDGETS: { id: string; labelKey: string }[] = [
   { id: "under_5k", labelKey: "Budgetunder5k" },
   { id: "5k_15k", labelKey: "Budget5kto15k" },
   { id: "15k_30k", labelKey: "Budget15kto30k" },
   { id: "over_30k", labelKey: "Budgetover30k" },
 ];
 
-const TIMELINES: { id: Timeline; labelKey: string }[] = [
+const TIMELINES: { id: string; labelKey: string }[] = [
   { id: "under_1m", labelKey: "Timelineunder1m" },
   { id: "1_3m", labelKey: "Timeline1to3m" },
   { id: "3_6m", labelKey: "Timeline3to6m" },
@@ -93,8 +82,6 @@ const TIMELINES: { id: Timeline; labelKey: string }[] = [
 ];
 
 const TOTAL_STEPS = 4;
-
-// ── Shared input class ─────────────────────────────────────────────────────────
 
 const inputCls =
   "w-full rounded border border-input bg-background px-3 text-sm text-foreground " +
@@ -105,11 +92,11 @@ const inputCls =
 
 function Step1({
   form,
-  setForm,
+  setField,
   t,
 }: {
-  form: FormData;
-  setForm: React.Dispatch<React.SetStateAction<FormData>>;
+  form: ReqProjectFormData;
+  setField: SetField;
   t: ReturnType<typeof useTranslations>;
 }) {
   return (
@@ -128,7 +115,7 @@ function Step1({
             <button
               key={id}
               type="button"
-              onClick={() => setForm((f) => ({ ...f, projectType: id }))}
+              onClick={() => setField("projectType", id)}
               className={[
                 "text-start p-5 rounded-lg border transition-all duration-200",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
@@ -171,11 +158,11 @@ function Step1({
 
 function Step2({
   form,
-  setForm,
+  setField,
   t,
 }: {
-  form: FormData;
-  setForm: React.Dispatch<React.SetStateAction<FormData>>;
+  form: ReqProjectFormData;
+  setField: SetField;
   t: ReturnType<typeof useTranslations>;
 }) {
   const MIN = 20;
@@ -194,7 +181,7 @@ function Step2({
 
       <textarea
         value={form.vision}
-        onChange={(e) => setForm((f) => ({ ...f, vision: e.target.value }))}
+        onChange={(e) => setField("vision", e.target.value)}
         placeholder={t("Myprojectisaplatformthat")}
         rows={7}
         className={`${inputCls} py-2.5 resize-none`}
@@ -211,11 +198,11 @@ function Step2({
 
 function Step3({
   form,
-  setForm,
+  setField,
   t,
 }: {
-  form: FormData;
-  setForm: React.Dispatch<React.SetStateAction<FormData>>;
+  form: ReqProjectFormData;
+  setField: SetField;
   t: ReturnType<typeof useTranslations>;
 }) {
   const pillCls = (selected: boolean) =>
@@ -243,28 +230,25 @@ function Step3({
             {t("Scopeapproach")}
           </p>
           <div className="grid grid-cols-2 gap-3">
-            {[
-              {
-                value: true,
-                icon: Zap,
-                label: "MVP",
-                desc: t("MVPdesc"),
-              },
-              {
-                value: false,
-                icon: Layers,
-                label: t("FullProduct"),
-                desc: t("FullProductdesc"),
-              },
-            ].map(({ value, icon: Icon, label, desc }) => {
+            {(
+              [
+                { value: true, icon: Zap, label: "MVP", desc: t("MVPdesc") },
+                {
+                  value: false,
+                  icon: Layers,
+                  label: t("FullProduct"),
+                  desc: t("FullProductdesc"),
+                },
+              ] as const
+            ).map(({ value, icon: Icon, label, desc }) => {
               const selected = form.isMvp === value;
               return (
                 <button
                   key={String(value)}
                   type="button"
-                  onClick={() => setForm((f) => ({ ...f, isMvp: value }))}
+                  onClick={() => setField("isMvp", value)}
                   className={[
-                    "text-start p-2 border transition-all duration-200",
+                    "text-start p-4 rounded-lg border transition-all duration-200",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     selected
                       ? "border-primary bg-primary/10"
@@ -280,8 +264,14 @@ function Step3({
                           : "bg-muted text-muted-foreground",
                       ].join(" ")}
                     >
-                      <Icon size={10} />
+                      <Icon size={15} />
                     </div>
+                    {selected && (
+                      <CheckCircle2
+                        size={15}
+                        className="text-primary shrink-0 mt-0.5"
+                      />
+                    )}
                   </div>
                   <p className="text-sm font-semibold text-foreground">
                     {label}
@@ -295,6 +285,7 @@ function Step3({
           </div>
         </div>
 
+        {/* Budget */}
         <div>
           <p className="text-sm font-semibold text-foreground mb-3">
             {t("Estimatedbudget")}
@@ -304,7 +295,7 @@ function Step3({
               <button
                 key={id}
                 type="button"
-                onClick={() => setForm((f) => ({ ...f, budget: id }))}
+                onClick={() => setField("budget", id)}
                 className={pillCls(form.budget === id)}
               >
                 {t(labelKey)}
@@ -313,6 +304,7 @@ function Step3({
           </div>
         </div>
 
+        {/* Timeline */}
         <div>
           <p className="text-sm font-semibold text-foreground mb-3">
             {t("Deliverytimeline")}
@@ -322,7 +314,7 @@ function Step3({
               <button
                 key={id}
                 type="button"
-                onClick={() => setForm((f) => ({ ...f, timeLine: id }))}
+                onClick={() => setField("timeLine", id)}
                 className={pillCls(form.timeLine === id)}
               >
                 {t(labelKey)}
@@ -337,11 +329,11 @@ function Step3({
 
 function Step4({
   form,
-  setForm,
+  setField,
   t,
 }: {
-  form: FormData;
-  setForm: React.Dispatch<React.SetStateAction<FormData>>;
+  form: ReqProjectFormData;
+  setField: SetField;
   t: ReturnType<typeof useTranslations>;
 }) {
   return (
@@ -361,7 +353,7 @@ function Step4({
           <input
             type="text"
             value={form.name}
-            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+            onChange={(e) => setField("name", e.target.value)}
             placeholder={t("Yourname")}
             className={`${inputCls} h-10`}
           />
@@ -374,7 +366,7 @@ function Step4({
           <input
             type="email"
             value={form.email}
-            onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+            onChange={(e) => setField("email", e.target.value)}
             placeholder="you@example.com"
             className={`${inputCls} h-10`}
           />
@@ -389,7 +381,7 @@ function Step4({
           </label>
           <textarea
             value={form.note}
-            onChange={(e) => setForm((f) => ({ ...f, extra: e.target.value }))}
+            onChange={(e) => setField("note", e.target.value)}
             placeholder={t("Referencesspecificrequirementsquestions")}
             rows={3}
             className={`${inputCls} py-2.5 resize-none`}
@@ -436,28 +428,24 @@ function SuccessScreen({
   );
 }
 
+// ── Main page ─────────────────────────────────────────────────────────────────
+
 export default function RequestProjectPage() {
   const t = useTranslations("Home");
   const { isArabic } = useArabicText();
   const [step, setStep] = useState(1);
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState<FormData>({
-    projectType: null,
-    vision: "",
-    isMvp: true,
-    budget: null,
-    timeLine: null,
-    name: "",
-    email: "",
-    note: "",
-  });
+
+  const { isAdding, isSubmitted, formData, setField, addNewReqProject } =
+    useAddNewReqProject();
 
   function canProceed() {
-    if (step === 1) return !!form.projectType;
-    if (step === 2) return form.vision.trim().length >= 20;
-    if (step === 3) return !!form.budget && !!form.timeLine;
+    if (step === 1) return !!formData.projectType;
+    if (step === 2) return formData.vision.trim().length >= 20;
+    if (step === 3) return !!formData.budget && !!formData.timeLine;
     if (step === 4)
-      return form.name.trim().length > 0 && /\S+@\S+\.\S+/.test(form.email);
+      return (
+        formData.name.trim().length > 0 && /\S+@\S+\.\S+/.test(formData.email)
+      );
     return false;
   }
 
@@ -465,12 +453,11 @@ export default function RequestProjectPage() {
     if (step < TOTAL_STEPS) {
       setStep((s) => s + 1);
     } else {
-      // TODO: wire up server action to persist/send the request
-      setSubmitted(true);
+      addNewReqProject();
     }
   }
 
-  if (submitted) return <SuccessScreen name={form.name} t={t} />;
+  if (isSubmitted) return <SuccessScreen name={formData.name} t={t} />;
 
   const progress = (step / TOTAL_STEPS) * 100;
 
@@ -504,35 +491,37 @@ export default function RequestProjectPage() {
             </Link>
           </div>
 
-          {/* Step content — key triggers re-mount for animation */}
+          {/* Step content */}
           <div
             key={step}
             className="animate-in fade-in-0 slide-in-from-bottom-3 duration-300"
           >
-            {step === 1 && <Step1 form={form} setForm={setForm} t={t} />}
-            {step === 2 && <Step2 form={form} setForm={setForm} t={t} />}
-            {step === 3 && <Step3 form={form} setForm={setForm} t={t} />}
-            {step === 4 && <Step4 form={form} setForm={setForm} t={t} />}
+            {step === 1 && <Step1 form={formData} setField={setField} t={t} />}
+            {step === 2 && <Step2 form={formData} setField={setField} t={t} />}
+            {step === 3 && <Step3 form={formData} setField={setField} t={t} />}
+            {step === 4 && <Step4 form={formData} setField={setField} t={t} />}
           </div>
 
           {/* ── Navigation ── */}
           <div className="flex items-center justify-between mt-10">
-            {/* Back */}
             {step > 1 ? (
               <Button
                 variant="outline"
                 type="button"
                 onClick={() => setStep((s) => s - 1)}
               >
-                {isArabic ? <ArrowRight size={15} /> : <ArrowRight size={15} />}
+                {isArabic ? <ArrowRight size={15} /> : <ArrowLeft size={15} />}
                 {t("Back")}
               </Button>
             ) : (
               <span />
             )}
 
-            {/* Next / Submit */}
-            <Button type="button" onClick={handleNext} disabled={!canProceed()}>
+            <Button
+              type="button"
+              onClick={handleNext}
+              disabled={!canProceed() || isAdding}
+            >
               {step < TOTAL_STEPS ? (
                 <>
                   {t("Next")}

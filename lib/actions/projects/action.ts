@@ -126,9 +126,23 @@ export async function getProjectByIdAction({ id }: { id: number }): Promise<{
 
 // THIS ACTION TO ADD A NEW PROJECT REQUEST
 export async function addProjectRequestAction({
-  formData,
+  projectType,
+  vision,
+  isMvp,
+  budget,
+  timeLine,
+  name,
+  email,
+  note,
 }: {
-  formData: FormData;
+  projectType: string;
+  vision: string;
+  isMvp: boolean;
+  budget: string;
+  timeLine: string;
+  name: string;
+  email: string;
+  note?: string | null;
 }): Promise<{
   success: boolean;
   message?: string;
@@ -136,14 +150,14 @@ export async function addProjectRequestAction({
   const t = await getTranslations("Actions");
   try {
     const data = projectRequestSchema.safeParse({
-      projectType: formData.get("projectType"),
-      vision: formData.get("vision"),
-      isMvp: formData.get("isMvp"),
-      budget: formData.get("budget"),
-      timeLine: formData.get("timeLine"),
-      name: formData.get("name"),
-      email: formData.get("email"),
-      note: formData.get("note"),
+      projectType,
+      vision,
+      isMvp,
+      budget,
+      timeLine,
+      name,
+      email,
+      note,
     });
 
     if (!data.success) {

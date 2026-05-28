@@ -17,8 +17,8 @@ export default async function About() {
           {/* ── Top row: image + bio ── */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
             {/* Developer image + socials */}
-            <div className="flex flex-col items-center lg:items-start gap-6">
-              <div className="relative h-64 w-64 sm:h-72 sm:w-72 md:h-80 md:w-80 lg:h-96 lg:w-full lg:max-w-sm rounded-full overflow-hidden border border-border/40 shadow-md">
+            <div className="flex flex-col items-center gap-6">
+              <div className="relative h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64 lg:h-72 lg:w-72 rounded-full overflow-hidden border border-border/40 shadow-md">
                 <Image
                   src="/myImage.svg"
                   alt="Muheddin Tellawi — developer portrait"
@@ -128,7 +128,7 @@ export default async function About() {
               </p>
             </div>
 
-            <div className="group relative w-full mx-auto aspect-video overflow-hidden rounded-2xl border border-border bg-muted cursor-pointer">
+            <div className="group relative w-full mx-auto aspect-video overflow-hidden rounded-lg border border-border bg-muted cursor-pointer">
               {/* Centered play button */}
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 transition-transform duration-300 group-hover:scale-105">
                 <div
