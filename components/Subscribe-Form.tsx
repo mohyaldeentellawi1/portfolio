@@ -11,7 +11,9 @@ export default function SubscribeForm() {
     useAddNewSubscription();
   return (
     <form
-      onSubmit={addNewSubscription}
+      onSubmit={(e) => {
+        addNewSubscription({ e });
+      }}
       className="w-full lg:w-auto lg:min-w-100"
     >
       {/* Outer wrapper acts as the visual input container */}

@@ -41,7 +41,10 @@
     "months": "months",
     "Readarticle": "Read article",
     "Noarticlesinthiscategoryyet": "No articles in this category yet.",
-    "Checkbacksoon": "Check back soon."
+    "Checkbacksoon": "Check back soon.",
+
+    "ShareyourexperienceworkingwithmeYourfeedbackmeansalot": "Share your experience working with me. Your feedback means a lot.",
+    "Tellmeaboutyourexperience": "Tell me about your experience..."
   },
   "Actions": {
     "Invalidemailaddress": "Invalid email address",

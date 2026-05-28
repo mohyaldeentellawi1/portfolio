@@ -1,13 +1,17 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import { REVIEWS } from "./reviews";
+import { Review } from "@/lib/interfaces/review.interface";
+import { useArabicText } from "@/lib/utils/arabic-helper";
 
 export default function ReviewItem({
   review,
   position,
 }: {
-  review: (typeof REVIEWS)[number];
+  review: Review;
   position: "left" | "center" | "right";
 }) {
+  const { getLocalizedText } = useArabicText();
   const isCenter = position === "center";
   const rotation = position === "left" ? 7.35 : -7.35;
 
@@ -45,14 +49,16 @@ export default function ReviewItem({
           <span aria-hidden="true" className="font-serif text-primary">
             &ldquo;
           </span>
-          {review.quote}
+          {getLocalizedText(review.contentEn ?? review.content, review.content)}
           <span aria-hidden="true" className="font-serif text-primary">
             &rdquo;
           </span>
         </p>
 
         {/* Author name */}
-        <p className="text-sm font-semibold text-primary">{review.name}</p>
+        <p className="text-sm font-semibold text-primary">
+          {getLocalizedText(review.nameEn ?? review.name, review.name)}
+        </p>
       </div>
     </div>
   );

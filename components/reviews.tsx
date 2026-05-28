@@ -1,46 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import ReviewItem from "./review-item";
 import { useArabicText } from "@/lib/utils/arabic-helper";
-
-export const REVIEWS = [
-  {
-    id: 1,
-    name: "Alex Johnson",
-    quote:
-      "Working with Muheddin was a pleasure from start to finish. Pixel-perfect UI, clean architecture, and exceptional attention to detail at every step.",
-  },
-  {
-    id: 2,
-    name: "Sarah Miller",
-    quote:
-      "Delivered the full dashboard ahead of schedule without compromising quality. The code is clean, well-structured, and incredibly easy to maintain.",
-  },
-  {
-    id: 3,
-    name: "James Wilson",
-    quote:
-      "The UI components are incredibly polished. Great communication throughout, strong design sensibility, and excellent performance at every layer.",
-  },
-  {
-    id: 4,
-    name: "Emily Chen",
-    quote:
-      "Transformed rough wireframes into a stunning, fully responsive product. Elegant, fast, and built to scale — exactly what we needed.",
-  },
-] as const;
+import AddNewReviewDialog from "./Add-New-Review-Dialog";
+import { useGetAllReviews } from "@/lib/helpers/use-get-all-reviews";
 
 export default function Reviews() {
   const t = useTranslations("Home");
 
   const { isArabic } = useArabicText();
-  const [active, setActive] = useState(1);
-  const total = REVIEWS.length;
+  const { isLoading, reviews, getAllReviews } = useGetAllReviews();
+  const [active, setActive] = useState(0);
+  const total = reviews.length;
 
   const prev = () => setActive((i) => (i - 1 + total) % total);
   const next = () => setActive((i) => (i + 1) % total);
@@ -53,6 +28,10 @@ export default function Reviews() {
     "text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground " +
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
+  useEffect(() => {
+    getAllReviews();
+  }, [getAllReviews]);
+
   return (
     <section
       id="reviews"
@@ -62,9 +41,7 @@ export default function Reviews() {
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
           {/* ── Top bar: Add Review ── */}
           <div className="flex justify-end mb-6">
-            <Button variant="default" size="default">
-              {t("AddReview")}
-            </Button>
+            <AddNewReviewDialog />
           </div>
 
           {/* ── Header: [prev] | title + dots | [next] ── */}
@@ -90,7 +67,7 @@ export default function Reviews() {
 
               {/* Dot indicators */}
               <div className="flex items-center gap-2">
-                {REVIEWS.map((_, i) => (
+                {reviews.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setActive(i)}
@@ -116,17 +93,31 @@ export default function Reviews() {
           </div>
 
           {/* ── Cards ── */}
-          <div className="flex items-center justify-center gap-8 overflow-hidden">
-            <div className="hidden md:block">
-              <ReviewItem review={REVIEWS[leftIdx]} position="left" />
+          {isLoading ? (
+            <div className="flex items-center justify-center h-80">
+              <div className="h-5 w-5 rounded-full border-2 border-primary border-t-transparent animate-spin" />
             </div>
-
-            <ReviewItem review={REVIEWS[active]} position="center" />
-
-            <div className="hidden md:block">
-              <ReviewItem review={REVIEWS[rightIdx]} position="right" />
+          ) : total === 0 ? (
+            <div className="flex items-center justify-center h-80">
+              <p className="text-sm text-muted-foreground">{t("WhatClientsSay")}</p>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center justify-center gap-8 overflow-hidden">
+              {total >= 3 && (
+                <div className="hidden md:block">
+                  <ReviewItem review={reviews[leftIdx]} position="left" />
+                </div>
+              )}
+
+              <ReviewItem review={reviews[active]} position="center" />
+
+              {total >= 3 && (
+                <div className="hidden md:block">
+                  <ReviewItem review={reviews[rightIdx]} position="right" />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>

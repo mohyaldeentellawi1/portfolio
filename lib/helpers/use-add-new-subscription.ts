@@ -13,7 +13,12 @@ export const useAddNewSubscription = () => {
     setEmail(e.target.value);
   };
 
-  const addNewSubscription = async () => {
+  const addNewSubscription = async ({
+    e,
+  }: {
+    e: { preventDefault: () => void };
+  }) => {
+    e.preventDefault();
     setIsAdding(true);
     try {
       const { success, message } = await addSubscriptionAction({ email });
