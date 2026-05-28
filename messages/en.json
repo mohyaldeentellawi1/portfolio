@@ -44,7 +44,30 @@
     "Checkbacksoon": "Check back soon.",
 
     "ShareyourexperienceworkingwithmeYourfeedbackmeansalot": "Share your experience working with me. Your feedback means a lot.",
-    "Tellmeaboutyourexperience": "Tell me about your experience..."
+    "Tellmeaboutyourexperience": "Tell me about your experience...",
+
+    "STEP": "STEP",
+    "OF": "OF",
+    "Home": "Home",
+    "Next": "Next",
+    "Back": "Back",
+    "SendRequest": "Send Request",
+    "Whatareyoubuilding": "What are you building ?",
+    "Choosethetypethatbestdescribesyourproject": "Choose the type that best describes your project.",
+    "Tellmeaboutyourvision": "Tell me about your vision",
+    "WhatproblemdoesitsolveWhoisitforThemoredetailyousharethebetterIcanhelp": "What problem does it solve? Who is it for? The more detail you share, the better I can help.",
+    "Myprojectisaplatformthat": "My project is a platform that...",
+    "morecharacterstocontinue": "more characters to continue",
+    "Budgettimeline": "Budget & timeline",
+    "Helpmescopetherightsolutionforyourneeds": "Help me scope the right solution for your needs.",
+    "Estimatedbudget": "Estimated budget",
+    "Deliverytimeline": "Delivery timeline",
+    "HowcanIreachyou": "How can I reach you ?",
+    "Illreviewyourbriefandgetbacktoyouwithin24hours": "I'll review your brief and get back to you within 24 hours.",
+    "Yourname": "Your name",
+    "Anythingelse": "Anything else ?",
+    "optional": "optional",
+    "Referencesspecificrequirementsquestions": "References, specific requirements, questions..."
   },
   "Actions": {
     "Invalidemailaddress": "Invalid email address",

@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   Send,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -34,8 +35,6 @@ interface FormData {
   email: string;
   extra: string;
 }
-
-// ── Static data ───────────────────────────────────────────────────────────────
 
 const PROJECT_TYPES: {
   id: ProjectType;
@@ -103,17 +102,19 @@ const inputCls =
 function Step1({
   form,
   setForm,
+  t,
 }: {
   form: FormData;
   setForm: React.Dispatch<React.SetStateAction<FormData>>;
+  t: ReturnType<typeof useTranslations>;
 }) {
   return (
     <>
-      <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground mb-3">
-        What are you building?
+      <h1 className="text-3xl font-bold tracking-tight text-foreground mb-3">
+        {t("Whatareyoubuilding")}
       </h1>
       <p className="text-base text-muted-foreground mb-8">
-        Choose the type that best describes your project.
+        {t("Choosethetypethatbestdescribesyourproject")}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -167,21 +168,24 @@ function Step1({
 function Step2({
   form,
   setForm,
+  t,
 }: {
   form: FormData;
   setForm: React.Dispatch<React.SetStateAction<FormData>>;
+  t: ReturnType<typeof useTranslations>;
 }) {
   const MIN = 20;
   const remaining = Math.max(0, MIN - form.description.trim().length);
 
   return (
     <>
-      <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground mb-3">
-        Tell me about your vision
+      <h1 className="text-3xl font-bold tracking-tight text-foreground mb-3">
+        {t("Tellmeaboutyourvision")}
       </h1>
       <p className="text-base text-muted-foreground mb-8">
-        What problem does it solve? Who is it for? The more detail you share,
-        the better I can help.
+        {t(
+          "WhatproblemdoesitsolveWhoisitforThemoredetailyousharethebetterIcanhelp",
+        )}
       </p>
 
       <textarea
@@ -189,14 +193,14 @@ function Step2({
         onChange={(e) =>
           setForm((f) => ({ ...f, description: e.target.value }))
         }
-        placeholder="My project is a platform that..."
+        placeholder={t("Myprojectisaplatformthat")}
         rows={7}
         className={`${inputCls} py-2.5 resize-none`}
       />
 
       {remaining > 0 && (
         <p className="text-xs text-muted-foreground mt-2">
-          {remaining} more characters to continue
+          {remaining} {t("morecharacterstocontinue")}
         </p>
       )}
     </>
@@ -206,9 +210,11 @@ function Step2({
 function Step3({
   form,
   setForm,
+  t,
 }: {
   form: FormData;
   setForm: React.Dispatch<React.SetStateAction<FormData>>;
+  t: ReturnType<typeof useTranslations>;
 }) {
   const pillCls = (selected: boolean) =>
     [
@@ -221,17 +227,17 @@ function Step3({
 
   return (
     <>
-      <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground mb-3">
-        Budget &amp; timeline
+      <h1 className="text-3xl font-bold tracking-tight text-foreground mb-3">
+        {t("Budgettimeline")}
       </h1>
       <p className="text-base text-muted-foreground mb-8">
-        Help me scope the right solution for your needs.
+        {t("Helpmescopetherightsolutionforyourneeds")}
       </p>
 
       <div className="flex flex-col gap-8">
         <div>
           <p className="text-sm font-semibold text-foreground mb-3">
-            Estimated budget
+            {t("Estimatedbudget")}
           </p>
           <div className="flex flex-wrap gap-2">
             {BUDGETS.map(({ id, label }) => (
@@ -249,7 +255,7 @@ function Step3({
 
         <div>
           <p className="text-sm font-semibold text-foreground mb-3">
-            Delivery timeline
+            {t("Deliverytimeline")}
           </p>
           <div className="flex flex-wrap gap-2">
             {TIMELINES.map(({ id, label }) => (
@@ -272,36 +278,38 @@ function Step3({
 function Step4({
   form,
   setForm,
+  t,
 }: {
   form: FormData;
   setForm: React.Dispatch<React.SetStateAction<FormData>>;
+  t: ReturnType<typeof useTranslations>;
 }) {
   return (
     <>
-      <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground mb-3">
-        How can I reach you?
+      <h1 className="text-3xl font-bold tracking-tight text-foreground mb-3">
+        {t("HowcanIreachyou")}
       </h1>
       <p className="text-base text-muted-foreground mb-8">
-        I&apos;ll review your brief and get back to you within 24 hours.
+        {t("Illreviewyourbriefandgetbacktoyouwithin24hours")}
       </p>
 
       <div className="flex flex-col gap-4">
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">
-            Name
+            {t("name")}
           </label>
           <input
             type="text"
             value={form.name}
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-            placeholder="Your name"
+            placeholder={t("Yourname")}
             className={`${inputCls} h-10`}
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">
-            Email
+            {t("Email")}
           </label>
           <input
             type="email"
@@ -314,13 +322,15 @@ function Step4({
 
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">
-            Anything else?{" "}
-            <span className="text-muted-foreground font-normal">(optional)</span>
+            {t("Anythingelse")}{" "}
+            <span className="text-muted-foreground font-normal">
+              ({t("optional")})
+            </span>
           </label>
           <textarea
             value={form.extra}
             onChange={(e) => setForm((f) => ({ ...f, extra: e.target.value }))}
-            placeholder="References, specific requirements, questions..."
+            placeholder={t("Referencesspecificrequirementsquestions")}
             rows={3}
             className={`${inputCls} py-2.5 resize-none`}
           />
@@ -342,8 +352,8 @@ function SuccessScreen({ name }: { name: string }) {
           Request sent!
         </h1>
         <p className="text-base text-muted-foreground mb-8">
-          Thanks{name ? `, ${name}` : ""}! I&apos;ll review your project brief and
-          get back to you within 24 hours.
+          Thanks{name ? `, ${name}` : ""}! I&apos;ll review your project brief
+          and get back to you within 24 hours.
         </p>
 
         <Link
@@ -360,9 +370,8 @@ function SuccessScreen({ name }: { name: string }) {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
-
 export default function RequestProjectPage() {
+  const t = useTranslations("Home");
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormData>({
@@ -380,9 +389,7 @@ export default function RequestProjectPage() {
     if (step === 2) return form.description.trim().length >= 20;
     if (step === 3) return !!form.budget && !!form.timeline;
     if (step === 4)
-      return (
-        form.name.trim().length > 0 && /\S+@\S+\.\S+/.test(form.email)
-      );
+      return form.name.trim().length > 0 && /\S+@\S+\.\S+/.test(form.email);
     return false;
   }
 
@@ -414,7 +421,7 @@ export default function RequestProjectPage() {
         <div className="w-full max-w-2xl">
           {/* Step label */}
           <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-5">
-            Step {step} of {TOTAL_STEPS}
+            {t("STEP")} {step} {t("OF")} {TOTAL_STEPS}
           </p>
 
           {/* Step content — key triggers re-mount for animation */}
@@ -422,10 +429,10 @@ export default function RequestProjectPage() {
             key={step}
             className="animate-in fade-in-0 slide-in-from-bottom-3 duration-300"
           >
-            {step === 1 && <Step1 form={form} setForm={setForm} />}
-            {step === 2 && <Step2 form={form} setForm={setForm} />}
-            {step === 3 && <Step3 form={form} setForm={setForm} />}
-            {step === 4 && <Step4 form={form} setForm={setForm} />}
+            {step === 1 && <Step1 form={form} setForm={setForm} t={t} />}
+            {step === 2 && <Step2 form={form} setForm={setForm} t={t} />}
+            {step === 3 && <Step3 form={form} setForm={setForm} t={t} />}
+            {step === 4 && <Step4 form={form} setForm={setForm} t={t} />}
           </div>
 
           {/* ── Navigation ── */}
@@ -440,7 +447,7 @@ export default function RequestProjectPage() {
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
               >
                 <ArrowLeft size={15} />
-                Back
+                {t("Back")}
               </button>
             ) : (
               <Link
@@ -450,7 +457,7 @@ export default function RequestProjectPage() {
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
               >
                 <ArrowLeft size={15} />
-                Home
+                {t("Home")}
               </Link>
             )}
 
@@ -466,12 +473,12 @@ export default function RequestProjectPage() {
             >
               {step < TOTAL_STEPS ? (
                 <>
-                  Next
+                  {t("Next")}
                   <ArrowRight size={15} />
                 </>
               ) : (
                 <>
-                  Send Request
+                  {t("SendRequest")}
                   <Send size={14} />
                 </>
               )}
