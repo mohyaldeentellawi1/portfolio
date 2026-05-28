@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import Providers from "./providers";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -49,6 +50,7 @@ export default async function RootLayout({
             <Nav />
             {children}
             <Footer />
+            <Toaster />
           </NextIntlClientProvider>
         </Providers>
       </body>

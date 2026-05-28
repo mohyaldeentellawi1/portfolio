@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  schemas   = ["SCH_PROJECT" , "SCH_REVIEW", "SCH_USER"]
+  schemas   = ["SCH_PROJECT" , "SCH_REVIEW", "SCH_MESSAGE", "SCH_SUBSCRIPTION", "SCH_BLOG"]
   
 }
 
@@ -31,6 +31,31 @@ enum ProjectType {
   
 
   @@schema("SCH_PROJECT")
+}
+
+enum ProjectTypeForRequest {
+  MARKETPLACE
+  ECOMMERCE
+  BLOG
+  PORTFOLIO
+  MEDIA
+  DASHBOARD
+  OTHER
+  
+
+  @@schema("SCH_PROJECT")
+}
+
+enum BlogType {
+  FRONTEND
+  BACKEND
+  FLUTTER
+  DEVOPS
+  AI
+  OTHER
+  
+
+  @@schema("SCH_BLOG")
 }
 
 enum TechType {
@@ -142,53 +167,70 @@ model ProjectMedia {
 }
 
 
+model ProjectRequest {
+  id          Int   @id @default(autoincrement())
+  projectType ProjectTypeForRequest @default(OTHER)
+  vision      String
+  timeLine    String
+  isMvp       Boolean  @default(false)
+  name        String
+  email       String
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+
+  @@schema("SCH_PROJECT")
+}
+
 model Review {
   id        Int   @id @default(autoincrement())
-  userId    Int?  @unique
   name      String
   nameEn    String?
-  email     String?
   content   String
   contentEn String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user      User?    @relation(fields: [userId], references: [id])
 
   @@schema("SCH_REVIEW")
+}
+
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("SCH_MESSAGE")
 }
 
 
 model Subscription {
   id        Int      @id @default(autoincrement())
   email     String   @unique
-  userId    Int?     @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user      User?    @relation(fields: [userId], references: [id])
-
-  @@schema("SCH_USER")
+  @@schema("SCH_SUBSCRIPTION")
 }
 
 
+model BlogPost {
+  id          Int      @id @default(autoincrement())
+  type        BlogType @default(OTHER)
+  title       String
+  titleEn     String?
+  content     String
+  contentEn   String?
+  readerCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-model User {
-  id           Int        @id @default(autoincrement())
-  googleId     Int?
-  firstName    String
-  lastName     String?
-  email        String        @unique
-  password     String
-  bio          String?
-  imageUrl     String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-
-  reviews       Review[]
-  subscriptions Subscription[]
-
-  @@schema("SCH_USER")
+  @@schema("SCH_BLOG")
 }
-

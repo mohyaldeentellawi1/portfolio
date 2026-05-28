@@ -42,5 +42,12 @@
     "Readarticle": "اقرأ المقال",
     "Noarticlesinthiscategoryyet": "لا توجد مقالات في هذه الفئة بعد.",
     "Checkbacksoon": "تحقق مرة أخرى قريبًا."
+  },
+  "Actions": {
+    "Invalidemailaddress": "عنوان البريد الإلكتروني غير صالح",
+    "Thisemailisalreadysubscribed": "هذا البريد الإلكتروني مشترك بالفعل",
+    "Subscriptionaddedsuccessfully": "تم الاشتراك بنجاح",
+    "Failedtoaddsubscription": "فشل في إضافة الاشتراك",
+    "Anerroroccurred": "حدث خطأ"
   }
 }

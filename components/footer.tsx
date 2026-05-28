@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { getTranslations } from "next-intl/server";
+import SubscribeForm from "./Subscribe-Form";
 
 export default async function Footer() {
   const t = await getTranslations("Home");
+
   return (
     <footer className="border-t border-border bg-card px-6 sm:px-8 lg:px-10 py-12">
       <div className="mx-auto max-w-7xl flex flex-col gap-8">
@@ -19,24 +20,7 @@ export default async function Footer() {
           </div>
 
           {/* Subscribe form — end side, button inside input */}
-          <form className="w-full lg:w-auto lg:min-w-100">
-            {/* Outer wrapper acts as the visual input container */}
-            <div
-              className="flex h-13 w-full items-center rounded border border-input
-                         bg-background pr-1.5 transition-colors duration-200
-                         focus-within:ring-2 focus-within:ring-ring"
-            >
-              <input
-                type="email"
-                placeholder={t("YourEmailAddress")}
-                className="h-full flex-1 bg-transparent px-4 text-sm text-foreground
-                           placeholder:text-muted-foreground outline-none"
-              />
-              <Button type="submit" className="shrink-0 h-9 mx-1.5">
-                {t("Subscribe")}
-              </Button>
-            </div>
-          </form>
+          <SubscribeForm />
         </div>
 
         {/* ── Bottom line ── */}
