@@ -18,24 +18,26 @@ import {
 } from "@/components/ui/sidebar";
 import { dashboardLogoutAction } from "@/lib/actions/auth/action";
 import { useArabicText } from "@/lib/utils/arabic-helper";
-
-const NAV = [
-  {
-    label: "Project Management",
-    href: "/dashboard/projects",
-    icon: FolderKanban,
-  },
-  {
-    label: "Blog Management",
-    href: "/dashboard/blogs",
-    icon: Newspaper,
-  },
-];
+import { useTranslations } from "next-intl";
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
+  const t = useTranslations("Dashboard");
 
   const { isArabic } = useArabicText();
+
+  const NAV = [
+    {
+      label: t("ProjectManagement"),
+      href: "/dashboard/projects",
+      icon: FolderKanban,
+    },
+    {
+      label: t("BlogManagement"),
+      href: "/dashboard/blogs",
+      icon: Newspaper,
+    },
+  ];
 
   return (
     <Sidebar
@@ -48,7 +50,7 @@ export default function DashboardSidebar() {
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
           <span className="text-sm font-semibold tracking-tight text-sidebar-foreground truncate group-data-[collapsible=icon]:hidden">
-            Dashboard
+            {t("Dashboard")}
           </span>
         </div>
       </SidebarHeader>
@@ -56,7 +58,7 @@ export default function DashboardSidebar() {
       {/* ── Nav ── */}
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Management</SidebarGroupLabel>
+          <SidebarGroupLabel>{t("Management")}</SidebarGroupLabel>
           <SidebarMenu>
             {NAV.map(({ label, href, icon: Icon }) => {
               const active = pathname === href;
@@ -87,7 +89,7 @@ export default function DashboardSidebar() {
               className="text-muted-foreground hover:text-destructive"
             >
               <LogOut />
-              <span>Sign out</span>
+              <span>{t("Logout")}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

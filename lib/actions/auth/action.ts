@@ -28,7 +28,7 @@ export async function dashboardLoginAction(
     maxAge: 60 * 60 * 24 * 30,
   });
 
-  redirect("/dashboard");
+  redirect("/dashboard/projects");
 }
 
 export async function dashboardLogoutAction() {

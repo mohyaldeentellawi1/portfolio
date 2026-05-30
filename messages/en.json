@@ -99,5 +99,12 @@
 
     "Failedtoaddprojectrequest": "Failed to add project request",
     "Projectrequestadded": "Project request added successfully"
+  },
+  "Dashboard": {
+    "Dashboard": "Dashboard",
+    "Management": "Management",
+    "ProjectManagement": "Project Management",
+    "BlogManagement": "Blog Management",
+    "Logout": "Logout"
   }
 }

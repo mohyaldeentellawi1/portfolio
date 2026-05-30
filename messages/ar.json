@@ -98,5 +98,12 @@
 
     "Failedtoaddprojectrequest": "فشل في إضافة طلب المشروع",
     "Projectrequestadded": "تم إضافة طلب المشروع بنجاح"
+  },
+  "Dashboard": {
+    "Dashboard": "لوحة التحكم",
+    "Management": "الإدارة",
+    "ProjectManagement": "إدارة المشاريع",
+    "BlogManagement": "إدارة المدونة",
+    "Logout": "تسجيل الخروج"
   }
 }
