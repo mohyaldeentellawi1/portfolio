@@ -10,11 +10,12 @@ export function proxy(request: NextRequest) {
 
   // Allow login page always
   if (pathname === LOGIN) {
-    // If already authenticated, skip the login page
     if (isAuthenticated) {
       return NextResponse.redirect(new URL("/dashboard/projects", request.url));
     }
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.headers.set("x-pathname", pathname);
+    return res;
   }
 
   // Protect all other /dashboard routes
@@ -22,7 +23,9 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(LOGIN, request.url));
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set("x-pathname", pathname);
+  return response;
 }
 
 export const config = {

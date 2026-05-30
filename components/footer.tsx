@@ -1,8 +1,14 @@
+import { headers } from "next/headers";
 import { getTranslations } from "next-intl/server";
 import SubscribeForm from "./Subscribe-Form";
 
 export default async function Footer() {
   const t = await getTranslations("Home");
+
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") ?? "";
+
+  if (pathname.startsWith("/dashboard")) return null;
 
   return (
     <footer className="border-t border-border bg-card px-6 sm:px-8 lg:px-10 py-12">
