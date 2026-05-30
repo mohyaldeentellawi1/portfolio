@@ -304,6 +304,100 @@ export async function addNewProjectAction(
   }
 }
 
+// THIS ACTION TO UPDATE AN EXISTING PROJECT BY ADMIN
+export async function updateProjectAction(
+  projectId: number,
+  input: z.infer<typeof newProjectSchema>,
+): Promise<{ success: boolean; message?: string }> {
+  try {
+    const parsed = newProjectSchema.safeParse(input);
+    if (!parsed.success) {
+      return { success: false, message: "Invalid project data." };
+    }
+
+    const { title, titleEn, description, descriptionEn, liveUrl, githubUrl,
+            techType, projectTypes, tagIds, media, sections } = parsed.data;
+
+    // Reset sequences (same reason as addNewProjectAction)
+    await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"SCH_PROJECT"."ProjectMedia"', 'id'), COALESCE((SELECT MAX(id) FROM "SCH_PROJECT"."ProjectMedia"), 0) + 1, false)`;
+    await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"SCH_PROJECT"."ProjectSection"', 'id'), COALESCE((SELECT MAX(id) FROM "SCH_PROJECT"."ProjectSection"), 0) + 1, false)`;
+    await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"SCH_PROJECT"."ProjectTag"', 'id'), COALESCE((SELECT MAX(id) FROM "SCH_PROJECT"."ProjectTag"), 0) + 1, false)`;
+
+    await prisma.$transaction(async (tx) => {
+      // 1. Update project base fields
+      await tx.project.update({
+        where: { id: projectId },
+        data: {
+          title, titleEn, description, descriptionEn,
+          liveUrl: liveUrl || null,
+          githubUrl: githubUrl || null,
+          techType: techType as import("@/app/generated/prisma/client").TechType,
+          projectTypes: projectTypes as import("@/app/generated/prisma/client").ProjectType[],
+        },
+      });
+
+      // 2. Replace tags
+      await tx.projectTag.deleteMany({ where: { projectId } });
+      if (tagIds.length > 0) {
+        await tx.projectTag.createMany({
+          data: tagIds.map((tagId) => ({ projectId, tagId })),
+          skipDuplicates: true,
+        });
+      }
+
+      // 3. Replace all media — delete project-level media, then sections (cascade deletes section media)
+      await tx.projectMedia.deleteMany({ where: { projectId, sectionId: null } });
+      await tx.projectSection.deleteMany({ where: { projectId } });
+
+      // 4. Re-create project-level media
+      if (media.length > 0) {
+        await tx.projectMedia.createMany({
+          data: media.map((m) => ({
+            projectId, sectionId: null,
+            url: m.url, cloudId: m.cloudId,
+            type: m.type as import("@/app/generated/prisma/client").ProjectMediaType,
+            fileName: m.fileName || null,
+            thumbnailUrl: m.thumbnailUrl || null,
+            order: m.order, isMain: m.isMain,
+          })),
+        });
+      }
+
+      // 5. Re-create sections and their media
+      for (const sec of sections) {
+        const created = await tx.projectSection.create({
+          data: {
+            projectId,
+            title: sec.title, titleEn: sec.titleEn || null,
+            description: sec.description, descriptionEn: sec.descriptionEn || null,
+            imageRight: sec.imageRight, order: sec.order,
+          },
+        });
+        if (sec.media.length > 0) {
+          await tx.projectMedia.createMany({
+            data: sec.media.map((m) => ({
+              projectId, sectionId: created.id,
+              url: m.url, cloudId: m.cloudId,
+              type: m.type as import("@/app/generated/prisma/client").ProjectMediaType,
+              fileName: m.fileName || null,
+              thumbnailUrl: m.thumbnailUrl || null,
+              order: m.order, isMain: m.isMain,
+            })),
+          });
+        }
+      }
+    });
+
+    return { success: true, message: "Project updated successfully." };
+  } catch (error) {
+    console.error("Error updating project:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to update project.",
+    };
+  }
+}
+
 // THIS ACTION TO ADD A NEW PROJECT REQUEST
 export async function addProjectRequestAction({
   projectType,

@@ -34,6 +34,7 @@ interface ProjectSection {
 interface ProjectMedia {
   id: number;
   projectId: number;
+  sectionId?: number | null;
   url: string;
   type: string;
   cloudId: string;
