@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Review } from "@/lib/interfaces/review.interface";
 import { useArabicText } from "@/lib/utils/arabic-helper";
+import { useState } from "react";
 
 export default function ReviewItem({
   review,
@@ -15,20 +16,26 @@ export default function ReviewItem({
   const isCenter = position === "center";
   const rotation = position === "left" ? 7.35 : -7.35;
 
+  const [hover, setHover] = useState<boolean>(false);
+
   return (
     <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       className={cn(
         "relative shrink-0 w-80 transition-all duration-500 ease-in-out",
-        isCenter ? "z-10 scale-100 opacity-100" : "z-0 scale-90 opacity-50",
+        isCenter
+          ? "z-10 scale-100 opacity-100"
+          : `z-0 scale-90 ${hover ? "opacity-100" : "opacity-50"}`,
       )}
     >
       {/* Primary accent layer — side cards only */}
       {!isCenter && (
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-primary"
+          className={`absolute inset-0 transition-colors duration-300 ${hover ? "bg-primary" : "bg-primary/50"}`}
           style={{
-            borderRadius: "2.5rem",
+            borderRadius: "8px",
             transform: `rotate(${rotation}deg)`,
           }}
         />
@@ -37,7 +44,7 @@ export default function ReviewItem({
       {/* Card body */}
       <div
         className="relative flex flex-col justify-center gap-6 border border-border bg-card p-8 h-80"
-        style={{ borderRadius: "2.5rem" }}
+        style={{ borderRadius: "8px" }}
       >
         {/* Quote text with inline opening and closing marks */}
         <p
@@ -56,7 +63,7 @@ export default function ReviewItem({
         </p>
 
         {/* Author name */}
-        <p className="text-sm font-semibold text-primary">
+        <p className={`text-sm font-semibold text-primary`}>
           {getLocalizedText(review.nameEn ?? review.name, review.name)}
         </p>
       </div>

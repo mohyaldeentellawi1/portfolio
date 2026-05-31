@@ -190,35 +190,84 @@ export default async function ProjectPage({
                     {/* Images */}
                     <FadeIn
                       delay={150}
-                      className={`flex items-end justify-center gap-4${!section.imageRight ? " lg:order-1" : ""}`}
+                      className={`${isPortrait ? "flex items-end justify-center gap-4" : "flex flex-col w-full gap-3"}${!section.imageRight ? " lg:order-1" : ""}`}
                     >
-                      {images.length > 0 ? (
-                        images.map((img) => (
-                          <div
-                            key={img.id}
-                            className={`w-48 ${aspectClass} relative`}
-                          >
-                            {img.url && (
-                              <Image
-                                src={img.thumbnailUrl ?? img.url}
-                                alt=""
-                                fill
-                                className="object-contain"
-                                sizes="192px"
-                                loading="eager"
-                              />
-                            )}
-                          </div>
-                        ))
+                      {isPortrait ? (
+                        /* Portrait (mobile) — side-by-side phone screens */
+                        images.length > 0 ? (
+                          images.map((img) => (
+                            <div
+                              key={img.id}
+                              className={`w-48 ${aspectClass} relative`}
+                            >
+                              {img.url && (
+                                <Image
+                                  src={img.thumbnailUrl ?? img.url}
+                                  alt=""
+                                  fill
+                                  className="object-contain"
+                                  sizes="192px"
+                                  loading="eager"
+                                />
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <>
+                            <div className={`w-48 ${aspectClass}  bg-muted`} />
+                            <div className={`w-48 ${aspectClass}  bg-muted`} />
+                          </>
+                        )
+                      ) : images.length > 0 ? (
+                        /* Landscape (web/desktop) — browser-framed screenshots side by side */
+                        <div className="flex gap-3 w-full items-start">
+                          {images.map((img, index) => (
+                            <div
+                              key={img.id}
+                              className="flex-1 rounded-sm border border-border overflow-hidden shadow-lg"
+                            >
+                              <div className="bg-muted/80 px-3 py-2 flex items-center gap-2 border-b border-border">
+                                <div className="flex gap-1.5">
+                                  <div className="w-2 h-2 rounded-full bg-destructive/60" />
+                                  <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
+                                  <div className="w-2 h-2 rounded-full bg-green-500/60" />
+                                </div>
+                                {index === 0 && (
+                                  <div className="flex-1 mx-1 px-2 py-0.5 text-xs text-muted-foreground truncate select-none">
+                                    {data?.liveUrl ?? "https://app.example.com"}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="relative aspect-video w-full bg-muted">
+                                {img.url && (
+                                  <Image
+                                    src={img.thumbnailUrl ?? img.url}
+                                    alt=""
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 1024px) 50vw, 25vw"
+                                    loading="eager"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       ) : (
-                        <>
-                          <div
-                            className={`w-48 ${aspectClass} rounded-lg bg-muted`}
-                          />
-                          <div
-                            className={`w-48 ${aspectClass} rounded-lg bg-muted`}
-                          />
-                        </>
+                        /* Landscape empty state */
+                        <div className="w-full rounded-xl border border-border overflow-hidden shadow-lg">
+                          <div className="bg-muted/80 px-3 py-2 flex items-center gap-2 border-b border-border">
+                            <div className="flex gap-1.5">
+                              <div className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
+                              <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
+                              <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                            </div>
+                            <div className="flex-1 mx-2 px-2 py-0.5 text-xs text-muted-foreground truncate select-none">
+                              https://app.example.com
+                            </div>
+                          </div>
+                          <div className="aspect-video w-full bg-muted" />
+                        </div>
                       )}
                     </FadeIn>
                   </div>
