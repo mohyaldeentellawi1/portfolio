@@ -104,6 +104,12 @@
     "Management": "الإدارة",
     "ProjectManagement": "إدارة المشاريع",
     "BlogManagement": "إدارة المدونة",
+    "AddProject": "إضافة مشروع",
+    "NoProjectsYet": "لا توجد مشاريع بعد",
+    "Title": "العنوان",
+    "Types": "الأنواع",
+    "Tags": "الوسوم",
+    "Edit": "تعديل",
     "Logout": "تسجيل الخروج"
   }
 }

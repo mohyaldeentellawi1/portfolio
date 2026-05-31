@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
+
 import { Plus, Pencil, Loader2, FolderOpen } from "lucide-react";
 import { useGetAllProjects } from "@/lib/helpers/use-get-all-projects";
 import {
@@ -15,8 +15,12 @@ import {
 import CustomPagination from "@/components/custom-pagination";
 import { Button } from "@/components/ui/button";
 import { useArabicText } from "@/lib/utils/arabic-helper";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function DashboardProjectsPage() {
+  const router = useRouter();
+  const t = useTranslations("Dashboard");
   const { getLocalizedText } = useArabicText();
   const { isLoading, projects, pagination, getAllProjects } =
     useGetAllProjects();
@@ -31,13 +35,16 @@ export default function DashboardProjectsPage() {
       <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-border">
         <div>
           <h1 className="text-base font-semibold tracking-tight text-foreground">
-            Projects
+            {t("ProjectManagement")}
           </h1>
         </div>
 
-        <Button render={<Link href="/dashboard/projects/new" />} nativeButton={false} size="sm">
+        <Button
+          onClick={() => router.push("/dashboard/projects/new")}
+          size="sm"
+        >
           <Plus />
-          Add Project
+          {t("AddProject")}
         </Button>
       </div>
 
@@ -50,14 +57,16 @@ export default function DashboardProjectsPage() {
         ) : projects.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 h-64">
             <FolderOpen size={28} className="text-muted-foreground/40" />
-            <p className="text-sm text-muted-foreground">No projects yet</p>
+            <p className="text-sm text-muted-foreground">
+              {t("NoProjectsYet")}
+            </p>
             <Button
-              render={<Link href="/dashboard/projects/new" />} nativeButton={false}
+              onClick={() => router.push("/dashboard/projects/new")}
               size="sm"
               variant="outline"
             >
               <Plus />
-              Add your first project
+              {t("AddProject")}
             </Button>
           </div>
         ) : (
@@ -65,10 +74,12 @@ export default function DashboardProjectsPage() {
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-14 ps-6 text-start!">ID</TableHead>
-                <TableHead className="text-start!">Title</TableHead>
-                <TableHead className="w-56 text-start!">Types</TableHead>
-                <TableHead className="w-48 text-start!">Tags</TableHead>
-                <TableHead className="w-14 pe-6 text-center">Edit</TableHead>
+                <TableHead className="text-start!">{t("Title")}</TableHead>
+                <TableHead className="w-56 text-start!">{t("Types")}</TableHead>
+                <TableHead className="w-48 text-start!">{t("Tags")}</TableHead>
+                <TableHead className="w-14 pe-6 text-center">
+                  {t("Edit")}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -126,16 +137,18 @@ export default function DashboardProjectsPage() {
 
                   {/* Edit */}
                   <TableCell className="w-14 pe-6 text-center">
-                    <Link
-                      href={`/dashboard/projects/${project.id}/edit`}
+                    <Button
+                      onClick={() =>
+                        router.push(`/dashboard/projects/${project.id}/edit`)
+                      }
                       aria-label={`Edit project ${project.id}`}
                       className="inline-flex h-8 w-8 items-center justify-center rounded
-                                 text-muted-foreground hover:text-foreground hover:bg-muted
+                                 text-white hover:text-foreground hover:bg-muted
                                  transition-colors duration-200
                                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       <Pencil size={13} />
-                    </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
