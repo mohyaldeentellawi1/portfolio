@@ -1,8 +1,10 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
+import { sendEmailAction } from "../emails/action";
+import { subscriptionConfirmationEmail } from "@/lib/emails/templates";
 
 const subscriptionSchema = z.object({
   email: z.email(),
@@ -17,7 +19,10 @@ export async function addSubscriptionAction({
   success: boolean;
   message: string;
 }> {
-  const t = await getTranslations("Actions");
+  const [t, locale] = await Promise.all([
+    getTranslations("Actions"),
+    getLocale(),
+  ]);
   try {
     const parsedData = subscriptionSchema.safeParse({ email });
 
@@ -47,17 +52,26 @@ export async function addSubscriptionAction({
       },
     });
 
-    if (res) {
+    if (!res) {
       return {
-        success: true,
-        message: `${t("Subscriptionaddedsuccessfully")}`,
+        success: false,
+        message: `${t("Failedtoaddsubscription")}`,
       };
     }
 
+    const safeLocale = locale === "ar" ? "ar" : "en";
+    sendEmailAction({
+      to: parsedData.data.email,
+      subject: safeLocale === "ar" ? "تم اشتراكك بنجاح!" : "You're subscribed!",
+      html: subscriptionConfirmationEmail({ locale: safeLocale }),
+    });
+
     return {
-      success: false,
-      message: `${t("Failedtoaddsubscription")}`,
+      success: true,
+      message: `${t("Subscriptionaddedsuccessfully")}`,
     };
+
+    
   } catch (error) {
     return {
       success: false,
