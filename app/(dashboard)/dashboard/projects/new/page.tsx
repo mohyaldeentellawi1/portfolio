@@ -2,19 +2,18 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import {
-  ArrowLeft,
-  Plus,
-  Trash2,
-  ChevronDown,
-  ChevronUp,
-  Loader2,
-} from "lucide-react";
+import { Plus, Trash2, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useGetAllTags } from "@/lib/helpers/use-get-all-tags";
 import { addNewProjectAction } from "@/lib/actions/projects/action";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -124,8 +123,8 @@ function CardSection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden">
-      <div className="px-5 py-3 border-b border-border">
+    <div className="border overflow-hidden">
+      <div className="px-5 py-4 border-b border-border">
         <h2 className="text-sm font-semibold text-foreground">{title}</h2>
       </div>
       <div className="p-5">{children}</div>
@@ -173,7 +172,7 @@ function MediaEditor({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div dir="ltr" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>URL *</label>
               <input
@@ -409,18 +408,10 @@ export default function DashboardProjectsNewPage() {
     ].join(" ");
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col min-h-full w-full">
       {/* ── Header ── */}
       <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-border">
         <div className="flex items-center gap-3">
-          <Link
-            href="/dashboard/projects"
-            className="inline-flex items-center justify-center h-8 w-8 rounded text-muted-foreground
-                       hover:text-foreground hover:bg-muted transition-colors duration-200
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <ArrowLeft size={15} />
-          </Link>
           <h1 className="text-base font-semibold tracking-tight text-foreground">
             New Project
           </h1>
@@ -437,7 +428,7 @@ export default function DashboardProjectsNewPage() {
       </div>
 
       {/* ── Form ── */}
-      <div className="flex-1 p-6 flex flex-col gap-5 max-w-4xl">
+      <div className="flex-1 p-6 flex flex-col gap-5 max-w-6xl">
         {/* Basic info */}
         <CardSection title="Basic Information">
           <div className="flex flex-col gap-4">
@@ -452,7 +443,7 @@ export default function DashboardProjectsNewPage() {
                   className={inputCls}
                 />
               </div>
-              <div>
+              <div dir="ltr">
                 <label className={labelCls}>Title (EN) *</label>
                 <input
                   type="text"
@@ -468,17 +459,17 @@ export default function DashboardProjectsNewPage() {
               <div>
                 <label className={labelCls}>Description (AR) *</label>
                 <textarea
-                  rows={3}
+                  rows={5}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="وصف المشروع"
                   className={textareaCls}
                 />
               </div>
-              <div>
+              <div dir="ltr">
                 <label className={labelCls}>Description (EN) *</label>
                 <textarea
-                  rows={3}
+                  rows={5}
                   value={descriptionEn}
                   onChange={(e) => setDescriptionEn(e.target.value)}
                   placeholder="Project description"
@@ -487,7 +478,7 @@ export default function DashboardProjectsNewPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div dir="ltr" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelCls}>Live URL</label>
                 <input
@@ -512,19 +503,28 @@ export default function DashboardProjectsNewPage() {
 
             <div>
               <label className={labelCls}>Tech Type *</label>
-              <select
-                value={techType}
-                onChange={(e) => setTechType(e.target.value)}
-                className="h-9 rounded border border-input bg-background px-3 text-sm text-foreground
+              <Select
+                value={techType || "OTHER"}
+                onValueChange={(value) => {
+                  setTechType(value || "OTHER");
+                }}
+              >
+                <SelectTrigger
+                  className="h-12 rounded border border-input bg-background px-3 text-sm text-foreground
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
                            transition-shadow duration-200"
-              >
-                {TECH_TYPES.map((t) => (
-                  <option key={t} value={t}>
-                    {t.replace(/_/g, " ")}
-                  </option>
-                ))}
-              </select>
+                  style={{ borderRadius: "5px" }}
+                >
+                  <SelectValue placeholder="Select tech type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TECH_TYPES.map((t) => (
+                    <SelectItem key={t} value={t}>
+                      {t.replace(/_/g, " ")}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
@@ -622,7 +622,7 @@ export default function DashboardProjectsNewPage() {
                           }
                         />
                       </div>
-                      <div>
+                      <div dir="ltr">
                         <label className={labelCls}>Title (EN)</label>
                         <input
                           type="text"
@@ -637,7 +637,7 @@ export default function DashboardProjectsNewPage() {
                       <div>
                         <label className={labelCls}>Description (AR) *</label>
                         <textarea
-                          rows={2}
+                          rows={3}
                           value={sec.description}
                           placeholder="وصف القسم"
                           className={textareaCls}
@@ -648,10 +648,10 @@ export default function DashboardProjectsNewPage() {
                           }
                         />
                       </div>
-                      <div>
+                      <div dir="ltr">
                         <label className={labelCls}>Description (EN)</label>
                         <textarea
-                          rows={2}
+                          rows={3}
                           value={sec.descriptionEn}
                           placeholder="Section description"
                           className={textareaCls}
