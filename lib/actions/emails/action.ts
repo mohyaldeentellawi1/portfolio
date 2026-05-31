@@ -16,13 +16,14 @@ export async function sendEmailAction({
 }): Promise<{
   success: boolean;
   message?: string;
+  data?: unknown;
 }> {
   try {
     if (!process.env.RESEND_API_KEY) {
       throw new Error("Email service configuration error");
     }
 
-    const { error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: "MOHYALDEEN TELLAWI <no-reply@mohyaldeen-tellawi.com>",
       to,
       subject,
@@ -34,6 +35,7 @@ export async function sendEmailAction({
     }
     return {
       success: true,
+      data,
     };
   } catch (error) {
     return {
