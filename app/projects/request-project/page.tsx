@@ -72,6 +72,7 @@ const BUDGETS: { id: string; labelKey: string }[] = [
   { id: "5k_15k", labelKey: "Budget5kto15k" },
   { id: "15k_30k", labelKey: "Budget15kto30k" },
   { id: "over_30k", labelKey: "Budgetover30k" },
+  { id: "later", labelKey: "Budgetlater" },
 ];
 
 const TIMELINES: { id: string; labelKey: string }[] = [
@@ -117,7 +118,7 @@ function Step1({
               type="button"
               onClick={() => setField("projectType", id)}
               className={[
-                "text-start p-5 rounded-lg border transition-all duration-200",
+                "text-start p-5 rounded-sm border transition-all duration-200",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 selected
                   ? "border-primary bg-primary/10"
@@ -248,7 +249,7 @@ function Step3({
                   type="button"
                   onClick={() => setField("isMvp", value)}
                   className={[
-                    "text-start p-4 rounded-lg border transition-all duration-200",
+                    "text-start p-4 rounded-sm border transition-all duration-200",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     selected
                       ? "border-primary bg-primary/10"
