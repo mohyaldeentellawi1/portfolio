@@ -417,33 +417,19 @@ export default function DashboardProjectsEditPage() {
     }
 
     startTransition(async () => {
-      const result = await updateProjectAction(Number(params.id), {
-        title,
-        titleEn,
-        description,
-        descriptionEn,
-        liveUrl: liveUrl || undefined,
-        githubUrl: githubUrl || undefined,
-        techType: techType as never,
-        projectTypes: projectTypes as never,
-        tagIds,
-        media: media.map((m) => ({
-          url: m.url,
-          cloudId: m.cloudId,
-          type: m.type,
-          fileName: m.fileName || undefined,
-          thumbnailUrl: m.thumbnailUrl || undefined,
-          order: m.order,
-          isMain: m.isMain,
-        })),
-        sections: sections.map((s) => ({
-          title: s.title,
-          titleEn: s.titleEn || undefined,
-          description: s.description,
-          descriptionEn: s.descriptionEn || undefined,
-          imageRight: s.imageRight,
-          order: s.order,
-          media: s.media.map((m) => ({
+      const result = await updateProjectAction({
+        projectId: Number(params.id),
+        input: {
+          title,
+          titleEn,
+          description,
+          descriptionEn,
+          liveUrl: liveUrl || undefined,
+          githubUrl: githubUrl || undefined,
+          techType: techType as never,
+          projectTypes: projectTypes as never,
+          tagIds,
+          media: media.map((m) => ({
             url: m.url,
             cloudId: m.cloudId,
             type: m.type,
@@ -452,12 +438,29 @@ export default function DashboardProjectsEditPage() {
             order: m.order,
             isMain: m.isMain,
           })),
-        })),
+          sections: sections.map((s) => ({
+            title: s.title,
+            titleEn: s.titleEn || undefined,
+            description: s.description,
+            descriptionEn: s.descriptionEn || undefined,
+            imageRight: s.imageRight,
+            order: s.order,
+            media: s.media.map((m) => ({
+              url: m.url,
+              cloudId: m.cloudId,
+              type: m.type,
+              fileName: m.fileName || undefined,
+              thumbnailUrl: m.thumbnailUrl || undefined,
+              order: m.order,
+              isMain: m.isMain,
+            })),
+          })),
+        },
       });
 
       if (result.success) {
-        toast.success(result.message ?? "Project updated.");
-        router.push("/dashboard/projects");
+        toast.success("Project updated successfully");
+        router.back();
       } else {
         toast.error(result.message ?? "Something went wrong.");
       }
