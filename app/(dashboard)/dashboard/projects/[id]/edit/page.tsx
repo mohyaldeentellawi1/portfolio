@@ -124,7 +124,7 @@ export default function DashboardProjectsEditPage() {
   return (
     <div className="flex flex-col min-h-full w-full">
       {/* ── Header ── */}
-      <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-border">
+      <div className="sticky top-20 z-10 flex items-center justify-between gap-4 px-6 py-4 border-b border-border bg-background">
         <div className="flex items-center gap-3">
           <div>
             <h1 className="text-base font-semibold tracking-tight text-foreground">

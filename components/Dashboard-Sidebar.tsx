@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FolderKanban, Newspaper, LogOut, LayoutDashboard } from "lucide-react";
 import {
   Sidebar,
@@ -21,12 +20,17 @@ import { useArabicText } from "@/lib/utils/arabic-helper";
 import { useTranslations } from "next-intl";
 
 const NAV = [
-  { labelKey: "ProjectManagement", href: "/dashboard/projects", icon: FolderKanban },
-  { labelKey: "BlogManagement",    href: "/dashboard/blogs",    icon: Newspaper },
+  {
+    labelKey: "ProjectManagement",
+    href: "/dashboard/projects",
+    icon: FolderKanban,
+  },
+  { labelKey: "BlogManagement", href: "/dashboard/blogs", icon: Newspaper },
 ] as const;
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const t = useTranslations("Dashboard");
   const { isArabic } = useArabicText();
 
@@ -47,9 +51,6 @@ export default function DashboardSidebar() {
             <span className="text-sm font-semibold tracking-tight text-sidebar-foreground leading-none">
               {t("Dashboard")}
             </span>
-            <span className="text-[11px] text-muted-foreground leading-none mt-0.5">
-              mohyaldeen.dev
-            </span>
           </div>
 
           <SidebarTrigger className="ms-auto text-muted-foreground hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
@@ -68,17 +69,17 @@ export default function DashboardSidebar() {
 
           <SidebarMenu className="gap-0.5">
             {NAV.map(({ labelKey, href, icon: Icon }) => {
-              const active = pathname === href;
+              const active = pathname.startsWith(href);
               return (
                 <SidebarMenuItem key={href}>
                   <SidebarMenuButton
-                    render={<Link href={href} />}
                     tooltip={t(labelKey)}
+                    onClick={() => !active && router.replace(href)}
                     className={[
                       "text-sm font-medium transition-colors duration-200",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                       active
-                        ? "bg-primary! text-primary-foreground! hover:bg-primary/90!"
+                        ? "bg-primary! text-primary-foreground! hover:bg-primary/90! cursor-default"
                         : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                     ].join(" ")}
                   >

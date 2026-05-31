@@ -115,37 +115,38 @@ export default async function ProjectPage({
               </div>
             </div>
 
-            {/* Right — hero screenshots */}
+            {/* Right — main logo */}
             {(() => {
-              const heroImages = [...(data?.media ?? [])]
-                .sort((a, b) => a.order - b.order)
-                .slice(0, 3);
-              const isPortrait = data?.techType === "MOBILE";
-              const aspectClass = isPortrait ? "aspect-9/19" : "aspect-video";
-              const items =
-                heroImages.length > 0 ? heroImages : [null, null, null];
+              const main = (data?.media ?? []).find((m) => m.isMain);
+              if (!main) return null;
               return (
-                <div className="flex items-end justify-center gap-4 py-4">
-                  {items.map((img, i) => {
-                    const isCenter = items.length === 3 && i === 1;
-                    return (
-                      <div
-                        key={img?.id ?? i}
-                        className={`${isCenter ? "w-36" : "w-28"} ${aspectClass} relative`}
-                      >
-                        {img?.url && (
-                          <Image
-                            src={img.thumbnailUrl ?? img.url}
-                            alt=""
-                            fill
-                            className="object-contain"
-                            sizes="(max-width: 768px) 112px, 144px"
-                            loading="eager"
-                          />
+                <div className="flex items-center justify-center py-6">
+                  <div className="relative flex flex-col items-center gap-4">
+                    {/* Ambient glow */}
+                    <div
+                      aria-hidden
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                                 w-56 h-56 rounded-full bg-primary/15 blur-3xl pointer-events-none"
+                    />
+
+                    {/* Logo card */}
+                    <div
+                      className="relative w-52 h-52 sm:w-64 sm:h-64 rounded-lg border border-border/50
+                                    bg-card shadow-lg overflow-hidden flex items-center justify-center p-6"
+                    >
+                      <Image
+                        src={main.thumbnailUrl ?? main.url}
+                        alt={getLocalizedText(
+                          data?.titleEn ?? "",
+                          data?.title ?? "",
                         )}
-                      </div>
-                    );
-                  })}
+                        fill
+                        className="object-contain p-5"
+                        sizes="(max-width: 640px) 208px, 256px"
+                        priority
+                      />
+                    </div>
+                  </div>
                 </div>
               );
             })()}
