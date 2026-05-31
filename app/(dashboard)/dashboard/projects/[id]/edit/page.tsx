@@ -1,14 +1,11 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useParams } from "next/navigation";
 import { Plus, Trash2, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
-import { toast } from "sonner";
 import { useGetAllTags } from "@/lib/helpers/use-get-all-tags";
-import { getProjectByIdAction } from "@/lib/actions/projects/action";
-import { updateProjectAction } from "@/lib/actions/projects/action";
 import { Button } from "@/components/ui/button";
-import type { Project } from "@/lib/interfaces/project.interface";
+
 import {
   Select,
   SelectContent,
@@ -16,8 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-// ── Constants (same as new page) ─────────────────────────────────────────────
+import CardSection from "../../components/Card-Section-Component";
+import { MediaEditor } from "../../components/Media-Componenet";
+import { useEditProject } from "@/lib/helpers/use-add-new-project";
 
 const TECH_TYPES = [
   "WEB_FRONTEND",
@@ -43,83 +41,6 @@ const PROJECT_TYPES = [
   "MEDIA",
 ] as const;
 
-interface MediaItem {
-  _key: string;
-  url: string;
-  cloudId: string;
-  type: "IMAGE" | "VIDEO";
-  fileName: string;
-  thumbnailUrl: string;
-  order: number;
-  isMain: boolean;
-}
-
-interface SectionItem {
-  _key: string;
-  title: string;
-  titleEn: string;
-  description: string;
-  descriptionEn: string;
-  imageRight: boolean;
-  order: number;
-  media: MediaItem[];
-  collapsed: boolean;
-}
-
-function uid() {
-  return Math.random().toString(36).slice(2);
-}
-
-function toMediaItem(m: {
-  url: string;
-  cloudId: string;
-  type: string;
-  fileName?: string;
-  thumbnailUrl?: string;
-  order: number;
-  isMain: boolean;
-}): MediaItem {
-  return {
-    _key: uid(),
-    url: m.url,
-    cloudId: m.cloudId,
-    type: m.type === "VIDEO" ? "VIDEO" : "IMAGE",
-    fileName: m.fileName ?? "",
-    thumbnailUrl: m.thumbnailUrl ?? "",
-    order: m.order,
-    isMain: m.isMain,
-  };
-}
-
-function emptyMedia(order = 0): MediaItem {
-  return {
-    _key: uid(),
-    url: "",
-    cloudId: "",
-    type: "IMAGE",
-    fileName: "",
-    thumbnailUrl: "",
-    order,
-    isMain: false,
-  };
-}
-
-function emptySection(order = 0): SectionItem {
-  return {
-    _key: uid(),
-    title: "",
-    titleEn: "",
-    description: "",
-    descriptionEn: "",
-    imageRight: true,
-    order,
-    media: [],
-    collapsed: false,
-  };
-}
-
-// ── Shared styles ─────────────────────────────────────────────────────────────
-
 const inputCls =
   "w-full h-9 rounded border border-input bg-background px-3 text-sm text-foreground " +
   "placeholder:text-muted-foreground transition-shadow duration-200 " +
@@ -132,337 +53,47 @@ const textareaCls =
 
 const labelCls = "block text-xs font-medium text-muted-foreground mb-1";
 
-// ── Sub-components ────────────────────────────────────────────────────────────
-
-function CardSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="border overflow-hidden">
-      <div className="px-5 py-4 border-b border-border">
-        <h2 className="text-sm font-semibold text-foreground">{title}</h2>
-      </div>
-      <div className="p-5">{children}</div>
-    </div>
-  );
-}
-
-function MediaEditor({
-  items,
-  onChange,
-}: {
-  items: MediaItem[];
-  onChange: (items: MediaItem[]) => void;
-}) {
-  function add() {
-    onChange([...items, emptyMedia(items.length)]);
-  }
-  function remove(key: string) {
-    onChange(items.filter((m) => m._key !== key));
-  }
-  function update(key: string, patch: Partial<MediaItem>) {
-    onChange(items.map((m) => (m._key === key ? { ...m, ...patch } : m)));
-  }
-
-  return (
-    <div className="flex flex-col gap-3">
-      {items.map((m, i) => (
-        <div
-          key={m._key}
-          className="rounded border border-border bg-muted/30 p-4"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-medium text-muted-foreground">
-              Media {i + 1}
-            </span>
-            <button
-              type="button"
-              onClick={() => remove(m._key)}
-              className="text-muted-foreground hover:text-destructive transition-colors duration-200
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
-            >
-              <Trash2 size={13} />
-            </button>
-          </div>
-
-          <div dir="ltr" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className={labelCls}>URL *</label>
-              <input
-                type="url"
-                value={m.url}
-                placeholder="https://..."
-                className={inputCls}
-                onChange={(e) =>
-                  update(m._key, {
-                    url: e.target.value,
-                    cloudId: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div>
-              <label className={labelCls}>Cloud ID *</label>
-              <input
-                type="text"
-                value={m.cloudId}
-                placeholder="storage/id/..."
-                className={inputCls}
-                onChange={(e) => update(m._key, { cloudId: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>File name</label>
-              <input
-                type="text"
-                value={m.fileName}
-                placeholder="image.jpg"
-                className={inputCls}
-                onChange={(e) => update(m._key, { fileName: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className={labelCls}>Thumbnail URL</label>
-              <input
-                type="url"
-                value={m.thumbnailUrl}
-                placeholder="https://..."
-                className={inputCls}
-                onChange={(e) =>
-                  update(m._key, { thumbnailUrl: e.target.value })
-                }
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-6 mt-3">
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <span className={labelCls + " mb-0"}>Type</span>
-              <select
-                value={m.type}
-                onChange={(e) =>
-                  update(m._key, { type: e.target.value as "IMAGE" | "VIDEO" })
-                }
-                className="h-7 rounded border border-input bg-background px-2 text-xs text-foreground
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <option value="IMAGE">Image</option>
-                <option value="VIDEO">Video</option>
-              </select>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input
-                type="number"
-                min={0}
-                value={m.order}
-                onChange={(e) =>
-                  update(m._key, { order: Number(e.target.value) })
-                }
-                className="w-16 h-7 rounded border border-input bg-background px-2 text-xs
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              />
-              <span className={labelCls + " mb-0"}>Order</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={m.isMain}
-                onChange={(e) => update(m._key, { isMain: e.target.checked })}
-              />
-              <span className={labelCls + " mb-0"}>Main image</span>
-            </label>
-          </div>
-        </div>
-      ))}
-
-      <button
-        type="button"
-        onClick={add}
-        className="inline-flex items-center gap-1.5 h-8 px-3 rounded border border-dashed border-border
-                   text-xs font-medium text-muted-foreground hover:text-foreground hover:border-border/80
-                   transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
-                   self-start"
-      >
-        <Plus size={13} />
-        Add media
-      </button>
-    </div>
-  );
-}
-
-// ── Main page ─────────────────────────────────────────────────────────────────
-
 export default function DashboardProjectsEditPage() {
   const params = useParams<{ id: string }>();
-  const router = useRouter();
+
   const { tags, getAllTags } = useGetAllTags();
-  const [isPending, startTransition] = useTransition();
-  const [isLoading, setIsLoading] = useState(true);
-  const [project, setProject] = useState<Project | null>(null);
 
-  // ── Form state ──
-  const [title, setTitle] = useState("");
-  const [titleEn, setTitleEn] = useState("");
-  const [description, setDescription] = useState("");
-  const [descriptionEn, setDescriptionEn] = useState("");
-  const [liveUrl, setLiveUrl] = useState("");
-  const [githubUrl, setGithubUrl] = useState("");
-  const [techType, setTechType] = useState("OTHER");
-  const [projectTypes, setProjectTypes] = useState<string[]>([]);
-  const [tagIds, setTagIds] = useState<number[]>([]);
-  const [media, setMedia] = useState<MediaItem[]>([]);
-  const [sections, setSections] = useState<SectionItem[]>([]);
+  const {
+    project,
+    router,
+    isLoading,
+    isPending,
+    title,
+    setTitle,
+    titleEn,
+    setTitleEn,
+    description,
+    setDescription,
+    descriptionEn,
+    setDescriptionEn,
+    liveUrl,
+    setLiveUrl,
+    githubUrl,
+    setGithubUrl,
+    techType,
+    setTechType,
+    projectTypes,
+    toggleProjectType,
+    tagIds,
+    toggleTag,
+    media,
+    setMedia,
+    sections,
+    addSection,
+    removeSection,
+    updateSection,
+    toggleSectionCollapse,
+    handleSubmit,
+  } = useEditProject(Number(params.id));
 
-  // ── Load project + tags ──
   useEffect(() => {
     getAllTags();
   }, [getAllTags]);
-
-  useEffect(() => {
-    if (!params.id) return;
-    setIsLoading(true);
-    getProjectByIdAction({ id: Number(params.id) }).then(({ data }) => {
-      if (!data) {
-        setIsLoading(false);
-        return;
-      }
-      setProject(data);
-
-      // Pre-fill basic fields
-      setTitle(data.title);
-      setTitleEn(data.titleEn);
-      setDescription(data.description);
-      setDescriptionEn(data.descriptionEn);
-      setLiveUrl(data.liveUrl ?? "");
-      setGithubUrl(data.githubUrl ?? "");
-      setTechType(data.techType);
-      setProjectTypes(data.projectTypes);
-      setTagIds((data.tags ?? []).map((pt) => pt.tagId));
-
-      // Project-level media (no section)
-      const sectionMediaIds = new Set(
-        (data.sections ?? []).flatMap((s) => s.media.map((m) => m.id)),
-      );
-      setMedia(
-        (data.media ?? [])
-          .filter((m) => !sectionMediaIds.has(m.id))
-          .map(toMediaItem),
-      );
-
-      // Sections
-      setSections(
-        (data.sections ?? []).map((s) => ({
-          _key: uid(),
-          title: s.title,
-          titleEn: s.titleEn ?? "",
-          description: s.description,
-          descriptionEn: s.descriptionEn ?? "",
-          imageRight: s.imageRight,
-          order: s.order,
-          media: s.media.map(toMediaItem),
-          collapsed: true,
-        })),
-      );
-
-      setIsLoading(false);
-    });
-  }, [params.id]);
-
-  // ── Handlers ──
-
-  function toggleProjectType(type: string) {
-    setProjectTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
-    );
-  }
-
-  function toggleTag(id: number) {
-    setTagIds((prev) =>
-      prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id],
-    );
-  }
-
-  function addSection() {
-    setSections((prev) => [...prev, emptySection(prev.length)]);
-  }
-  function removeSection(key: string) {
-    setSections((prev) => prev.filter((s) => s._key !== key));
-  }
-  function updateSection(key: string, patch: Partial<SectionItem>) {
-    setSections((prev) =>
-      prev.map((s) => (s._key === key ? { ...s, ...patch } : s)),
-    );
-  }
-  function toggleSectionCollapse(key: string) {
-    setSections((prev) =>
-      prev.map((s) => (s._key === key ? { ...s, collapsed: !s.collapsed } : s)),
-    );
-  }
-
-  async function handleSubmit() {
-    if (!title || !titleEn || !description || !descriptionEn) {
-      toast.error("Please fill in all required fields.");
-      return;
-    }
-    if (projectTypes.length === 0) {
-      toast.error("Select at least one project type.");
-      return;
-    }
-
-    startTransition(async () => {
-      const result = await updateProjectAction({
-        projectId: Number(params.id),
-        input: {
-          title,
-          titleEn,
-          description,
-          descriptionEn,
-          liveUrl: liveUrl || undefined,
-          githubUrl: githubUrl || undefined,
-          techType: techType as never,
-          projectTypes: projectTypes as never,
-          tagIds,
-          media: media.map((m) => ({
-            url: m.url,
-            cloudId: m.cloudId,
-            type: m.type,
-            fileName: m.fileName || undefined,
-            thumbnailUrl: m.thumbnailUrl || undefined,
-            order: m.order,
-            isMain: m.isMain,
-          })),
-          sections: sections.map((s) => ({
-            title: s.title,
-            titleEn: s.titleEn || undefined,
-            description: s.description,
-            descriptionEn: s.descriptionEn || undefined,
-            imageRight: s.imageRight,
-            order: s.order,
-            media: s.media.map((m) => ({
-              url: m.url,
-              cloudId: m.cloudId,
-              type: m.type,
-              fileName: m.fileName || undefined,
-              thumbnailUrl: m.thumbnailUrl || undefined,
-              order: m.order,
-              isMain: m.isMain,
-            })),
-          })),
-        },
-      });
-
-      if (result.success) {
-        toast.success("Project updated successfully");
-        router.back();
-      } else {
-        toast.error(result.message ?? "Something went wrong.");
-      }
-    });
-  }
 
   const pillCls = (active: boolean) =>
     [
