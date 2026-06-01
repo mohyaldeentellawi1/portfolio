@@ -4,7 +4,10 @@ import { z } from "zod";
 import { PaginationResult } from "@/lib/interfaces/pagination.interface";
 import { Project } from "@/lib/interfaces/project.interface";
 import prisma from "@/lib/prisma";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { sendEmailAction } from "../emails/action";
+import { projectRequestCustomerEmail } from "@/lib/emails/customer-req-template";
+import { projectRequestAdminEmail } from "@/lib/emails/admin-req-template";
 
 const projectRequestSchema = z.object({
   projectType: z.string().min(1),
@@ -448,9 +451,13 @@ export async function addProjectRequestAction({
   success: boolean;
   message?: string;
 }> {
-  const t = await getTranslations("Actions");
+  const [t, locale] = await Promise.all([
+    getTranslations("Actions"),
+    getLocale(),
+  ]);
+
   try {
-    const data = projectRequestSchema.safeParse({
+    const parsedData = projectRequestSchema.safeParse({
       projectType,
       vision,
       isMvp,
@@ -461,41 +468,81 @@ export async function addProjectRequestAction({
       note,
     });
 
-    if (!data.success) {
+    if (!parsedData.success) {
       return {
         success: false,
+        message: t("Anerroroccurred"),
       };
     }
 
-    const res = await prisma.projectRequest.create({
+    const projectRequest = await prisma.projectRequest.create({
       data: {
-        projectType: data.data.projectType,
-        vision: data.data.vision,
-        isMvp: data.data.isMvp,
-        budget: data.data.budget,
-        timeLine: data.data.timeLine,
-        name: data.data.name.trim(),
-        email: data.data.email.trim(),
-        note: data.data.note ? String(data.data.note).trim() : null,
+        projectType: parsedData.data.projectType,
+        vision: parsedData.data.vision,
+        isMvp: parsedData.data.isMvp,
+        budget: parsedData.data.budget,
+        timeLine: parsedData.data.timeLine,
+        name: parsedData.data.name.trim(),
+        email: parsedData.data.email.trim(),
+        note: parsedData.data.note ? String(parsedData.data.note).trim() : null,
       },
     });
 
-    if (!res) {
+    if (!projectRequest) {
       return {
         success: false,
-        message: `${t("Failedtoaddprojectrequest")}`,
+        message: t("Failedtoaddprojectrequest"),
       };
+    }
+
+    const safeLocale = locale === "ar" ? "ar" : "en";
+
+    try {
+      await Promise.all([
+        sendEmailAction({
+          to: projectRequest.email,
+          subject:
+            safeLocale === "ar"
+              ? "تم استلام طلب مشروعك بنجاح 🚀"
+              : "Your Project Request Has Been Received 🚀",
+
+          html: projectRequestCustomerEmail({
+            locale: safeLocale,
+            projectType: projectRequest.projectType,
+            budget: projectRequest.budget,
+            timeLine: projectRequest.timeLine,
+            isMvp: projectRequest.isMvp,
+          }),
+        }),
+
+        sendEmailAction({
+          to: "mohyaldeentellawi@gmail.com",
+          subject: `🚀 New Project Request - ${projectRequest.name}`,
+
+          html: projectRequestAdminEmail({
+            name: projectRequest.name,
+            email: projectRequest.email,
+            projectType: projectRequest.projectType,
+            vision: projectRequest.vision,
+            budget: projectRequest.budget,
+            timeLine: projectRequest.timeLine,
+            isMvp: projectRequest.isMvp,
+            note: projectRequest.note,
+          }),
+        }),
+      ]);
+    } catch (emailError) {
+      console.error("[PROJECT_REQUEST_EMAIL_ERROR]", emailError);
     }
 
     return {
       success: true,
-      message: `${t("Projectrequestadded")}`,
+      message: t("Projectrequestadded"),
     };
   } catch (error) {
     return {
       success: false,
-      message:
-        error instanceof Error ? error.message : `${t("Anerroroccurred")}`,
+      message: error instanceof Error ? error.message : t("Anerroroccurred"),
     };
   }
 }

@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { getLocale, getTranslations } from "next-intl/server";
 import { z } from "zod";
 import { sendEmailAction } from "../emails/action";
-import { subscriptionConfirmationEmail } from "@/lib/emails/templates";
+import { subscriptionConfirmationEmail } from "@/lib/emails/subscription-templates";
 
 const subscriptionSchema = z.object({
   email: z.email(),
@@ -70,8 +70,6 @@ export async function addSubscriptionAction({
       success: true,
       message: `${t("Subscriptionaddedsuccessfully")}`,
     };
-
-    
   } catch (error) {
     return {
       success: false,
