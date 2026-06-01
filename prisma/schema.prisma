@@ -39,8 +39,13 @@ enum BlogType {
   FRONTEND
   BACKEND
   FLUTTER
+  MOBILE
   DEVOPS
   AI
+  SOFTWARE_ENGINEERING
+  PRODUCT_DEVELOPMENT
+  CAREER
+  CASE_STUDY
   OTHER
   
 
@@ -218,6 +223,7 @@ model BlogPost {
   titleEn     String?
   content     String
   contentEn   String?
+  readingTime Int      @default(0)
   readerCount Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

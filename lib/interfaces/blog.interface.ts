@@ -7,6 +7,7 @@ export interface Post {
   titleEn?: string;
   content: string;
   contentEn?: string;
+  readingTime: number;
   readerCount: number;
   createdAt: Date; // ISO date string
   updatedAt: Date; // ISO date string

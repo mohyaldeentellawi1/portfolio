@@ -83,7 +83,12 @@
     "Scopeapproach": "Scope & approach",
     "MVPdesc": "Core features only — ship fast, validate early",
     "FullProduct": "Full Product",
-    "FullProductdesc": "Complete feature set — built to the full spec"
+    "FullProductdesc": "Complete feature set — built to the full spec",
+
+    "minread": "min read",
+    "readers": "readers",
+    "Backtoblog": "Back to blog",
+    "Articlenotfound": "Article not found"
   },
   "Actions": {
     "Invalidemailaddress": "Invalid email address",
@@ -99,7 +104,11 @@
     "Failedtoaddreview": "Failed to add review",
 
     "Failedtoaddprojectrequest": "Failed to add project request",
-    "Projectrequestadded": "Project request added successfully"
+    "Projectrequestadded": "Project request added successfully",
+
+    "Failedtofetchblogposts": "Failed to fetch blog posts",
+    "Blogpostnotfound": "Blog post not found",
+    "Failedtofetchblogpost": "Failed to fetch blog post"
   },
   "Dashboard": {
     "Dashboard": "Dashboard",

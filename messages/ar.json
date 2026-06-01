@@ -82,7 +82,12 @@
     "Scopeapproach": "النطاق والنهج",
     "MVPdesc": "الميزات الأساسية فقط — أطلق بسرعة، تحقق مبكرًا",
     "FullProduct": "منتج كامل",
-    "FullProductdesc": "مجموعة ميزات كاملة — مبني وفق المواصفات الكاملة"
+    "FullProductdesc": "مجموعة ميزات كاملة — مبني وفق المواصفات الكاملة",
+
+    "minread": "دقيقة قراءة",
+    "readers": "قراء",
+    "Backtoblog": "العودة إلى المدونة",
+    "Articlenotfound": "المقالة غير موجودة"
   },
   "Actions": {
     "Invalidemailaddress": "عنوان البريد الإلكتروني غير صالح",
@@ -98,7 +103,11 @@
     "Failedtoaddreview": "فشل في إضافة التقييم",
 
     "Failedtoaddprojectrequest": "فشل في إضافة طلب المشروع",
-    "Projectrequestadded": "تم إضافة طلب المشروع بنجاح"
+    "Projectrequestadded": "تم إضافة طلب المشروع بنجاح",
+
+    "Failedtofetchblogposts": "فشل في جلب المقالات",
+    "Blogpostnotfound": "المقالة غير موجودة",
+    "Failedtofetchblogpost": "فشل في جلب المقالة"
   },
   "Dashboard": {
     "Dashboard": "لوحة التحكم",
