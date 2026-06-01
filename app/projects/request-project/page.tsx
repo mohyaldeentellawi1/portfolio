@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
   Globe,
   Smartphone,
@@ -23,6 +22,7 @@ import {
   useAddNewReqProject,
   type ReqProjectFormData,
 } from "@/lib/helpers/use-add-new-req-project";
+import { useRouter } from "next/navigation";
 
 type SetField = <K extends keyof ReqProjectFormData>(
   key: K,
@@ -396,9 +396,11 @@ function Step4({
 function SuccessScreen({
   name,
   t,
+  router,
 }: {
   name: string;
   t: ReturnType<typeof useTranslations>;
+  router: ReturnType<typeof useRouter>;
 }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-6 pt-20">
@@ -416,23 +418,22 @@ function SuccessScreen({
           })}
         </p>
 
-        <Link
-          href="/"
+        <div
+          onClick={() => router.back()}
           className="inline-flex items-center gap-2 h-9 rounded bg-primary px-5 text-sm font-medium
                      text-primary-foreground hover:bg-primary/85 active:scale-[0.97]
                      transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {t("Backtohome")}
-        </Link>
+        </div>
       </div>
     </div>
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
-
 export default function RequestProjectPage() {
   const t = useTranslations("Home");
+  const router = useRouter();
   const { isArabic } = useArabicText();
   const [step, setStep] = useState(1);
 
@@ -458,7 +459,8 @@ export default function RequestProjectPage() {
     }
   }
 
-  if (isSubmitted) return <SuccessScreen name={formData.name} t={t} />;
+  if (isSubmitted)
+    return <SuccessScreen name={formData.name} t={t} router={router} />;
 
   const progress = (step / TOTAL_STEPS) * 100;
 
@@ -481,15 +483,15 @@ export default function RequestProjectPage() {
               {t("STEP")} {step} {t("OF")} {TOTAL_STEPS}
             </p>
 
-            <Link
-              href="/"
+            <div
+              onClick={() => router.back()}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground
                          hover:text-foreground transition-colors duration-200
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
             >
               {t("Home")}
               <LogOut size={15} className={isArabic ? "rotate-180" : ""} />
-            </Link>
+            </div>
           </div>
 
           {/* Step content */}

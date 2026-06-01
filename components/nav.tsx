@@ -209,8 +209,7 @@ export default function Nav() {
         <div className="flex items-center gap-3">
           {/* Desktop CTA */}
           <Button
-            render={<Link href="/projects/request-project" />}
-            nativeButton={false}
+            onClick={() => router.push("/projects/request-project")}
             className="hidden md:inline-flex items-center bg-primary px-4 text-sm font-medium
                        text-primary-foreground transition-colors duration-200 hover:bg-primary/85 active:scale-[0.97]"
           >
@@ -307,9 +306,10 @@ export default function Nav() {
           })}
 
           <Button
-            render={<Link href="/projects/request-project" />}
-            onClick={() => setMenuOpen(false)}
-            nativeButton={false}
+            onClick={() => {
+              setMenuOpen(false);
+              router.push("/projects/request-project");
+            }}
             className="w-full mt-4"
           >
             <MessageSquareCode size={16} className="mr-2" />
