@@ -60,7 +60,7 @@ export async function addSubscriptionAction({
     }
 
     const safeLocale = locale === "ar" ? "ar" : "en";
-    sendEmailAction({
+    await sendEmailAction({
       to: parsedData.data.email,
       subject: safeLocale === "ar" ? "تم اشتراكك بنجاح!" : "You're subscribed!",
       html: subscriptionConfirmationEmail({ locale: safeLocale }),

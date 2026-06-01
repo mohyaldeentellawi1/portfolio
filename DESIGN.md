@@ -1,9 +1,9 @@
 # Design Reference — Pixel-Perfect Guide
 
-> **Rule #1:** Never hardcode pixel values as arbitrary Tailwind classes (e.g. `h-[72px]`) when a canonical class exists (`h-18`). Always use the canonical class. Check Tailwind docs before reaching for brackets.
+> **Rule #1:** Never hardcode pixel values as arbitrary Tailwind classes (e.g. `h-[72px]`) when a canonical class exists (`h-20`). Always use the canonical class. Check Tailwind docs before reaching for brackets.
 > **Rule #2:** Never hardcode colors. Always use CSS variable tokens via Tailwind (`text-foreground`, `bg-primary`, etc.).
 > **Rule #3:** Every interactive element must have a `transition-*` class and a visible focus state (`focus-visible:ring-2 focus-visible:ring-ring`).
-> **Rule #4:** Border radius is **4px** (`rounded`) for all buttons and interactive elements. Containers use `rounded-lg` maximum. Never use `rounded-xl`, `rounded-2xl`, `rounded-3xl`, or `rounded-4xl` anywhere in the codebase. Circles (avatars, icon buttons) use `rounded-full`.
+> **Rule #4:** Buttons use `rounded-none` (the Button component base). Cards and containers use `rounded-lg` maximum. Circles (avatars, icon buttons, play buttons) use `rounded-full`. Review cards use inline `borderRadius: "8px"`.
 
 ---
 
@@ -22,6 +22,22 @@
 
 ---
 
+## Fonts & i18n
+
+| Variable | Font | Usage |
+|---|---|---|
+| `--font-inter` | Inter | Default for `ltr` (English) — applied to `html` globally |
+| `--font-cairo` | Cairo | Applied to `html:lang(ar)` for Arabic (RTL) |
+
+```css
+html { @apply font-inter; }
+html:lang(ar) { @apply font-cairo; }
+```
+
+The layout sets `dir="rtl"` on `<html>` when locale is `ar`. Components must not hard-code directional classes that break in RTL. Use `dir="ltr"` only for content that must always be LTR (phone numbers, emails, code).
+
+---
+
 ## Color System
 
 All colors use `oklch` and are mapped to CSS variables. Use Tailwind token classes only.
@@ -37,6 +53,8 @@ All colors use `oklch` and are mapped to CSS variables. Use Tailwind token class
 | `--secondary-foreground` | `oklch(0.21 0.006 285.885)` | `text-secondary-foreground` | Text on secondary |
 | `--muted` | `oklch(0.97 0 0)` | `bg-muted` | Subtle fills, hover states |
 | `--muted-foreground` | `oklch(0.556 0 0)` | `text-muted-foreground` | Secondary/dimmed text |
+| `--accent` | `oklch(0.97 0 0)` | `bg-accent` | Same as muted in light mode |
+| `--accent-foreground` | `oklch(0.205 0 0)` | `text-accent-foreground` | Text on accent |
 | `--border` | `oklch(0.922 0 0)` | `border-border` | Dividers, card borders |
 | `--input` | `oklch(0.922 0 0)` | `border-input` | Input field borders |
 | `--ring` | `oklch(0.708 0 0)` | `ring-ring` | Focus rings |
@@ -45,22 +63,35 @@ All colors use `oklch` and are mapped to CSS variables. Use Tailwind token class
 | `--destructive` | `oklch(0.577 0.245 27.325)` | `bg-destructive` | Errors, delete actions |
 
 ### Dark Mode (`.dark`)
+Dark mode uses a **dark blue-tinted** background (not neutral grey) to give depth.
+
 | Token | Raw Value |
 |---|---|
-| `--background` | `oklch(0.145 0 0)` |
+| `--background` | `oklch(0.155 0.015 242)` |
 | `--foreground` | `oklch(0.985 0 0)` |
+| `--card` | `oklch(0.21 0.012 242)` |
+| `--card-foreground` | `oklch(0.985 0 0)` |
+| `--popover` | `oklch(0.21 0.012 242)` |
 | `--primary` | `oklch(0.443 0.11 240.79)` |
+| `--primary-foreground` | `oklch(0.977 0.013 236.62)` |
+| `--secondary` | `oklch(0.274 0.006 286.033)` |
+| `--secondary-foreground` | `oklch(0.985 0 0)` |
 | `--muted` | `oklch(0.269 0 0)` |
 | `--muted-foreground` | `oklch(0.708 0 0)` |
+| `--accent` | `oklch(0.269 0 0)` |
+| `--accent-foreground` | `oklch(0.985 0 0)` |
+| `--destructive` | `oklch(0.704 0.191 22.216)` |
 | `--border` | `oklch(1 0 0 / 10%)` |
-| `--card` | `oklch(0.205 0 0)` |
+| `--input` | `oklch(1 0 0 / 15%)` |
+| `--ring` | `oklch(0.556 0 0)` |
 
 ### Opacity modifiers
 Use Tailwind's slash syntax for semi-transparent variants:
 - `bg-background/75` → 75% opaque background (nav blur backdrop)
 - `bg-primary/85` → hover state for primary button
+- `bg-primary/10` → icon bubble background, video play button
 - `border-border/60` → subtle divider
-- `border-border/40` → very subtle divider (mobile menu items)
+- `border-border/40` → very subtle divider (mobile menu items, stats row)
 
 ### Blue Chart Palette
 ```
@@ -68,63 +99,64 @@ chart-1: oklch(0.828 0.111 230.318)   ← lightest blue
 chart-2: oklch(0.685 0.169 237.323)
 chart-3: oklch(0.588 0.158 241.966)
 chart-4: oklch(0.5  0.134 242.749)    ← same as --primary
-chart-5: oklch(0.443 0.11  240.79)   ← darkest blue
+chart-5: oklch(0.443 0.11  240.79)   ← darkest blue / dark mode primary
 ```
 
 ---
 
 ## Typography
 
-| Variable | Font | Usage |
-|---|---|---|
-| `--font-sans` | Inter | Body, UI, headings — default everywhere |
-| `--font-mono` | Geist Mono | Code blocks only |
-
-`html` already has `font-sans` applied globally. Never override it on body/containers.
-
 ### Type Scale (Tailwind defaults, 1rem = 16px)
 
 | Class | Size | Line Height | Use for |
 |---|---|---|---|
-| `text-xs` | 12px | 16px | Labels, captions, badges |
-| `text-sm` | 14px | 20px | Nav links, body small, button text |
-| `text-base` | 16px | 24px | Body copy |
-| `text-lg` | 18px | 28px | Sub-headings, lead text |
-| `text-xl` | 20px | 28px | Brand name, section intros |
-| `text-2xl` | 24px | 32px | Card titles |
+| `text-[10px]` | 10px | — | Skill chip labels |
+| `text-[11px]` | 11px | — | Project tech tag labels |
+| `text-xs` | 12px | 16px | Section labels (uppercase), captions, copyright |
+| `text-sm` | 14px | 20px | Nav links, body small, button text, form inputs |
+| `text-base` | 16px | 24px | Body copy, contact info |
+| `text-lg` | 18px | 28px | Sub-headings (skills strip) |
+| `text-xl` | 20px | 28px | Contact form sub-heading |
+| `text-2xl` | 24px | 32px | Stat values |
 | `text-3xl` | 30px | 36px | Section headings |
-| `text-4xl` | 36px | 40px | Page headings |
-| `text-5xl` | 48px | 48px | Hero headings |
-| `text-6xl` | 60px | 60px | Display / XL hero |
 
 ### Font Weight
 | Class | Weight | Use for |
 |---|---|---|
 | `font-normal` | 400 | Body text |
-| `font-medium` | 500 | Button labels, nav links, UI labels |
-| `font-semibold` | 600 | Card titles, sub-headings |
-| `font-bold` | 700 | Brand name, page headings |
+| `font-medium` | 500 | Nav links, info links |
+| `font-semibold` | 600 | Card titles, sub-headings, footer copy, stat labels |
+| `font-bold` | 700 | Brand name, page/section headings |
+
+The Button component uses `font-semibold` with `text-xs uppercase tracking-widest`.
 
 ### Tracking (letter-spacing)
 | Class | Value | Use for |
 |---|---|---|
-| `tracking-tight` | -0.025em | Brand name, large headings |
+| `tracking-tight` | -0.025em | Brand name, headings |
 | `tracking-normal` | 0 | Body, UI |
-| `tracking-wide` | 0.025em | Uppercase labels, badges |
+| `tracking-wide` | 0.025em | Section labels (uppercase) |
+| `tracking-widest` | 0.1em | Button labels (via Button component) |
 
 ---
 
 ## Border Radius
 
-**Standard: 4px everywhere.** The global `--radius` CSS variable exists but is intentionally kept small. Do not escalate to `xl` or above — that creates an overly soft, bubbly look that breaks the design language.
+`--radius` is set to `0.625rem` (10px) in CSS. Tailwind maps it as:
+- `rounded-sm` → `calc(var(--radius) * 0.6)` ≈ 6px
+- `rounded-md` → `calc(var(--radius) * 0.8)` = 8px
+- `rounded-lg` → `var(--radius)` = 10px
+- `rounded-xl`, `rounded-2xl`, etc. → proportionally larger (available but rarely needed)
 
-| Use case | Class | px | When to use |
-|---|---|---|---|
-| Buttons, inputs, badges, tags | `rounded` | 4px | All interactive elements |
-| Small dropdowns, tooltips, chips | `rounded-md` | ~8px | Only when `rounded` feels too sharp |
-| Cards, panels, large containers | `rounded-lg` | 10px | Section containers, video frame, image frame |
-| Circular elements | `rounded-full` | 9999px | Avatars, icon-only buttons, play buttons |
-| **NEVER use** | `rounded-xl` `rounded-2xl` `rounded-3xl` `rounded-4xl` | — | Banned — breaks design consistency |
+| Use case | Class | Notes |
+|---|---|---|
+| Buttons (via Button component) | `rounded-none` | Base class on Button — square corners by design |
+| Small interactive icons, badges, tags | `rounded` | 4px |
+| Icon bubbles (contact), skill chips | `rounded-sm` | ~6px |
+| Dropdowns, tooltips | `rounded-md` | ~8px |
+| Cards, panels, section containers | `rounded-lg` | 10px |
+| Review card bodies | inline `borderRadius: "8px"` | Explicit inline to avoid Tailwind rounding |
+| Circular elements | `rounded-full` | Avatars, nav icon buttons, play button, dot indicators |
 
 ---
 
@@ -135,15 +167,16 @@ chart-5: oklch(0.443 0.11  240.79)   ← darkest blue
 | `1` | 4px | Icon gap, fine spacing |
 | `2` | 8px | Tight padding, icon margin |
 | `3` | 12px | Small component padding |
-| `4` | 16px | Button padding-x base |
+| `4` | 16px | Button padding-x (sm size) |
 | `5` | 20px | Nav vertical padding |
-| `6` | 24px | Card padding, section gap |
-| `8` | 32px | Between sections elements |
-| `9` | 36px | Button/input height |
-| `10` | 40px | Button/input height large, Mobile CTA height |
-| `18` | 72px | Nav bar height |
-| `20` | 80px | Section vertical padding |
-| `24` | 96px | Large section gap |
+| `6` | 24px | Card padding, section gap, horizontal padding base |
+| `8` | 32px | Section element gap, card padding (md) |
+| `9` | 36px | Button height (sm), icon button size |
+| `10` | 40px | Button height (default), social link size, icon bubble size, input height |
+| `13` | 52px | Subscribe form outer height |
+| `14` | 56px | Section bottom padding (`py-14`) |
+| `20` | 80px | Nav bar height (`h-20`) |
+| `25` | 100px | Section top padding (`pt-25`) |
 
 **Max content width:** `max-w-7xl` (1280px) — always center with `mx-auto`.
 
@@ -154,7 +187,7 @@ chart-5: oklch(0.443 0.11  240.79)   ← darkest blue
 | Layer | Value | Class | Use for |
 |---|---|---|---|
 | Base | 0 | — | Default stacking |
-| Raised | 10 | `z-10` | Cards on hover |
+| Raised | 10 | `z-10` | Center review card |
 | Overlay | 20 | `z-20` | Dropdowns, tooltips |
 | Modal | 40 | `z-40` | Dialogs, drawers |
 | Navigation | 50 | `z-50` | Fixed nav — always on top |
@@ -167,23 +200,31 @@ chart-5: oklch(0.443 0.11  240.79)   ← darkest blue
 
 | Effect | Classes | Use for |
 |---|---|---|
-| Color change | `transition-colors duration-200` | Link/button hover text color |
-| All properties | `transition-all duration-300` | Nav scroll state, drawer open/close |
-| Opacity | `transition-opacity duration-200` | Fades |
-| Transform | `transition-transform duration-200` | Scale effects, underline slides |
-| Easing | `ease-in-out` | Drawers, panels (pair with `duration-300`) |
+| Color change | `transition-colors duration-200` | Link/button hover text color, icon buttons |
+| All properties | `transition-all duration-300` | Nav scroll state, mobile drawer, review cards |
+| Opacity | `transition-opacity duration-200` | Projects grid page change fade |
+| Transform | `transition-transform duration-500` | Project image scale on hover |
+| Smooth ease | `ease-in-out` | Mobile drawer (pair with `duration-300`) |
 
-**Micro-interactions (press feedback):**
-- Buttons: `active:scale-[0.97]` (desktop CTA), `active:scale-[0.98]` (full-width mobile)
+**Micro-interactions:**
+- Nav brand: `hover:opacity-80`
+- Skill chips: `hover:scale-105`
+- Project card image: `group-hover:scale-105 transition-transform duration-500`
+- Video placeholder inner: `group-hover:scale-105 transition-transform duration-300`
 
-**Underline hover (nav links):**
+**Active indicator (nav links):**
+The active/inactive state uses opacity (not scale transform):
 ```
-after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px
-after:scale-x-0 after:bg-primary
-after:transition-transform after:duration-200
-hover:after:scale-x-100
+after:absolute after:inset-x-0 after:-bottom-2 after:h-px after:bg-primary
+isActive  → after:opacity-100
+inactive  → after:opacity-0
 ```
-Requires `relative` on the anchor.
+Requires `relative` on the `<button>` or `<a>`.
+
+**Loading spinner:**
+```
+h-5 w-5 rounded-full border-2 border-primary border-t-transparent animate-spin
+```
 
 ---
 
@@ -191,19 +232,24 @@ Requires `relative` on the anchor.
 
 | Class | Use for |
 |---|---|
-| `shadow-sm` | Cards, subtle elevation |
-| `shadow-md` | Dropdowns, popovers |
-| `shadow-lg` | Modals, floating panels |
+| `shadow-sm` | Cards, section containers |
+| `shadow-md` | Portrait image, hover elevation on project cards |
 | `shadow-none` | Reset |
 
 ---
 
 ## Focus States (Accessibility — never skip)
 
-Every interactive element must have a visible focus ring:
+The Button component uses a ring variant:
+```
+focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30
+```
+
+All other interactive elements (icon buttons, inputs, links):
 ```
 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
 ```
+
 Use `focus-visible:` (not `focus:`) so keyboard users see the ring but mouse clicks don't.
 
 ---
@@ -211,104 +257,296 @@ Use `focus-visible:` (not `focus:`) so keyboard users see the ring but mouse cli
 ## Component Patterns
 
 ### Navigation
+
 | Property | Value |
 |---|---|
 | Position | `fixed inset-x-0 top-0 z-50` |
-| Height | `h-18` (72px) |
+| Height | `h-20` (80px) |
 | Max width inner | `max-w-7xl mx-auto` |
 | Horizontal padding | `px-6 sm:px-8 lg:px-10` |
 | Background (default) | transparent (no class) |
-| Background (scrolled) | `backdrop-blur-md bg-background/75 border-b border-border/60 shadow-sm` |
+| Background (scrolled or drawer open) | `backdrop-blur-md bg-background/75 border-b border-border/60 shadow-sm` |
 | Scroll threshold | 24px (`window.scrollY > 24`) |
 | Transition | `transition-all duration-300` |
-| Brand text | `text-xl font-bold tracking-tight text-foreground` |
-| Nav links | `text-sm font-medium text-muted-foreground hover:text-foreground` + underline slide effect |
+| Brand text | `text-xl font-bold tracking-tight text-foreground transition-opacity duration-200 hover:opacity-80` |
+| Nav links | `text-sm font-medium` + opacity-based active underline (see Transitions) |
 | Link gap | `gap-8` |
-| Desktop CTA | `h-9 rounded bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.97]` |
+| Desktop CTA | Button component `size="default"` with `bg-primary text-primary-foreground hover:bg-primary/80` |
 | Mobile breakpoint | Links/CTA hidden below `md` (768px) |
-| Hamburger size | `h-9 w-9`, SVG `18×18`, stroke `1.6`, `rounded` |
-| Mobile drawer bg | Inherits header backdrop |
-| Mobile link padding | `py-3`, `border-b border-border/40 last:border-0` |
-| Mobile CTA | `h-10 w-full rounded`, full-width |
-| Body scroll lock | Lock `overflow: hidden` on body when drawer open |
+| Theme toggle | `h-9 w-9 rounded border border-border text-foreground hover:bg-muted` + focus ring |
+| Locale toggle | Same as theme toggle, displays `AR`/`EN` label, `text-xs font-semibold` |
+| Hamburger | `h-9 w-9 rounded-md`, `Menu`/`X` icon at `size={18}`, hidden above `md` |
+| Mobile drawer animation | `max-h-0 opacity-0` → `max-h-screen opacity-100`, `transition-all duration-300 ease-in-out` |
+| Mobile drawer padding | `px-6 sm:px-8 pb-6 pt-4` |
+| Mobile link | `py-3 text-sm font-medium border-b border-border/40 last:border-0` |
+| Mobile CTA | Button component `w-full mt-4` |
+| Body scroll lock | `document.body.style.overflow = menuOpen ? "hidden" : ""` |
 
-### Buttons
+### Button Component
 
-| Variant | Classes |
+The `<Button>` from `components/ui/button.tsx` uses **base-ui** and **cva**:
+
+**Base classes** (all variants):
+```
+inline-flex shrink-0 items-center justify-center rounded-none border border-transparent
+bg-clip-padding text-xs font-semibold tracking-widest whitespace-nowrap uppercase
+transition-all outline-none select-none
+focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30
+active:not-aria-[haspopup]:translate-y-px
+disabled:pointer-events-none disabled:opacity-50
+```
+
+| Variant | Additional classes |
 |---|---|
-| Primary | `h-9 rounded bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.97] transition-colors duration-200` |
-| Primary Full-width | `h-10 w-full rounded bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/85 active:scale-[0.98] transition-colors duration-200` |
-| Ghost | `h-9 rounded px-4 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200` |
-| Outline | `h-9 rounded border border-border px-4 text-sm font-medium text-foreground hover:bg-muted transition-colors duration-200` |
-| Icon | `h-9 w-9 rounded flex items-center justify-center text-foreground hover:bg-muted transition-colors duration-200` |
+| `default` | `bg-primary text-primary-foreground hover:bg-primary/80` |
+| `outline` | `border-border bg-transparent hover:bg-muted hover:text-foreground` |
+| `secondary` | `bg-secondary text-secondary-foreground hover:bg-[color-mix(...)]` |
+| `ghost` | `hover:bg-muted hover:text-foreground` |
+| `destructive` | `bg-destructive/10 text-destructive hover:bg-destructive/20` |
+| `link` | `text-primary underline underline-offset-4` |
 
-All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`
-
-### About Section
-
-| Property | Value |
+| Size | Classes |
 |---|---|
-| Section height | `min-h-screen flex items-center` |
-| Section padding | `py-24 px-6 sm:px-8 lg:px-10` |
-| Background orbs | 3× `absolute rounded-full bg-primary/10 blur-3xl`, `pointer-events-none`, `aria-hidden` |
-| Orb sizes | top-left `h-125 w-125`, bottom-right `h-96 w-96`, center `h-72 w-72 bg-primary/5` |
-| Content wrapper | `relative z-10 mx-auto w-full max-w-7xl` |
-| **Container** | `bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm` |
-| Top grid | `grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center` |
-| Image frame | `relative h-64 w-64` → `md:h-80 md:w-80` → `lg:h-96 lg:w-full lg:max-w-sm`, `rounded-full overflow-hidden border border-border/40 shadow-md` (circle portrait) |
-| Image | `next/image` with `fill` + `object-cover` + `priority` |
-| Section label | `text-xs font-semibold uppercase tracking-wide text-primary` |
-| Section heading | `text-3xl lg:text-4xl font-bold tracking-tight text-foreground` |
-| Body text | `text-base text-muted-foreground leading-relaxed` |
-| Stats row | `grid grid-cols-3 gap-4 pt-2 border-t border-border/40` |
-| Stat value | `text-2xl font-bold tracking-tight text-foreground` |
-| Stat label | `text-xs text-muted-foreground` |
-| Divider | `my-10 border-t border-border/40` |
-| **Video placeholder** | `group relative w-full max-w-2xl mx-auto aspect-video overflow-hidden rounded-lg border border-border bg-muted cursor-pointer` |
-| Video play button | `h-16 w-16 rounded-full bg-primary/10 border border-primary/20 group-hover:bg-primary/20` (circle — `rounded-full` is correct here) |
-| Video play icon | Lucide `<Play />`, `text-primary`, `ml-1` for optical center |
-| Video hover | `group` on container, `group-hover:scale-105 transition-transform duration-300` on inner |
+| `default` | `h-10 gap-1.5 px-6` |
+| `sm` | `h-9 gap-1 px-4` |
+| `lg` | `h-11 gap-1.5 px-8` |
+| `xs` | `h-7 gap-1 px-3` |
+| `icon` | `size-10` |
+| `icon-sm` | `size-9` |
 
-### Cards
+### Input Component
 
-| Property | Value |
-|---|---|
-| Background | `bg-card text-card-foreground` |
-| Border | `border border-border` |
-| Radius | `rounded-lg` (max allowed for containers) |
-| Padding | `p-6` |
-| Shadow | `shadow-sm` |
-| Hover elevation | `hover:shadow-md transition-shadow duration-200` |
+The `<Input>` from `components/ui/input.tsx` uses **base-ui** and renders a bottom-border-only style:
+
+```
+h-10 w-full min-w-0 border border-transparent border-b-input bg-transparent
+px-0 py-1 text-sm text-foreground placeholder:text-muted-foreground
+transition-[color,border-color] outline-none
+focus-visible:border-b-ring
+disabled:pointer-events-none disabled:opacity-50
+```
+
+This is used by default across the app (e.g. dialogs, dashboard).
+
+### Custom Form Inputs (Contact form)
+
+The Send Message form uses a custom input class (not the `<Input>` component) to get a full-border look:
+
+```
+w-full h-10 rounded border border-input bg-background px-3 text-sm text-foreground
+placeholder:text-muted-foreground transition-colors duration-200
+focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
+```
+
+Textarea variant adds `resize-none py-2.5` and `rows={6}`.
+
+### Subscribe Form (Footer)
+
+The subscribe form uses a composite input-with-embedded-button pattern:
+
+```
+/* Outer wrapper — visual input container */
+flex h-13 w-full items-center rounded border border-input bg-background pr-1.5
+transition-colors duration-200 focus-within:ring-2 focus-within:ring-ring
+
+/* Inner text input */
+h-full flex-1 bg-transparent px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none
+
+/* Embedded Button */
+<Button size="sm" className="shrink-0 h-9 mx-1.5" />
+```
 
 ### Section Layout
 
+All main sections follow this structure:
+
 ```
-<section id="about" className="py-20 px-6 sm:px-8 lg:px-10">
-  <div className="mx-auto max-w-7xl">
-    ...
+<section id="..." className="flex items-center pt-25 py-14 px-6 sm:px-8 lg:px-10">
+  <div className="mx-auto w-full max-w-7xl">
+    <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+      ...
+    </div>
   </div>
 </section>
 ```
 
 | Property | Value |
 |---|---|
-| Vertical padding | `py-20` (80px) |
+| Top padding | `pt-25` (100px — clears fixed nav) |
+| Bottom padding | `py-14` (56px) |
 | Horizontal padding | `px-6 sm:px-8 lg:px-10` |
 | Content max-width | `max-w-7xl mx-auto` |
-| Section heading | `text-3xl font-bold tracking-tight text-foreground` |
-| Section sub-text | `text-base text-muted-foreground` |
+| Container | `bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm` |
 
-### Forms & Inputs
+### About Section
 
 | Property | Value |
 |---|---|
-| Height | `h-9` (small) / `h-10` (default) |
-| Border | `border border-input` |
-| Radius | `rounded` (4px) |
-| Padding | `px-3` |
-| Text | `text-sm text-foreground placeholder:text-muted-foreground` |
-| Focus | `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring` |
-| Background | `bg-background` |
+| Top grid | `grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center` |
+| Image column | `flex flex-col items-center gap-6` |
+| Portrait | `relative h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64 lg:h-72 lg:w-72 rounded-full overflow-hidden border border-border/40 shadow-md` |
+| Portrait image | `next/image` with `fill` + `object-cover` + `priority` |
+| Social links row | `flex items-center gap-3` |
+| Social link | `flex h-10 w-10 items-center justify-center rounded border border-border bg-background transition-colors duration-200 hover:bg-muted hover:border-border/80` + focus ring |
+| Bio column | `flex flex-col gap-6` |
+| Section heading | `text-3xl font-bold tracking-tight text-foreground leading-snug` |
+| Body text | `text-base text-muted-foreground leading-relaxed` |
+| Stats row | `grid grid-cols-3 gap-4 pt-2 border-t border-border/40` |
+| Stat value | `text-2xl font-bold tracking-tight text-foreground` |
+| Stat label | `text-xs text-muted-foreground` |
+| Divider | `my-10 border-t border-border/40` |
+| Section label (intro) | `text-xs font-semibold uppercase tracking-wide text-primary` |
+| Video placeholder | `group relative w-full mx-auto aspect-video overflow-hidden rounded-lg border border-border bg-muted cursor-pointer` |
+| Video inner (animated) | `absolute inset-0 flex flex-col items-center justify-center gap-4 transition-transform duration-300 group-hover:scale-105` |
+| Play button circle | `flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border border-primary/20 transition-colors duration-200 group-hover:bg-primary/20` |
+| Play icon | Lucide `<Play />` with `text-primary` |
+
+### Projects Section
+
+**Skills strip** (above the divider):
+```
+/* Strip container */
+overflow-x-auto scrollbar-none   (always dir="ltr")
+
+/* Skill chip */
+bg-muted dark:bg-background rounded-sm flex flex-col items-center gap-2
+h-20 w-20 shrink-0 justify-center transition-colors duration-200 hover:scale-105
+
+/* Icon: 36×36 */
+/* Label */
+text-[10px] font-medium text-muted-foreground text-center leading-none whitespace-nowrap
+```
+
+**Section heading:**
+```
+text-3xl font-bold tracking-tight text-foreground max-w-2xl leading-relaxed
+```
+
+**Projects grid:** `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6`
+
+### Project Card (`project-item.tsx`)
+
+```
+/* Article */
+group flex flex-col rounded-lg border border-border bg-background shadow-sm
+transition-shadow duration-300 hover:shadow-md overflow-hidden
+
+/* Image frame */
+aspect-square w-full relative overflow-hidden
+
+/* Image */
+object-contain transition-transform duration-500 group-hover:scale-105
+
+/* Empty placeholder */
+aspect-square w-full bg-linear-to-br from-primary/10 via-muted to-muted/60
+```
+
+Overlaid elements (positioned absolute inside the image wrapper):
+
+| Element | Classes |
+|---|---|
+| Tech tags (top-left) | `absolute top-3 left-3 flex flex-wrap gap-1.5` |
+| Tag chip | `inline-flex items-center rounded bg-card/90 backdrop-blur-sm border border-border/40 px-2 py-0.5 text-[11px] font-medium text-foreground` |
+| Title + type row (bottom) | `absolute bottom-3 left-3 right-3 flex items-center gap-2 justify-between` (always `dir="ltr"`) |
+| Title badge | `inline-flex items-center rounded bg-card/90 backdrop-blur-sm border border-border/40 px-2.5 py-1 text-sm font-semibold text-foreground transition-colors duration-200 group-hover:text-primary` |
+| Type badge | `inline-flex items-center rounded bg-primary/90 backdrop-blur-sm px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary-foreground` |
+
+### Reviews Section
+
+**Layout:**
+
+```
+/* Outer section follows standard section layout */
+
+/* Top bar (Add Review button) */
+flex justify-end mb-6
+
+/* Header row — [prev-btn] | [title + dots] | [next-btn] */
+flex items-start justify-between gap-4 mb-16
+
+/* Navigation buttons */
+flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border
+text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground + focus ring
+
+/* Dot indicators */
+rounded-full h-1 w-5
+active   → bg-primary
+inactive → bg-border hover:bg-muted-foreground
+transition-all duration-300
+
+/* Cards container */
+flex items-center justify-center gap-8 overflow-hidden
+```
+
+**Review card** (`review-item.tsx`):
+
+| Property | Value |
+|---|---|
+| Outer wrapper | `relative shrink-0 w-80 transition-all duration-500 ease-in-out` |
+| Center card | `z-10 scale-100 opacity-100` |
+| Side cards | `z-0 scale-90 opacity-50` → `opacity-100` on hover |
+| Accent layer (side only) | `absolute inset-0 bg-primary/50 hover:bg-primary`, `borderRadius: "8px"`, rotated `±7.35deg` |
+| Card body | `relative flex flex-col justify-center gap-6 border border-border bg-card p-8 h-80`, `borderRadius: "8px"` |
+| Quote text (center) | `flex-1 leading-relaxed text-foreground text-base line-clamp-6` |
+| Quote text (side) | `text-sm line-clamp-6` |
+| Quote marks | `font-serif text-primary` |
+| Author name | `text-sm font-semibold text-primary` |
+
+### Contact Section
+
+```
+/* Inner grid */
+grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20
+
+/* Left column — contact info */
+flex flex-col gap-8
+
+/* Heading */
+text-3xl font-bold tracking-tight text-foreground leading-relaxed
+
+/* Sub-text */
+text-base text-muted-foreground leading-relaxed
+
+/* Info rows container */
+flex flex-col gap-5
+
+/* Individual info row */
+flex items-center gap-4
+
+/* Icon bubble */
+flex h-10 w-10 shrink-0 items-center justify-center rounded bg-primary/10 text-primary
+
+/* Value link */
+text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground
+
+/* Right column — form */
+flex flex-col gap-6
+
+/* Sub-heading */
+text-xl font-bold tracking-tight text-foreground
+```
+
+### Footer
+
+```
+border-t border-border bg-card px-6 sm:px-8 lg:px-10 py-12
+
+/* Inner */
+mx-auto max-w-7xl flex flex-col gap-8
+
+/* Copy + form row */
+flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6
+
+/* Copy heading */
+text-base font-semibold text-foreground
+
+/* Copy sub-text */
+text-sm text-muted-foreground max-w-s leading-relaxed
+
+/* Bottom divider + copyright */
+border-t border-border/60 pt-6
+text-xs text-muted-foreground text-center   (always dir="ltr")
+```
 
 ---
 
@@ -317,11 +555,11 @@ All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring
 | Columns | Classes |
 |---|---|
 | 1 col (mobile default) | `grid grid-cols-1` |
-| 2 col from md | `grid grid-cols-1 md:grid-cols-2` |
+| 2 col from lg | `grid grid-cols-1 lg:grid-cols-2` |
 | 3 col from lg | `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3` |
-| Auto-fill cards | `grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))]` |
+| Auto responsive | `grid grid-cols-3` (stats row inside card) |
 
-**Gap:** `gap-6` between cards, `gap-8` between sections.
+**Gap:** `gap-6` between cards, `gap-8` between section elements.
 
 ---
 
@@ -334,6 +572,7 @@ All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring
 | Projects | `#project` | Project |
 | Reviews | `#reviews` | Reviews |
 | Contact | `#contact` | Contact |
+| Tech Blog | `/tech-blog` | Tech Blog (route, not anchor) |
 
 ---
 
@@ -343,7 +582,9 @@ All buttons: `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring
 |---|---|
 | Hide on mobile, show desktop | `hidden md:flex` / `hidden md:block` |
 | Show on mobile, hide desktop | `flex md:hidden` / `block md:hidden` |
-| Full-width mobile, auto desktop | `w-full md:w-auto` |
-| Stack on mobile, row on desktop | `flex flex-col md:flex-row` |
+| Full-width mobile, auto desktop | `w-full lg:w-auto` |
+| Stack on mobile, row on desktop | `flex flex-col lg:flex-row` |
 | Larger padding on desktop | `px-6 sm:px-8 lg:px-10` |
-| Larger text on desktop | `text-3xl lg:text-5xl` |
+| Larger container padding | `p-8 md:p-10 lg:p-14` |
+| Larger text on desktop | `text-3xl lg:text-4xl` |
+| Force LTR inside RTL layout | `dir="ltr"` attribute on element |
