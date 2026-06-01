@@ -54,12 +54,12 @@ export function MediaEditor({
                 value={m.url}
                 placeholder="https://..."
                 className={inputCls}
-                onChange={(e) =>
-                  update(m._key, {
-                    url: e.target.value,
-                    cloudId: e.target.value,
-                  })
-                }
+                onChange={(e) => {
+                  const url = e.target.value;
+                  const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(\.[^.]+)?$/);
+                  const cloudId = match ? match[1] : url;
+                  update(m._key, { url, cloudId });
+                }}
               />
             </div>
             <div>

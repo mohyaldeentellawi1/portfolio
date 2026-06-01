@@ -244,7 +244,7 @@ export default async function ProjectPage({
                                     src={img.thumbnailUrl ?? img.url}
                                     alt=""
                                     fill
-                                    className="object-cover"
+                                    className="object-contain"
                                     sizes="(max-width: 1024px) 50vw, 25vw"
                                     loading="eager"
                                   />
