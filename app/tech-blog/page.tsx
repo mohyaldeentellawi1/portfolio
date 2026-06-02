@@ -2,16 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import BlogItem from "@/components/Blog-Item";
 import { useGetAllBlogs } from "@/lib/helpers/use-get-all-blogs";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useArabicText } from "@/lib/utils/arabic-helper";
 import CustomPagination from "@/components/custom-pagination";
 
 const CATEGORIES = [
@@ -31,6 +29,8 @@ const CATEGORIES = [
 
 export default function TechBlogPage() {
   const t = useTranslations("Home");
+  const router = useRouter();
+  const { isArabic } = useArabicText();
 
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -56,25 +56,39 @@ export default function TechBlogPage() {
     <main className="pt-24 pb-14 px-6 sm:px-8 lg:px-10 min-h-screen flex flex-col">
       <div className="mx-auto max-w-5xl w-full flex flex-col flex-1 gap-12">
         {/* ── Header ── */}
-        <div className="flex items-center justify-end gap-4 pt-2">
-          <Select
-            value={activeCategory}
-            onValueChange={(val) => setActiveCategory(val ?? "All")}
+        <div className="sticky top-20 z-40 -mx-6 sm:-mx-8 lg:-mx-10 px-6 sm:px-8 lg:px-10 py-3 bg-background/80 backdrop-blur-md border-b border-border/60 flex items-start justify-between gap-4">
+          {/* Categories — wrapping chip row */}
+          <div
+            dir="ltr"
+            className="flex items-center gap-2 flex-wrap"
           >
-            <SelectTrigger
-              dir="ltr"
-              className="w-44 shrink-0 border-border bg-background px-3 rounded-lg"
-            >
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent dir="ltr">
-              {CATEGORIES.map((cat) => (
-                <SelectItem key={cat} value={cat}>
-                  {cat}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setActiveCategory(cat)}
+                className={cn(
+                  "shrink-0 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  activeCategory === cat
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-secondary hover:text-foreground",
+                )}
+              >
+                {cat.replace(/_/g, " ")}
+              </button>
+            ))}
+          </div>
+
+          {/* Back button */}
+          <Button
+            variant="outline"
+            type="button"
+            onClick={() => router.back()}
+            className="shrink-0 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {t("Backtohome")}
+            {isArabic ? <ArrowLeft size={15} /> : <ArrowRight size={15} />}
+          </Button>
         </div>
 
         {/* ── Articles ── */}

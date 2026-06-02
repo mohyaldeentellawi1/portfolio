@@ -23,12 +23,28 @@ export default function ReviewItem({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={cn(
-        "relative shrink-0 w-80 transition-all duration-500 ease-in-out",
+        "relative shrink-0 transition-all duration-500 ease-in-out",
         isCenter
-          ? "z-10 scale-100 opacity-100"
-          : `z-0 scale-90 ${hover ? "opacity-100" : "opacity-50"}`,
+          ? "z-10 scale-100 opacity-100 w-full sm:w-80"
+          : `z-0 w-80 scale-90 ${hover ? "opacity-100" : "opacity-50"}`,
       )}
     >
+      {/* Decorative accent layers — center card on mobile only */}
+      {isCenter && (
+        <>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-primary/40 md:hidden"
+            style={{ borderRadius: "8px", transform: "rotate(-7.35deg)" }}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-primary/40 md:hidden"
+            style={{ borderRadius: "8px", transform: "rotate(7.35deg)" }}
+          />
+        </>
+      )}
+
       {/* Primary accent layer — side cards only */}
       {!isCenter && (
         <div
@@ -43,29 +59,44 @@ export default function ReviewItem({
 
       {/* Card body */}
       <div
-        className="relative flex flex-col justify-center gap-6 border border-border bg-card p-8 h-80"
+        className={cn(
+          "relative flex flex-col border border-border bg-card h-80",
+          isCenter ? "p-6" : "p-5",
+        )}
         style={{ borderRadius: "8px" }}
       >
-        {/* Quote text with inline opening and closing marks */}
-        <p
+        {/* Decorative opening quote mark */}
+        <span
+          aria-hidden="true"
           className={cn(
-            "flex-1 leading-relaxed text-foreground",
-            isCenter ? "text-base line-clamp-6" : "line-clamp-6 text-sm",
+            "font-serif leading-none text-primary/70 mb-3 select-none",
+            isCenter ? "text-3xl" : "text-2xl",
           )}
         >
-          <span aria-hidden="true" className="font-serif text-primary">
-            &ldquo;
-          </span>
+          &ldquo;
+        </span>
+
+        {/* Quote body */}
+        <p
+          className={cn(
+            "flex-1 leading-relaxed text-muted-foreground line-clamp-5",
+            isCenter ? "text-sm" : "text-xs",
+          )}
+        >
           {getLocalizedText(review.contentEn ?? review.content, review.content)}
-          <span aria-hidden="true" className="font-serif text-primary">
-            &rdquo;
-          </span>
         </p>
 
-        {/* Author name */}
-        <p className={`text-sm font-semibold text-primary`}>
-          {getLocalizedText(review.nameEn ?? review.name, review.name)}
-        </p>
+        {/* Author */}
+        <div className="mt-4 pt-3 border-t border-border/60">
+          <p
+            className={cn(
+              "font-semibold text-foreground truncate",
+              isCenter ? "text-sm" : "text-xs",
+            )}
+          >
+            {getLocalizedText(review.nameEn ?? review.name, review.name)}
+          </p>
+        </div>
       </div>
     </div>
   );

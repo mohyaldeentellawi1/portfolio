@@ -43,23 +43,25 @@ The layout sets `dir="rtl"` on `<html>` when locale is `ar`. Components must not
 All colors use `oklch` and are mapped to CSS variables. Use Tailwind token classes only.
 
 ### Light Mode
+All neutrals share hue **286** (violet-blue) and proportionally scaled chroma derived from the base background `#f9f9ff`.
+
 | Token | Raw Value | Tailwind class | Usage |
 |---|---|---|---|
-| `--background` | `oklch(1 0 0)` | `bg-background` | Page background |
-| `--foreground` | `oklch(0.145 0 0)` | `text-foreground` | Primary text |
+| `--background` | `oklch(0.984 0.007 286)` | `bg-background` | Page background (`#f9f9ff`) |
+| `--foreground` | `oklch(0.145 0.007 286)` | `text-foreground` | Primary text |
 | `--primary` | `oklch(0.5 0.134 242.749)` | `bg-primary` | Buttons, CTA, highlights (blue) |
 | `--primary-foreground` | `oklch(0.977 0.013 236.62)` | `text-primary-foreground` | Text on primary bg |
-| `--secondary` | `oklch(0.967 0.001 286.375)` | `bg-secondary` | Secondary fills |
-| `--secondary-foreground` | `oklch(0.21 0.006 285.885)` | `text-secondary-foreground` | Text on secondary |
-| `--muted` | `oklch(0.97 0 0)` | `bg-muted` | Subtle fills, hover states |
-| `--muted-foreground` | `oklch(0.556 0 0)` | `text-muted-foreground` | Secondary/dimmed text |
-| `--accent` | `oklch(0.97 0 0)` | `bg-accent` | Same as muted in light mode |
-| `--accent-foreground` | `oklch(0.205 0 0)` | `text-accent-foreground` | Text on accent |
-| `--border` | `oklch(0.922 0 0)` | `border-border` | Dividers, card borders |
-| `--input` | `oklch(0.922 0 0)` | `border-input` | Input field borders |
-| `--ring` | `oklch(0.708 0 0)` | `ring-ring` | Focus rings |
-| `--card` | `oklch(1 0 0)` | `bg-card` | Card backgrounds |
-| `--card-foreground` | `oklch(0.145 0 0)` | `text-card-foreground` | Text inside cards |
+| `--secondary` | `oklch(0.955 0.010 286)` | `bg-secondary` | Secondary fills |
+| `--secondary-foreground` | `oklch(0.210 0.007 286)` | `text-secondary-foreground` | Text on secondary |
+| `--muted` | `oklch(0.958 0.008 286)` | `bg-muted` | Subtle fills, hover states |
+| `--muted-foreground` | `oklch(0.556 0.006 286)` | `text-muted-foreground` | Secondary/dimmed text |
+| `--accent` | `oklch(0.958 0.008 286)` | `bg-accent` | Same as muted in light mode |
+| `--accent-foreground` | `oklch(0.205 0.007 286)` | `text-accent-foreground` | Text on accent |
+| `--border` | `oklch(0.912 0.008 286)` | `border-border` | Dividers, card borders |
+| `--input` | `oklch(0.912 0.008 286)` | `border-input` | Input field borders |
+| `--ring` | `oklch(0.700 0.008 286)` | `ring-ring` | Focus rings |
+| `--card` | `oklch(0.984 0.007 286)` | `bg-card` | Card backgrounds |
+| `--card-foreground` | `oklch(0.145 0.007 286)` | `text-card-foreground` | Text inside cards |
 | `--destructive` | `oklch(0.577 0.245 27.325)` | `bg-destructive` | Errors, delete actions |
 
 ### Dark Mode (`.dark`)

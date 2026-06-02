@@ -483,15 +483,18 @@ export default function RequestProjectPage() {
               {t("STEP")} {step} {t("OF")} {TOTAL_STEPS}
             </p>
 
-            <div
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
               onClick={() => router.back()}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground
                          hover:text-foreground transition-colors duration-200
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
             >
-              {t("Home")}
+              {t("Backtohome")}
               <LogOut size={15} className={isArabic ? "rotate-180" : ""} />
-            </div>
+            </Button>
           </div>
 
           {/* Step content */}
@@ -543,23 +546,6 @@ export default function RequestProjectPage() {
             </Button>
           </div>
         </div>
-      </div>
-
-      {/* ── Step dot indicators ── */}
-      <div className="fixed bottom-0 inset-x-0 flex items-center justify-center gap-2 pb-6">
-        {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-          <div
-            key={i}
-            className={[
-              "rounded-full transition-all duration-300",
-              i + 1 === step
-                ? "w-6 h-1.5 bg-primary"
-                : i + 1 < step
-                  ? "w-1.5 h-1.5 bg-primary/40"
-                  : "w-1.5 h-1.5 bg-border",
-            ].join(" ")}
-          />
-        ))}
       </div>
     </div>
   );

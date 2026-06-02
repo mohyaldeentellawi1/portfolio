@@ -102,7 +102,7 @@ export default function Reviews() {
               <p className="text-sm text-muted-foreground">{t("WhatClientsSay")}</p>
             </div>
           ) : (
-            <div className="flex items-center justify-center gap-8 overflow-hidden">
+            <div className="flex items-center justify-center gap-8 overflow-hidden w-full">
               {total >= 3 && (
                 <div className="hidden md:block">
                   <ReviewItem review={reviews[leftIdx]} position="left" />
