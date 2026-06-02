@@ -11,7 +11,6 @@ import {
   ArrowRight,
   CheckCircle2,
   Send,
-  LogOut,
   Zap,
   Layers,
 } from "lucide-react";
@@ -23,6 +22,7 @@ import {
   type ReqProjectFormData,
 } from "@/lib/helpers/use-add-new-req-project";
 import { useRouter } from "next/navigation";
+import BackButton from "@/components/back-button";
 
 type SetField = <K extends keyof ReqProjectFormData>(
   key: K,
@@ -483,18 +483,7 @@ export default function RequestProjectPage() {
               {t("STEP")} {step} {t("OF")} {TOTAL_STEPS}
             </p>
 
-            <Button
-              variant="outline"
-              size="sm"
-              type="button"
-              onClick={() => router.back()}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground
-                         hover:text-foreground transition-colors duration-200
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
-            >
-              {t("Backtohome")}
-              <LogOut size={15} className={isArabic ? "rotate-180" : ""} />
-            </Button>
+            <BackButton />
           </div>
 
           {/* Step content */}

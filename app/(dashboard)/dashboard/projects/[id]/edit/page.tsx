@@ -81,8 +81,6 @@ export default function DashboardProjectsEditPage() {
     toggleProjectType,
     tagIds,
     toggleTag,
-    media,
-    setMedia,
     sections,
     addSection,
     removeSection,
@@ -283,9 +281,9 @@ export default function DashboardProjectsEditPage() {
         </CardSection>
 
         {/* Project-level media */}
-        <CardSection title="Project Media (no section)">
+        {/* <CardSection title="Project Media (no section)">
           <MediaEditor items={media} onChange={setMedia} />
-        </CardSection>
+        </CardSection> */}
 
         {/* Sections */}
         <CardSection title="Sections">

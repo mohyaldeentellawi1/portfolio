@@ -2,15 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import BlogItem from "@/components/Blog-Item";
 import { useGetAllBlogs } from "@/lib/helpers/use-get-all-blogs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useArabicText } from "@/lib/utils/arabic-helper";
 import CustomPagination from "@/components/custom-pagination";
+import BackButton from "@/components/back-button";
 
 const CATEGORIES = [
   "All",
@@ -29,8 +26,6 @@ const CATEGORIES = [
 
 export default function TechBlogPage() {
   const t = useTranslations("Home");
-  const router = useRouter();
-  const { isArabic } = useArabicText();
 
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -58,10 +53,7 @@ export default function TechBlogPage() {
         {/* ── Header ── */}
         <div className="sticky top-20 z-40 -mx-6 sm:-mx-8 lg:-mx-10 px-6 sm:px-8 lg:px-10 py-3 bg-background/80 backdrop-blur-md border-b border-border/60 flex items-start justify-between gap-4">
           {/* Categories — wrapping chip row */}
-          <div
-            dir="ltr"
-            className="flex items-center gap-2 flex-wrap"
-          >
+          <div dir="ltr" className="flex items-center gap-2 flex-wrap">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -80,15 +72,7 @@ export default function TechBlogPage() {
           </div>
 
           {/* Back button */}
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => router.back()}
-            className="shrink-0 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            {t("Backtohome")}
-            {isArabic ? <ArrowLeft size={15} /> : <ArrowRight size={15} />}
-          </Button>
+          <BackButton />
         </div>
 
         {/* ── Articles ── */}

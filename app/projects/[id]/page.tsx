@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowUpRight, Code2, Calendar, Clock, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BackButton from "@/components/back-button";
 import FadeIn from "@/components/fade-in";
 import { getTranslations } from "next-intl/server";
 import { getArabicTextServer } from "@/lib/utils/arabic-helper-server";
@@ -24,6 +25,9 @@ export default async function ProjectPage({
       <div className="mx-auto max-w-7xl flex flex-col gap-8">
         {/* ── Hero ── */}
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+          <div className="flex justify-end mb-6">
+            <BackButton />
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
             {/* Left — info */}
             <div className="flex flex-col gap-6">
