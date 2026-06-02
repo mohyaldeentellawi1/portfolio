@@ -1,4 +1,3 @@
-import { Play } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import Image from "next/image";
@@ -113,39 +112,40 @@ export default async function About() {
               </div>
             </div>
           </div>
-
           {/* ── Divider ── */}
-          <div className="my-10 border-t border-border/40" />
-
-          {/* ── Video placeholder ── */}
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                {t("Introduction")}
-              </span>
-              <p className="text-sm text-muted-foreground">
-                {t("AShortWalkthroughOfWhoIAmAndWhatIBuild")}
-              </p>
-            </div>
-
-            <div className="group relative w-full mx-auto aspect-video overflow-hidden rounded-lg border border-border bg-muted cursor-pointer">
-              {/* Centered play button */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 transition-transform duration-300 group-hover:scale-105">
-                <div
-                  className="flex h-16 w-16 items-center justify-center rounded-full
-                             bg-primary/10 border border-primary/20
-                             transition-colors duration-200 group-hover:bg-primary/20"
-                >
-                  <Play className="text-primary" />
-                </div>
-                <span className="text-sm font-medium text-muted-foreground">
-                  {t("WatchIntroduction")}
-                </span>
-              </div>
-            </div>
-          </div>
+          <div className="my-25" />
         </div>
       </div>
     </section>
   );
 }
+
+{
+  /* ── Video placeholder ── */
+}
+// <div className="flex flex-col gap-4">
+//   <div className="flex flex-col gap-1">
+//     <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+//       {t("Introduction")}
+//     </span>
+//     <p className="text-sm text-muted-foreground">
+//       {t("AShortWalkthroughOfWhoIAmAndWhatIBuild")}
+//     </p>
+//   </div>
+
+//   <div className="group relative w-full mx-auto aspect-video overflow-hidden rounded-lg border border-border bg-muted cursor-pointer">
+//     {/* Centered play button */}
+//     <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 transition-transform duration-300 group-hover:scale-105">
+//       <div
+//         className="flex h-16 w-16 items-center justify-center rounded-full
+//                    bg-primary/10 border border-primary/20
+//                    transition-colors duration-200 group-hover:bg-primary/20"
+//       >
+//         <Play className="text-primary" />
+//       </div>
+//       <span className="text-sm font-medium text-muted-foreground">
+//         {t("WatchIntroduction")}
+//       </span>
+//     </div>
+//   </div>
+// </div>
