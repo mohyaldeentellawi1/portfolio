@@ -36,16 +36,16 @@ export async function addNewReviewAction({
       },
     });
 
-    if (res) {
+    if (!res) {
       return {
-        success: true,
-        message: `${t("Reviewaddedsuccessfully")}`,
+        success: false,
+        message: `${t("Failedtoaddreview")}`,
       };
     }
 
     return {
-      success: false,
-      message: `${t("Failedtoaddreview")}`,
+      success: true,
+      message: `${t("Reviewaddedsuccessfully")}`,
     };
   } catch (error) {
     return {

@@ -159,12 +159,9 @@ export default function Nav() {
       {/* ── Desktop & Mobile bar ── */}
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:px-8 lg:px-10">
         {/* LEFT — Brand */}
-        <Link
-          href="#"
-          className="shrink-0 text-xl font-bold tracking-tight text-foreground transition-opacity duration-200 hover:opacity-80"
-        >
+        <div className="shrink-0 text-xl font-bold tracking-tight text-foreground transition-opacity duration-200 hover:opacity-80">
           {t("Name")}
-        </Link>
+        </div>
 
         {/* CENTER — Desktop links */}
         <ul className="hidden md:flex items-center gap-8" role="list">

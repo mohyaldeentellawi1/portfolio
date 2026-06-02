@@ -19,7 +19,11 @@ const inputCls =
   "placeholder:text-muted-foreground transition-shadow duration-200 " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
-export default function AddNewReviewDialog() {
+export default function AddNewReviewDialog({
+  onSuccess,
+}: {
+  onSuccess?: () => void;
+}) {
   const t = useTranslations("Home");
   const {
     name,
@@ -30,7 +34,7 @@ export default function AddNewReviewDialog() {
     isOpen,
     setIsOpen,
     addNewReview,
-  } = useAddNewReview();
+  } = useAddNewReview({ onSuccess });
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

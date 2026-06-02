@@ -51,9 +51,17 @@ export default function TechBlogPage() {
     <main className="pt-24 pb-14 px-6 sm:px-8 lg:px-10 min-h-screen flex flex-col">
       <div className="mx-auto max-w-5xl w-full flex flex-col flex-1 gap-12">
         {/* ── Header ── */}
-        <div className="sticky top-20 z-40 -mx-6 sm:-mx-8 lg:-mx-10 px-6 sm:px-8 lg:px-10 py-3 bg-background/80 backdrop-blur-md border-b border-border/60 flex items-start justify-between gap-4">
-          {/* Categories — wrapping chip row */}
-          <div dir="ltr" className="flex items-center gap-2 flex-wrap">
+        <div className="sm:-mx-8 lg:-mx-10 px-6 sm:px-8 lg:px-10 py-3 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+          {/* Back button — first on mobile, end on sm+ */}
+          <div className="flex justify-end sm:order-2 shrink-0">
+            <BackButton />
+          </div>
+
+          {/* Categories — second on mobile, start on sm+ */}
+          <div
+            dir="ltr"
+            className="flex items-center gap-2 flex-wrap sm:order-1"
+          >
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -70,9 +78,6 @@ export default function TechBlogPage() {
               </button>
             ))}
           </div>
-
-          {/* Back button */}
-          <BackButton />
         </div>
 
         {/* ── Articles ── */}

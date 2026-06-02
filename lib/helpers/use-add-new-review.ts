@@ -4,7 +4,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { addNewReviewAction } from "../actions/reviews/action";
 
-export const useAddNewReview = () => {
+export const useAddNewReview = ({
+  onSuccess,
+}: { onSuccess?: () => void } = {}) => {
   const [name, setName] = useState<string>("");
   const [content, setContent] = useState<string>("");
 
@@ -34,6 +36,7 @@ export const useAddNewReview = () => {
         setName("");
         setContent("");
         setIsOpen(false);
+        onSuccess?.();
       } else {
         toast.error(message);
         setName("");

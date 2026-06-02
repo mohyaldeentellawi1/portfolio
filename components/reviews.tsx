@@ -41,7 +41,7 @@ export default function Reviews() {
         <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
           {/* ── Top bar: Add Review ── */}
           <div className="flex justify-end mb-6">
-            <AddNewReviewDialog />
+            <AddNewReviewDialog onSuccess={getAllReviews} />
           </div>
 
           {/* ── Header: [prev] | title + dots | [next] ── */}
