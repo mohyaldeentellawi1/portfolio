@@ -6,13 +6,7 @@ import { Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
-export default function BlogItem({
-  post,
-  index,
-}: {
-  post: Post;
-  index: number;
-}) {
+export default function BlogItem({ post }: { post: Post }) {
   const t = useTranslations("Home");
   const router = useRouter();
 
@@ -22,10 +16,7 @@ export default function BlogItem({
       key={post.id}
       onClick={() => router.push(`/tech-blog/${post.id}`)}
       className={`group flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-10 py-8
-                  ${index === 0 ? "border-t border-border/60" : ""}
-                  border-b border-border/60
-                  transition-colors duration-200 hover:bg-muted/30
-                  -mx-4 px-4 rounded
+                  transition-colors duration-200
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer`}
     >
       {/* Left — meta */}

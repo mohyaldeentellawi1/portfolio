@@ -24,7 +24,7 @@ export default async function ProjectPage({
     <main className="pt-24 pb-14 px-6 sm:px-8 lg:px-10">
       <div className="mx-auto max-w-7xl flex flex-col gap-8">
         {/* ── Hero ── */}
-        <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+        <div className="bg-card border rounded-sm shadow-2xl shadow-slate-400 dark:shadow-slate-800 p-8 md:p-10 lg:p-14">
           <div className="flex justify-end mb-6">
             <BackButton />
           </div>
@@ -159,7 +159,7 @@ export default async function ProjectPage({
 
         {/* ── Story sections ── */}
         {data?.sections && data.sections.length > 0 && (
-          <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm flex flex-col gap-16">
+          <div className="bg-card border rounded-sm shadow-2xl shadow-slate-400 dark:shadow-slate-800 p-8 md:p-10 lg:p-14 flex flex-col gap-16">
             {[...data.sections]
               .sort((a, b) => a.order - b.order)
               .map((section) => {

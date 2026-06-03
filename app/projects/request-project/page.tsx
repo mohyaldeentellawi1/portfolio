@@ -476,7 +476,7 @@ export default function RequestProjectPage() {
 
       {/* ── Content ── */}
       <div className="flex-1 flex items-center justify-center px-6 sm:px-8 pt-28 pb-24">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-6xl">
           {/* Top row: step label + Home link */}
           <div className="flex items-center justify-between mb-5">
             <p className="text-xs font-semibold uppercase tracking-wide text-primary">
@@ -487,52 +487,66 @@ export default function RequestProjectPage() {
           </div>
 
           {/* Step content */}
-          <div
-            key={step}
-            className="animate-in fade-in-0 slide-in-from-bottom-3 duration-300"
-          >
-            {step === 1 && <Step1 form={formData} setField={setField} t={t} />}
-            {step === 2 && <Step2 form={formData} setField={setField} t={t} />}
-            {step === 3 && <Step3 form={formData} setField={setField} t={t} />}
-            {step === 4 && <Step4 form={formData} setField={setField} t={t} />}
-          </div>
-
-          {/* ── Navigation ── */}
-          <div className="flex items-center justify-between mt-10">
-            {step > 1 ? (
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => setStep((s) => s - 1)}
-              >
-                {isArabic ? <ArrowRight size={15} /> : <ArrowLeft size={15} />}
-                {t("Back")}
-              </Button>
-            ) : (
-              <span />
-            )}
-
-            <Button
-              type="button"
-              onClick={handleNext}
-              disabled={!canProceed() || isAdding}
+          <div className="bg-card border rounded-sm shadow-2xl shadow-slate-400 dark:shadow-slate-800 p-8 md:p-10 lg:p-14">
+            <div
+              key={step}
+              className="animate-in fade-in-0 slide-in-from-bottom-3 duration-300"
             >
-              {step < TOTAL_STEPS ? (
-                <>
-                  {t("Next")}
-                  {isArabic ? (
-                    <ArrowLeft size={15} />
-                  ) : (
-                    <ArrowRight size={15} />
-                  )}
-                </>
-              ) : (
-                <>
-                  {t("SendRequest")}
-                  <Send size={14} />
-                </>
+              {step === 1 && (
+                <Step1 form={formData} setField={setField} t={t} />
               )}
-            </Button>
+              {step === 2 && (
+                <Step2 form={formData} setField={setField} t={t} />
+              )}
+              {step === 3 && (
+                <Step3 form={formData} setField={setField} t={t} />
+              )}
+              {step === 4 && (
+                <Step4 form={formData} setField={setField} t={t} />
+              )}
+            </div>
+
+            {/* ── Navigation ── */}
+            <div className="flex items-center justify-between mt-10">
+              {step > 1 ? (
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => setStep((s) => s - 1)}
+                >
+                  {isArabic ? (
+                    <ArrowRight size={15} />
+                  ) : (
+                    <ArrowLeft size={15} />
+                  )}
+                  {t("Back")}
+                </Button>
+              ) : (
+                <span />
+              )}
+
+              <Button
+                type="button"
+                onClick={handleNext}
+                disabled={!canProceed() || isAdding}
+              >
+                {step < TOTAL_STEPS ? (
+                  <>
+                    {t("Next")}
+                    {isArabic ? (
+                      <ArrowLeft size={15} />
+                    ) : (
+                      <ArrowRight size={15} />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {t("SendRequest")}
+                    <Send size={14} />
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
