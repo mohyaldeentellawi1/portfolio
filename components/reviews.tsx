@@ -33,12 +33,7 @@ export default function Reviews() {
   }, [getAllReviews]);
 
   return (
-    <section
-      id="reviews"
-      className="flex items-center pt-25 py-14 px-6 sm:px-8 lg:px-10"
-    >
-      <div className="mx-auto w-full max-w-7xl">
-        <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+    <section id="reviews" className="p-8 md:p-10 lg:p-14 scroll-mt-24">
           {/* ── Top bar: Add Review ── */}
           <div className="flex justify-end mb-6">
             <AddNewReviewDialog onSuccess={getAllReviews} />
@@ -118,8 +113,6 @@ export default function Reviews() {
               )}
             </div>
           )}
-        </div>
-      </div>
     </section>
   );
 }

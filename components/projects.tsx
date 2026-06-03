@@ -35,12 +35,7 @@ export default async function Projects() {
     limit: 3,
   });
   return (
-    <section
-      id="project"
-      className="flex items-center pt-25 py-14 px-6 sm:px-8 lg:px-10"
-    >
-      <div className="mx-auto w-full max-w-7xl">
-        <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+    <section id="project" className="p-8 md:p-10 lg:p-14 scroll-mt-24">
           {/* ── Skills scroll strip ── */}
           <div className="mb-10">
             <div className="flex flex-col gap-1 mb-4">
@@ -100,8 +95,6 @@ export default async function Projects() {
             initialProjects={projects}
             initialPagination={pagination ?? null}
           />
-        </div>
-      </div>
     </section>
   );
 }

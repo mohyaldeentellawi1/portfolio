@@ -6,13 +6,7 @@ export default async function About() {
   const t = await getTranslations("Home");
 
   return (
-    <section
-      id="about"
-      className="flex items-center pt-25 pb-14 px-6 sm:px-8 lg:px-10"
-    >
-      <div className="mx-auto w-full max-w-7xl">
-        {/* ── Container ── */}
-        <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+    <section id="about" className="p-8 md:p-10 lg:p-14 scroll-mt-24">
           {/* ── Top row: image + bio ── */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center">
             {/* Developer image + socials */}
@@ -114,8 +108,6 @@ export default async function About() {
           </div>
           {/* ── Divider ── */}
           <div className="my-25" />
-        </div>
-      </div>
     </section>
   );
 }

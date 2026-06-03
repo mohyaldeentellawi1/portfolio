@@ -26,12 +26,7 @@ const INFO = [
 export default async function Contact() {
   const t = await getTranslations("Home");
   return (
-    <section
-      id="contact"
-      className="flex items-center pt-25 py-14 px-6 sm:px-8 lg:px-10"
-    >
-      <div className="mx-auto w-full max-w-7xl">
-        <div className="bg-card border border-border rounded-lg p-8 md:p-10 lg:p-14 shadow-sm">
+    <section id="contact" className="p-8 md:p-10 lg:p-14 scroll-mt-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
             {/* ── Start column — contact info ── */}
             <div className="flex flex-col gap-8">
@@ -82,8 +77,6 @@ export default async function Contact() {
               <SendMessageForm />
             </div>
           </div>
-        </div>
-      </div>
     </section>
   );
 }
