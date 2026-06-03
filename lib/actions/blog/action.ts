@@ -97,8 +97,6 @@ export async function getBlogByIdAction({
       };
     }
 
-    console.log("Fetched blog post:", result.content);
-
     return {
       success: true,
       data: JSON.parse(JSON.stringify(result)) as Post,

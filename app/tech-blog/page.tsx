@@ -87,9 +87,7 @@ export default function TechBlogPage() {
               {Array.from({ length: 5 }).map((_, i) => (
                 <div
                   key={i}
-                  className={`flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-10 py-8
-                  ${i === 0 ? "border-t border-border/60" : ""}
-                  border-b border-border/60`}
+                  className={`flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-10 py-8`}
                 >
                   <div className="sm:w-40 shrink-0 flex sm:flex-col gap-3 sm:gap-1.5 flex-wrap">
                     <Skeleton className="h-3 w-16 rounded" />
