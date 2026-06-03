@@ -307,7 +307,7 @@ export default function Nav() {
               setMenuOpen(false);
               router.push("/projects/request-project");
             }}
-            className="w-full mt-4"
+            className="rounded-sm w-full mt-4"
           >
             <MessageSquareCode size={16} className="mr-2" />
             {t("Requestyourproject")}

@@ -67,7 +67,7 @@ export default function TechBlogPostPage() {
         variant="outline"
         type="button"
         onClick={() => router.back()}
-        className="inline-flex self-end items-center gap-1.5 text-xs font-medium text-muted-foreground
+        className="bg-white dark:bg-card inline-flex self-end items-center gap-1.5 text-xs font-medium text-muted-foreground
                    transition-colors duration-200 hover:text-foreground
                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
@@ -75,37 +75,39 @@ export default function TechBlogPostPage() {
         {isArabic ? <ArrowLeft size={15} /> : <ArrowRight size={15} />}
       </Button>
 
-      {/* Header */}
-      <div className="flex flex-col gap-4 border-b border-border pb-8">
-        <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-          {blog.type}
-        </span>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground leading-snug">
-          {title}
-        </h1>
-        <div className="flex flex-wrap items-center gap-5 text-xs text-muted-foreground">
-          <span>
-            {new Date(blog.createdAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+      <div className="bg-card border rounded-sm shadow-2xl shadow-slate-400 dark:shadow-slate-800 p-8 md:p-10 lg:p-14">
+        {/* Header */}
+        <div className="flex flex-col gap-4 border-b border-border  pb-8">
+          <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+            {blog.type}
           </span>
-          <span className="flex items-center gap-1">
-            <Clock size={11} />
-            {readMin} {t("minread")}
-          </span>
-          <span className="flex items-center gap-1">
-            <Eye size={11} />
-            {blog.readerCount} {t("readers")}
-          </span>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground leading-snug">
+            {title}
+          </h1>
+          <div className="flex flex-wrap items-center gap-5 text-xs text-muted-foreground">
+            <span>
+              {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+            <span className="flex items-center gap-1">
+              <Clock size={11} />
+              {readMin} {t("minread")}
+            </span>
+            <span className="flex items-center gap-1">
+              <Eye size={11} />
+              {blog.readerCount} {t("readers")}
+            </span>
+          </div>
         </div>
-      </div>
 
-      {/* Body */}
-      <article>
-        <ContentRenderer content={content} />
-      </article>
+        {/* Body */}
+        <article className="mt-8">
+          <ContentRenderer content={content} />
+        </article>
+      </div>
     </PageShell>
   );
 }
@@ -113,7 +115,7 @@ export default function TechBlogPostPage() {
 function PageShell({ children }: { children: React.ReactNode }) {
   return (
     <main className="pt-24 pb-14 px-6 sm:px-8 lg:px-10 min-h-screen">
-      <div className="mx-auto max-w-3xl flex flex-col gap-8">{children}</div>
+      <div className="mx-auto max-w-6xl flex flex-col gap-8">{children}</div>
     </main>
   );
 }
@@ -138,7 +140,11 @@ function LoadingSkeleton() {
       {/* Body lines */}
       <div className="flex flex-col gap-3">
         {[75, 90, 85, 60, 95, 80, 70, 88].map((w, i) => (
-          <Skeleton key={i} className="h-3 rounded" style={{ width: `${w}%` }} />
+          <Skeleton
+            key={i}
+            className="h-3 rounded"
+            style={{ width: `${w}%` }}
+          />
         ))}
       </div>
     </div>
