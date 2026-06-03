@@ -26,9 +26,11 @@ export async function getBlogsAction({
     const pageNum = Math.max(1, Number(page) || 1);
     const limitNum = Math.min(100, Math.max(1, Number(limit) || 10));
     const totalItems = await prisma.blogPost.count({
+      orderBy: { createdAt: "desc" },
       where: type ? { type: type as BlogType } : undefined,
     });
     const result = await prisma.blogPost.findMany({
+      orderBy: { createdAt: "desc" },
       where: type ? { type: type as BlogType } : undefined,
       skip: (pageNum - 1) * limitNum,
       take: limitNum,
