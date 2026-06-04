@@ -68,23 +68,34 @@ export default function Nav() {
     const onScroll = () => {
       setScrolled(window.scrollY > 24);
 
-      // Only run scroll-spy when sections are present on this page
       if (!document.getElementById(SECTION_IDS[0])) return;
 
-      // Suppress scroll-spy while a programmatic scroll is in progress
       if (isProgrammaticScroll.current) {
         if (scrollEndTimer.current) clearTimeout(scrollEndTimer.current);
+
         scrollEndTimer.current = setTimeout(() => {
           isProgrammaticScroll.current = false;
         }, 150);
+
         return;
       }
 
+      const viewportMiddle = window.innerHeight * 0.35;
+
       let current: SectionId = "about";
+
       for (const id of SECTION_IDS) {
         const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= 80) current = id;
+
+        if (!el) continue;
+
+        const rect = el.getBoundingClientRect();
+
+        if (rect.top <= viewportMiddle) {
+          current = id;
+        }
       }
+
       _setSection(current);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -116,11 +127,22 @@ export default function Nav() {
     // No pending scroll (e.g. browser back) — wait for scroll to settle,
     // then sync activeId to the actual visible section.
     const timer = setTimeout(() => {
+      const viewportMiddle = window.innerHeight * 0.35;
+
       let current: SectionId = "about";
+
       for (const id of SECTION_IDS) {
         const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= 80) current = id;
+
+        if (!el) continue;
+
+        const rect = el.getBoundingClientRect();
+
+        if (rect.top <= viewportMiddle) {
+          current = id;
+        }
       }
+
       _setSection(current);
       isProgrammaticScroll.current = false;
     }, 300);
