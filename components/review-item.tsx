@@ -37,13 +37,17 @@ export default function ReviewItem({ review }: { review: Review }) {
         </span>
 
         {/* Quote text — max 7 lines + scrollable on small screens, full height on md+ */}
-        <p className="relative text-foreground leading-relaxed text-base md:text-lg pr-20 max-h-46 overflow-y-auto md:max-h-none md:overflow-visible">
+        <p className="relative text-foreground leading-relaxed text-base md:text-lg pr-20 max-h-46 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden md:max-h-none md:overflow-visible">
           &ldquo;{content}&rdquo;
         </p>
 
-        {/* Author — centered, no avatar */}
-        <div className="pt-4 border-t border-border/50 text-center">
-          <p className="font-semibold text-sm text-foreground">{name}</p>
+        {/* Author */}
+        <div className="flex items-center gap-4 pt-4">
+          <div className="flex-1 h-px bg-linear-to-r from-transparent to-primary/40" />
+          <p className="font-semibold text-sm text-primary tracking-wide shrink-0">
+            {name}
+          </p>
+          <div className="flex-1 h-px bg-linear-to-l from-transparent to-primary/40" />
         </div>
       </div>
     </div>
