@@ -20,9 +20,6 @@ export default function Reviews() {
   const prev = () => setActive((i) => (i - 1 + total) % total);
   const next = () => setActive((i) => (i + 1) % total);
 
-  const leftIdx = (active - 1 + total) % total;
-  const rightIdx = (active + 1) % total;
-
   const navBtn =
     "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border " +
     "text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground " +
@@ -97,21 +94,7 @@ export default function Reviews() {
               <p className="text-sm text-muted-foreground">{t("WhatClientsSay")}</p>
             </div>
           ) : (
-            <div className="flex items-center justify-center gap-8 overflow-hidden w-full">
-              {total >= 3 && (
-                <div className="hidden md:block">
-                  <ReviewItem review={reviews[leftIdx]} position="left" />
-                </div>
-              )}
-
-              <ReviewItem review={reviews[active]} position="center" />
-
-              {total >= 3 && (
-                <div className="hidden md:block">
-                  <ReviewItem review={reviews[rightIdx]} position="right" />
-                </div>
-              )}
-            </div>
+            <ReviewItem review={reviews[active]} />
           )}
     </section>
   );

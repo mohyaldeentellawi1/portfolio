@@ -73,9 +73,11 @@ export async function getAllReviewsAction({
   try {
     const pageNum = Math.max(1, Number(page) || 1);
     const limitNum = Math.min(100, Math.max(1, Number(limit) || 50));
-    const totalItems = await prisma.review.count();
+    const totalItems = await prisma.review.count({
+      orderBy: { createdAt: "desc" },
+    });
     const result = await prisma.review.findMany({
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
       skip: (pageNum - 1) * limitNum,
       take: limitNum,
     });
