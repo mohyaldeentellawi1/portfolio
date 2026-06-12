@@ -86,10 +86,17 @@
     "FullProduct": "Full Product",
     "FullProductdesc": "Complete feature set — built to the full spec",
 
+    "TechnicalInsights": "Technical Insights",
+    "Deepdivesintosoftwareengineering": "Deep dives into software engineering, system design, and the latest in web technologies. Curated thoughts and practical guides for developers.",
+    "Searcharticles": "Search articles...",
+    "TrendingNow": "Trending Now",
+    "ExploreByTopic": "Explore by Topic",
     "minread": "min read",
     "readers": "readers",
     "Backtoblog": "Back to blog",
-    "Articlenotfound": "Article not found"
+    "Articlenotfound": "Article not found",
+    "SubscribetoInsights": "Subscribe to Insights",
+    "GetthelatesttechnicalarticlesdelivereddirectlytoyourinboxNospam": "Get the latest technical articles delivered directly to your inbox. No spam."
   },
   "Actions": {
     "Invalidemailaddress": "Invalid email address",

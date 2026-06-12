@@ -85,10 +85,17 @@
     "FullProduct": "منتج كامل",
     "FullProductdesc": "مجموعة ميزات كاملة — مبني وفق المواصفات الكاملة",
 
+    "TechnicalInsights": "رؤى تقنية",
+    "Deepdivesintosoftwareengineering": "غوص عميق في هندسة البرمجيات، تصميم الأنظمة، وأحدث تقنيات الويب. أفكار مختارة وأدلة عملية للمطورين.",
+    "Searcharticles": "ابحث في المقالات...",
+    "TrendingNow": "الأكثر رواجًا الآن",
+    "ExploreByTopic": "استكشاف حسب الموضوع",
     "minread": "دقيقة قراءة",
     "readers": "قراء",
     "Backtoblog": "العودة إلى المدونة",
-    "Articlenotfound": "المقالة غير موجودة"
+    "Articlenotfound": "المقالة غير موجودة",
+    "SubscribetoInsights": "اشترك في الرؤى",
+    "GetthelatesttechnicalarticlesdelivereddirectlytoyourinboxNospam": "احصل على أحدث المقالات التقنية مباشرة في بريدك الإلكتروني. لا رسائل مزعجة."
   },
   "Actions": {
     "Invalidemailaddress": "عنوان البريد الإلكتروني غير صالح",

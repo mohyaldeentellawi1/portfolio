@@ -34,6 +34,7 @@ export async function getBlogsAction({
       where: type ? { type: type as BlogType } : undefined,
       skip: (pageNum - 1) * limitNum,
       take: limitNum,
+      include: { media: true },
     });
 
     const totalPages = Math.ceil(totalItems / limitNum);
@@ -59,6 +60,32 @@ export async function getBlogsAction({
       data: [],
       message: `${t("Failedtofetchblogposts")}`,
     };
+  }
+}
+
+// THIS ACTION TO GET POST COUNTS PER CATEGORY
+export async function getCategoryCountsAction(): Promise<{
+  success: boolean;
+  data: Record<string, number>;
+}> {
+  try {
+    const grouped = await prisma.blogPost.groupBy({
+      by: ["type"],
+      _count: { id: true },
+    });
+
+    const data: Record<string, number> = {};
+    let total = 0;
+    for (const { type, _count } of grouped) {
+      data[type] = _count.id;
+      total += _count.id;
+    }
+    data["All"] = total;
+
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error fetching category counts:", error);
+    return { success: false, data: {} };
   }
 }
 
@@ -88,6 +115,7 @@ export async function getBlogByIdAction({
   try {
     const result = await prisma.blogPost.findUnique({
       where: { id },
+      include: { media: true },
     });
 
     if (!result) {

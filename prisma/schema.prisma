@@ -70,7 +70,12 @@ enum ProjectMediaType {
   @@schema("SCH_PROJECT")
 }
 
+enum BlogMediaMode {
+  DARK
+  LIGHT
 
+  @@schema("SCH_BLOG")
+}
 
 model Tag {
   id        Int      @id @default(autoincrement())
@@ -227,6 +232,25 @@ model BlogPost {
   readerCount Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  media       BlogPostMedia[]
+
+  @@schema("SCH_BLOG")
+}
+
+
+model BlogPostMedia {
+  id          Int   @id @default(autoincrement())
+  blogPostId  Int
+  url         String
+  cloudId      String
+  mode        BlogMediaMode @default(LIGHT)
+  order       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  blogPost    BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
 
   @@schema("SCH_BLOG")
 }
