@@ -15,8 +15,11 @@ export default function BackButton() {
     <Button
       variant="outline"
       type="button"
+      style={{
+        borderRadius: "4px",
+      }}
       onClick={() => router.back()}
-      className="bg-white dark:bg-card shrink-0 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="shrink-0 inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       {t("back")}
       {isArabic ? <ArrowLeft size={15} /> : <ArrowRight size={15} />}

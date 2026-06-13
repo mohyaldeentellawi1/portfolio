@@ -145,6 +145,9 @@ export function SubscribeCard({
             className="h-full flex-1 bg-transparent px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none"
           />
           <Button
+            style={{
+              borderRadius: "4px",
+            }}
             type="submit"
             size="sm"
             disabled={isAdding}

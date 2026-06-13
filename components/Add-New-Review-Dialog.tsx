@@ -40,7 +40,11 @@ export default function AddNewReviewDialog({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger
         render={
-          <Button>
+          <Button
+            style={{
+              borderRadius: "4px",
+            }}
+          >
             <PenLine />
             {t("AddReview")}
           </Button>

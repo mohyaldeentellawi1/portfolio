@@ -248,6 +248,9 @@ export default function Nav() {
           {/* Desktop CTA */}
           <Button
             onClick={() => router.push("/projects/request-project")}
+            style={{
+              borderRadius: "4px",
+            }}
             className="hidden md:inline-flex items-center bg-primary px-4 text-sm font-medium
                        text-primary-foreground transition-colors duration-200 hover:bg-primary/85 active:scale-[0.97]"
           >
@@ -347,6 +350,9 @@ export default function Nav() {
             onClick={() => {
               setMenuOpen(false);
               router.push("/projects/request-project");
+            }}
+            style={{
+              borderRadius: "4px",
             }}
             className="rounded-sm w-full mt-4"
           >

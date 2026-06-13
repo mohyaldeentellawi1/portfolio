@@ -77,7 +77,14 @@ export default function SendMessageForm() {
       />
 
       {/* Submit */}
-      <Button type="submit" className="w-full" disabled={isAdding}>
+      <Button
+        style={{
+          borderRadius: "4px",
+        }}
+        type="submit"
+        className="w-full"
+        disabled={isAdding}
+      >
         {t("SendMessage")}
       </Button>
     </form>

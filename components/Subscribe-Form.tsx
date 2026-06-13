@@ -31,6 +31,9 @@ export default function SubscribeForm() {
                            placeholder:text-muted-foreground outline-none"
         />
         <Button
+          style={{
+            borderRadius: "4px",
+          }}
           type="submit"
           className="shrink-0 h-9 mx-1.5"
           disabled={isAdding}
