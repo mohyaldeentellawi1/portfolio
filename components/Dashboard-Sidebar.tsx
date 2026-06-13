@@ -73,6 +73,9 @@ export default function DashboardSidebar() {
               return (
                 <SidebarMenuItem key={href}>
                   <SidebarMenuButton
+                    style={{
+                      borderRadius: "4px",
+                    }}
                     tooltip={t(labelKey)}
                     onClick={() => !active && router.replace(href)}
                     className={[

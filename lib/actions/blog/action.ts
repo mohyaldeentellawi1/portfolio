@@ -1,7 +1,7 @@
 "use server";
 
 import { Post } from "@/lib/interfaces/blog.interface";
-import { BlogType } from "@/app/generated/prisma/enums";
+import { BlogMediaMode, BlogType } from "@/app/generated/prisma/enums";
 import prisma from "@/lib/prisma";
 import { getTranslations } from "next-intl/server";
 import { PaginationResult } from "@/lib/interfaces/pagination.interface";
@@ -135,5 +135,46 @@ export async function getBlogByIdAction({
       success: false,
       message: `${t("Failedtofetchblogpost")}`,
     };
+  }
+}
+
+// THIS ACTION TO ADD A NEW BLOG POST
+export async function addNewBlogAction({
+  input,
+}: {
+  input: {
+    type: string;
+    title: string;
+    titleEn?: string;
+    content: string;
+    contentEn?: string;
+    readingTime: number;
+    media: { url: string; cloudId: string; mode: string; order: number }[];
+  };
+}): Promise<{ success: boolean; message?: string; id?: number }> {
+  const t = await getTranslations("Actions");
+  try {
+    const post = await prisma.blogPost.create({
+      data: {
+        type: input.type as BlogType,
+        title: input.title,
+        titleEn: input.titleEn || null,
+        content: input.content,
+        contentEn: input.contentEn || null,
+        readingTime: input.readingTime,
+        media: {
+          create: input.media.map((m) => ({
+            url: m.url,
+            cloudId: m.cloudId,
+            mode: m.mode as BlogMediaMode,
+            order: m.order,
+          })),
+        },
+      },
+    });
+    return { success: true, id: post.id };
+  } catch (error) {
+    console.error("Error creating blog post:", error);
+    return { success: false, message: `${t("Failedtofetchblogposts")}` };
   }
 }

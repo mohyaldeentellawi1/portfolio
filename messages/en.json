@@ -129,6 +129,8 @@
     "Types": "Types",
     "Tags": "Tags",
     "Edit": "Edit",
-    "Logout": "Logout"
+    "Logout": "Logout",
+
+    "AddBlog": "Add Blog"
   }
 }
