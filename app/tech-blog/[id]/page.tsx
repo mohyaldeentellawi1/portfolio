@@ -3,19 +3,20 @@
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { ArrowLeft, ArrowRight, Clock, Eye } from "lucide-react";
+import { ArrowLeft, Clock, Eye } from "lucide-react";
 import { useGetBlogById } from "@/lib/helpers/use-get-blog-by-id";
 import { useArabicText } from "@/lib/utils/arabic-helper";
 import { ContentRenderer } from "@/components/Content-Renderer";
 import { incrementReaderCountAction } from "@/lib/actions/blog/action";
-import { Button } from "@/components/ui/button";
+
 import { Skeleton } from "@/components/ui/skeleton";
+import BackButton from "@/components/back-button";
 
 export default function TechBlogPostPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const t = useTranslations("Home");
-  const { getLocalizedText, isArabic } = useArabicText();
+  const { getLocalizedText } = useArabicText();
 
   const { isLoading, blog } = useGetBlogById(Number(params.id));
 
@@ -63,17 +64,9 @@ export default function TechBlogPostPage() {
   return (
     <PageShell>
       {/* Back */}
-      <Button
-        variant="outline"
-        type="button"
-        onClick={() => router.back()}
-        className="bg-white dark:bg-card inline-flex self-end items-center gap-1.5 text-xs font-medium text-muted-foreground
-                   transition-colors duration-200 hover:text-foreground
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        {t("Backtoblog")}
-        {isArabic ? <ArrowLeft size={15} /> : <ArrowRight size={15} />}
-      </Button>
+      <div className="flex justify-end">
+        <BackButton />
+      </div>
 
       <div className="bg-card border rounded-sm shadow-2xl shadow-slate-400 dark:shadow-slate-800 p-8 md:p-10 lg:p-14">
         {/* Header */}
