@@ -32,7 +32,7 @@ export default function TechBlogPostPage() {
   const title = blog ? getLocalizedText(blog.titleEn ?? "", blog.title) : "";
   const readMin = blog ? blog.readingTime : 0;
 
-  if (isLoading) {
+  if (isLoading && !blog) {
     return (
       <PageShell>
         <LoadingSkeleton />
@@ -65,7 +65,7 @@ export default function TechBlogPostPage() {
     <PageShell>
       {/* Back */}
       <div className="flex justify-end">
-        <BackButton />
+        <BackButton fallback="/tech-blog" />
       </div>
 
       <div className="bg-card border rounded-sm shadow-2xl shadow-slate-400 dark:shadow-slate-800 p-8 md:p-10 lg:p-14">
