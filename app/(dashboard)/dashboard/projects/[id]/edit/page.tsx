@@ -16,6 +16,7 @@ import {
 import CardSection from "../../components/Card-Section-Component";
 import { MediaEditor } from "../../components/Media-Componenet";
 import { useEditProject } from "@/lib/helpers/use-add-new-project";
+import { useTranslations } from "next-intl";
 
 const TECH_TYPES = [
   "WEB_FRONTEND",
@@ -55,6 +56,8 @@ const labelCls = "block text-xs font-medium text-muted-foreground mb-1";
 
 export default function DashboardProjectsEditPage() {
   const params = useParams<{ id: string }>();
+
+  const t = useTranslations("Dashboard");
 
   const { tags, getAllTags } = useGetAllTags();
 
@@ -122,21 +125,18 @@ export default function DashboardProjectsEditPage() {
   return (
     <div className="flex flex-col min-h-full w-full">
       {/* ── Header ── */}
-      <div className="sticky top-20 z-10 flex items-center justify-between gap-4 px-6 py-4 border-b border-border bg-background">
+      <div className="sticky top-20 z-10 flex items-center justify-between gap-4 px-6 py-4 border-t border-b bg-background">
         <div className="flex items-center gap-3">
           <div>
             <h1 className="text-base font-semibold tracking-tight text-foreground">
-              Edit Project
+              {t("EditProject")}
             </h1>
-            <p className="text-xs text-muted-foreground">
-              #{project?.id} — {project?.titleEn}
-            </p>
           </div>
         </div>
 
         <Button size="sm" onClick={handleSubmit} disabled={isPending}>
           {isPending ? <Loader2 size={14} className="animate-spin" /> : null}
-          {isPending ? "Saving…" : "Save Changes"}
+          {isPending ? t("Saving") : t("SaveChanges")}
         </Button>
       </div>
 

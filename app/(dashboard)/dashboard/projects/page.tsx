@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import { Plus, Pencil, Loader2, FolderOpen } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, FolderOpen } from "lucide-react";
 import { useGetAllProjects } from "@/lib/helpers/use-get-all-projects";
 import {
   Table,
@@ -32,7 +32,7 @@ export default function DashboardProjectsPage() {
   return (
     <div className="flex flex-col min-h-full">
       {/* ── Header ── */}
-      <div className="flex items-center justify-between gap-4 px-6 py-4">
+      <div className="flex items-center justify-between gap-4 px-6 py-4 border-t border-b">
         <div>
           <h1 className="text-base font-semibold tracking-tight text-foreground">
             {t("ProjectManagement")}
@@ -74,11 +74,14 @@ export default function DashboardProjectsPage() {
             <TableHeader>
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-14 ps-6 text-start!">ID</TableHead>
-                <TableHead className="text-start!">{t("Title")}</TableHead>
-                <TableHead className="w-56 text-start!">{t("Types")}</TableHead>
-                <TableHead className="w-48 text-start!">{t("Tags")}</TableHead>
-                <TableHead className="w-14 pe-6 text-center">
-                  {t("Edit")}
+                <TableHead className="w-48 text-start!">{t("Title")}</TableHead>
+                <TableHead className="w-72 text-start!">{t("Types")}</TableHead>
+                <TableHead className="text-start!">{t("Tags")}</TableHead>
+                <TableHead className="w-32 text-start!">
+                  {t("CreatedAt")}
+                </TableHead>
+                <TableHead className="w-20 pe-6 text-center">
+                  {t("Actions")}
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -91,16 +94,16 @@ export default function DashboardProjectsPage() {
                   </TableCell>
 
                   {/* Title */}
-                  <TableCell>
-                    <span className="text-sm font-medium text-foreground">
+                  <TableCell className="w-48">
+                    <span className="text-sm font-medium text-foreground line-clamp-2">
                       {getLocalizedText(project.titleEn, project.title)}
                     </span>
                   </TableCell>
 
                   {/* Types */}
-                  <TableCell className="w-56">
+                  <TableCell className="w-72">
                     <div className="flex flex-wrap gap-1">
-                      {project.projectTypes.slice(0, 2).map((type) => (
+                      {project.projectTypes.slice(0, 3).map((type) => (
                         <span
                           key={type}
                           className="inline-flex items-center rounded bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary whitespace-nowrap"
@@ -108,18 +111,18 @@ export default function DashboardProjectsPage() {
                           {type.replace(/_/g, " ")}
                         </span>
                       ))}
-                      {project.projectTypes.length > 2 && (
+                      {project.projectTypes.length > 3 && (
                         <span className="text-[11px] text-muted-foreground self-center">
-                          +{project.projectTypes.length - 2}
+                          +{project.projectTypes.length - 3}
                         </span>
                       )}
                     </div>
                   </TableCell>
 
                   {/* Tags */}
-                  <TableCell className="w-48">
+                  <TableCell>
                     <div className="flex flex-wrap gap-1">
-                      {(project.tags ?? []).slice(0, 3).map((pt) => (
+                      {(project.tags ?? []).slice(0, 4).map((pt) => (
                         <span
                           key={pt.id}
                           className="inline-flex items-center rounded bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground whitespace-nowrap"
@@ -127,28 +130,45 @@ export default function DashboardProjectsPage() {
                           {pt.tag.name}
                         </span>
                       ))}
-                      {(project.tags ?? []).length > 3 && (
+                      {(project.tags ?? []).length > 4 && (
                         <span className="text-[11px] text-muted-foreground self-center">
-                          +{(project.tags ?? []).length - 3}
+                          +{(project.tags ?? []).length - 4}
                         </span>
                       )}
                     </div>
                   </TableCell>
 
-                  {/* Edit */}
-                  <TableCell className="w-14 pe-6 text-center">
-                    <Button
-                      onClick={() =>
-                        router.push(`/dashboard/projects/${project.id}/edit`)
-                      }
-                      aria-label={`Edit project ${project.id}`}
-                      className="inline-flex h-8 w-8 items-center justify-center rounded
-                                 text-white hover:text-foreground hover:bg-muted
-                                 transition-colors duration-200
-                                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                      <Pencil size={13} />
-                    </Button>
+                  {/* Created At */}
+                  <TableCell className="w-32 text-xs text-muted-foreground">
+                    {new Date(project.createdAt).toLocaleDateString()}
+                  </TableCell>
+
+                  {/* Actions */}
+                  <TableCell className="w-20 pe-6">
+                    <div className="flex items-center justify-center gap-1">
+                      <Button
+                        onClick={() =>
+                          router.push(`/dashboard/projects/${project.id}/edit`)
+                        }
+                        style={{
+                          borderRadius: "4px",
+                        }}
+                        aria-label={`Edit project ${project.id}`}
+                        className="h-8 w-8 p-0"
+                      >
+                        <Pencil size={13} />
+                      </Button>
+                      <Button
+                        aria-label={`Delete project ${project.id}`}
+                        style={{
+                          borderRadius: "4px",
+                        }}
+                        variant="destructive"
+                        className="h-8 w-8 p-0"
+                      >
+                        <Trash2 size={13} />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

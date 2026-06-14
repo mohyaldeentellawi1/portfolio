@@ -178,3 +178,48 @@ export async function addNewBlogAction({
     return { success: false, message: `${t("Failedtofetchblogposts")}` };
   }
 }
+
+// THIS ACTION TO UPDATE A BLOG POST
+export async function updateBlogAction({
+  blogId,
+  input,
+}: {
+  blogId: number;
+  input: {
+    type: string;
+    title: string;
+    titleEn?: string;
+    content: string;
+    contentEn?: string;
+    readingTime: number;
+    media: { url: string; cloudId: string; mode: string; order: number }[];
+  };
+}): Promise<{ success: boolean; message?: string }> {
+  const t = await getTranslations("Actions");
+  try {
+    await prisma.blogPost.update({
+      where: { id: blogId },
+      data: {
+        type: input.type as BlogType,
+        title: input.title,
+        titleEn: input.titleEn || null,
+        content: input.content,
+        contentEn: input.contentEn || null,
+        readingTime: input.readingTime,
+        media: {
+          deleteMany: {},
+          create: input.media.map((m) => ({
+            url: m.url,
+            cloudId: m.cloudId,
+            mode: m.mode as BlogMediaMode,
+            order: m.order,
+          })),
+        },
+      },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating blog post:", error);
+    return { success: false, message: `${t("Failedtofetchblogpost")}` };
+  }
+}

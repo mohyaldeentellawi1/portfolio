@@ -38,11 +38,11 @@ export default function DashboardSidebar() {
     <Sidebar
       side={isArabic ? "right" : "left"}
       collapsible="icon"
-      className="top-20! h-[calc(100svh-80px)]! border-border"
+      className="top-20 h-[calc(100svh-80px)]! border"
     >
       {/* ── Header ── */}
-      <SidebarHeader className="p-3">
-        <div className="flex items-center gap-2.5">
+      <SidebarHeader className="px-3 py-4 border-b">
+        <div className="flex items-center gap-2.5 ">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-primary text-primary-foreground">
             <LayoutDashboard size={14} />
           </div>
@@ -56,9 +56,6 @@ export default function DashboardSidebar() {
           <SidebarTrigger className="ms-auto text-muted-foreground hover:text-sidebar-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
         </div>
       </SidebarHeader>
-
-      {/* ── Divider ── */}
-      <div className="mx-3 border-t border-sidebar-border" />
 
       {/* ── Nav ── */}
       <SidebarContent className="p-2 pt-3">
@@ -97,7 +94,7 @@ export default function DashboardSidebar() {
       </SidebarContent>
 
       {/* ── Footer ── */}
-      <div className="mx-3 border-t border-sidebar-border" />
+      <div className="border-t" />
       <SidebarFooter className="p-2">
         <SidebarMenu>
           <SidebarMenuItem>

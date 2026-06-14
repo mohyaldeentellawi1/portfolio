@@ -212,7 +212,7 @@ export default function TechBlogPage() {
         {pagination && !isLoading && (
           <CustomPagination
             pagination={pagination}
-            onPageChange={handlePageChange}
+            onPageChange={(page) => handlePageChange(page, 5)}
           />
         )}
       </div>

@@ -129,8 +129,16 @@
     "Types": "Types",
     "Tags": "Tags",
     "Edit": "Edit",
+    "Actions": "Actions",
+    "CreatedAt": "Created",
     "Logout": "Logout",
 
-    "AddBlog": "Add Blog"
+    "AddBlog": "Add Blog",
+
+    "EditProject": "Edit Project",
+    "EditBlogPost": "Edit Blog Post",
+
+    "Saving": "Saving…",
+    "SaveChanges": "Save Changes"
   }
 }

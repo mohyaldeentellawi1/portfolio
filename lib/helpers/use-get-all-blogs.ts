@@ -36,7 +36,7 @@ export const useGetAllBlogs = () => {
     [],
   );
 
-  function handlePageChange(page: number) {
+  function handlePageChange(page: number, limit: number = 5) {
     startTransition(async () => {
       const {
         data,
@@ -45,7 +45,7 @@ export const useGetAllBlogs = () => {
         message,
       } = await getBlogsAction({
         page,
-        limit: 5,
+        limit,
       });
       if (success) {
         setBlogs(data);
