@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useParams } from "next/navigation";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,9 +12,6 @@ import {
 } from "@/components/ui/select";
 import CardSection from "../../../projects/components/Card-Section-Component";
 import { useEditBlog, BlogMediaItem } from "@/lib/helpers/use-add-new-blog";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
 const BLOG_TYPES = [
@@ -57,57 +53,16 @@ function MarkdownField({
   placeholder?: string;
   dir?: "ltr" | "rtl";
 }) {
-  const [preview, setPreview] = useState(false);
-
   return (
     <div dir={dir}>
-      <div className="flex items-center justify-between mb-1">
-        <label className={labelCls + " mb-0"}>{label}</label>
-        <div className="flex items-center rounded border border-border overflow-hidden text-xs">
-          <button
-            type="button"
-            onClick={() => setPreview(false)}
-            className={cn(
-              "px-2.5 py-1 transition-colors duration-150",
-              !preview
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            Write
-          </button>
-          <button
-            type="button"
-            onClick={() => setPreview(true)}
-            className={cn(
-              "px-2.5 py-1 transition-colors duration-150",
-              preview
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            Preview
-          </button>
-        </div>
-      </div>
-
-      {preview ? (
-        <div className="min-h-52 rounded border border-input bg-background px-3 py-2 prose prose-sm dark:prose-invert max-w-none text-sm">
-          {value ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{value}</ReactMarkdown>
-          ) : (
-            <p className="text-muted-foreground italic">Nothing to preview.</p>
-          )}
-        </div>
-      ) : (
-        <textarea
-          rows={12}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className={textareaCls}
-        />
-      )}
+      <label className={labelCls}>{label}</label>
+      <textarea
+        rows={12}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className={textareaCls}
+      />
     </div>
   );
 }

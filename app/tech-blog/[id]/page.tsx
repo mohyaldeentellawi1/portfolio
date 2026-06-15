@@ -97,7 +97,7 @@ export default function TechBlogPostPage() {
         </div>
 
         {/* Body */}
-        <article className="mt-8">
+        <article className="mt-8 max-w-none">
           <ContentRenderer content={content} />
         </article>
       </div>

@@ -1,79 +1,62 @@
-import React from "react";
-
-function parseInline(text: string): React.ReactNode[] {
-  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-    part.startsWith("**") && part.endsWith("**") ? (
-      <strong key={i} className="font-semibold text-foreground">
-        {part.slice(2, -2)}
-      </strong>
-    ) : (
-      part
-    )
-  );
-}
-
-function Block({ text }: { text: string }) {
-  const lines = text.split("\n").filter((l) => l.trim());
-  if (!lines.length) return null;
-
-  if (lines[0].startsWith("### "))
-    return (
-      <h3 className="text-xl font-bold tracking-tight text-foreground mt-2">
-        {lines[0].slice(4)}
-      </h3>
-    );
-  if (lines[0].startsWith("## "))
-    return (
-      <h2 className="text-2xl font-bold tracking-tight text-foreground mt-2">
-        {lines[0].slice(3)}
-      </h2>
-    );
-  if (lines[0].startsWith("# "))
-    return (
-      <h1 className="text-3xl font-bold tracking-tight text-foreground mt-2">
-        {lines[0].slice(2)}
-      </h1>
-    );
-
-  if (lines.every((l) => l.startsWith("> ")))
-    return (
-      <blockquote className="border-l-4 border-primary pl-5 italic text-muted-foreground">
-        {lines.map((l, i) => (
-          <p key={i}>{parseInline(l.slice(2))}</p>
-        ))}
-      </blockquote>
-    );
-
-  if (lines.every((l) => /^[*-] /.test(l)))
-    return (
-      <ul className="list-disc list-inside flex flex-col gap-1.5 text-muted-foreground">
-        {lines.map((l, i) => (
-          <li key={i} className="text-base">
-            {parseInline(l.slice(2))}
-          </li>
-        ))}
-      </ul>
-    );
-
-  return (
-    <p className="text-base text-muted-foreground leading-relaxed">
-      {lines.map((line, i) => (
-        <React.Fragment key={i}>
-          {i > 0 && <br />}
-          {parseInline(line)}
-        </React.Fragment>
-      ))}
-    </p>
-  );
-}
+import ReactMarkdown from "react-markdown";
 
 export function ContentRenderer({ content }: { content: string }) {
-  const blocks = content.split(/\n{2,}/);
   return (
-    <div className="flex flex-col gap-5">
-      {blocks.map((block, i) => (
-        <Block key={i} text={block} />
-      ))}
-    </div>
+    <ReactMarkdown
+      components={{
+        h2: ({ children }) => (
+          <h2 className="mt-8 mb-4 text-2xl font-bold text-foreground">
+            {children}
+          </h2>
+        ),
+
+        h3: ({ children }) => (
+          <h3 className="mt-6 mb-3 text-xl font-semibold text-foreground">
+            {children}
+          </h3>
+        ),
+
+        p: ({ children }) => (
+          <p className="mb-5 leading-8 text-muted-foreground">{children}</p>
+        ),
+
+        ul: ({ children }) => (
+          <ul className="mb-5 list-disc space-y-2 pr-6 text-muted-foreground">
+            {children}
+          </ul>
+        ),
+
+        blockquote: ({ children }) => (
+          <blockquote className="my-6 border-s-4 border-primary ps-4 italic">
+            {children}
+          </blockquote>
+        ),
+
+        strong: ({ children }) => (
+          <strong className="font-semibold text-foreground">{children}</strong>
+        ),
+
+        a: ({ children, href }) => (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            {children}
+          </a>
+        ),
+
+        code: ({ children }) => (
+          <code className="rounded bg-muted px-1.5 py-0.5 text-sm">
+            {children}
+          </code>
+        ),
+
+        hr: () => <hr className="my-8 border-border" />,
+      }}
+    >
+      {content}
+    </ReactMarkdown>
   );
 }
