@@ -51,7 +51,7 @@ export function BlogItem({ post }: { post: Post }) {
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            loading="lazy"
+            loading="eager"
           />
         )}
       </div>
@@ -71,8 +71,11 @@ export function BlogItem({ post }: { post: Post }) {
           {getLocalizedText(post.titleEn ?? "", post.title)}
         </h2>
 
-        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-          {getLocalizedText(post.contentEn ?? "", post.content)}
+        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
+          {getLocalizedText(
+            post.excerptEn ?? post.contentEn ?? "",
+            post.excerpt ?? post.content ?? "",
+          )}
         </p>
 
         <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -109,6 +112,7 @@ export function FeaturedPost({ post }: { post: Post }) {
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              loading="eager"
             />
           )}
         </div>
@@ -128,8 +132,11 @@ export function FeaturedPost({ post }: { post: Post }) {
             {getLocalizedText(post.titleEn ?? "", post.title)}
           </h2>
 
-          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 flex-1">
-            {getLocalizedText(post.contentEn ?? "", post.content)}
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-6 flex-1">
+            {getLocalizedText(
+              post.excerptEn ?? post.contentEn ?? "",
+              post.excerpt ?? post.content ?? "",
+            )}
           </p>
 
           <span className="inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200">

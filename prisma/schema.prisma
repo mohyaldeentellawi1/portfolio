@@ -228,6 +228,8 @@ model BlogPost {
   titleEn     String?
   content     String
   contentEn   String?
+  excerpt     String?
+  excerptEn   String?
   readingTime Int      @default(0)
   readerCount Int      @default(0)
   createdAt   DateTime @default(now())

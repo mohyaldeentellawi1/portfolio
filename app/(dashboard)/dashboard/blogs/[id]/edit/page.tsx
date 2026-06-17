@@ -191,6 +191,10 @@ export default function EditBlogPage() {
     setTitle,
     titleEn,
     setTitleEn,
+    excerpt,
+    setExcerpt,
+    excerptEn,
+    setExcerptEn,
     content,
     setContent,
     contentEn,
@@ -292,6 +296,29 @@ export default function EditBlogPage() {
                   min={1}
                   value={readingTime}
                   onChange={(e) => setReadingTime(Number(e.target.value))}
+                  className={inputCls}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>Excerpt (AR)</label>
+                <input
+                  type="text"
+                  value={excerpt}
+                  onChange={(e) => setExcerpt(e.target.value)}
+                  placeholder="ملخص المقالة"
+                  className={inputCls}
+                />
+              </div>
+              <div dir="ltr">
+                <label className={labelCls}>Excerpt (EN)</label>
+                <input
+                  type="text"
+                  value={excerptEn}
+                  onChange={(e) => setExcerptEn(e.target.value)}
+                  placeholder="Article excerpt"
                   className={inputCls}
                 />
               </div>

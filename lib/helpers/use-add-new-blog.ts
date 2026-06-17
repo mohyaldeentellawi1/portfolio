@@ -3,7 +3,11 @@
 import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { addNewBlogAction, getBlogByIdAction, updateBlogAction } from "@/lib/actions/blog/action";
+import {
+  addNewBlogAction,
+  getBlogByIdAction,
+  updateBlogAction,
+} from "@/lib/actions/blog/action";
 import { Post } from "@/lib/interfaces/blog.interface";
 
 function uid() {
@@ -11,6 +15,7 @@ function uid() {
 }
 
 export interface BlogMediaItem {
+  id?: number;
   _key: string;
   url: string;
   cloudId: string;
@@ -25,6 +30,8 @@ export function useAddNewBlog() {
   const [type, setType] = useState("OTHER");
   const [title, setTitle] = useState("");
   const [titleEn, setTitleEn] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [excerptEn, setExcerptEn] = useState("");
   const [content, setContent] = useState("");
   const [contentEn, setContentEn] = useState("");
   const [readingTime, setReadingTime] = useState(0);
@@ -59,15 +66,19 @@ export function useAddNewBlog() {
           type,
           title,
           titleEn: titleEn || undefined,
+          excerpt: excerpt || undefined,
+          excerptEn: excerptEn || undefined,
           content,
           contentEn: contentEn || undefined,
           readingTime,
-          media: media.map((m, i) => ({
-            url: m.url,
-            cloudId: m.cloudId,
-            mode: m.mode,
-            order: i,
-          })),
+          media: media
+            .sort((a, b) => a.order - b.order)
+            .map((m) => ({
+              url: m.url,
+              cloudId: m.cloudId,
+              mode: m.mode,
+              order: m.order,
+            })),
         },
       });
 
@@ -82,13 +93,26 @@ export function useAddNewBlog() {
 
   return {
     isPending,
-    type, setType,
-    title, setTitle,
-    titleEn, setTitleEn,
-    content, setContent,
-    contentEn, setContentEn,
-    readingTime, setReadingTime,
-    media, addMedia, removeMedia, updateMedia,
+    type,
+    setType,
+    title,
+    setTitle,
+    titleEn,
+    setTitleEn,
+    excerpt,
+    setExcerpt,
+    excerptEn,
+    setExcerptEn,
+    content,
+    setContent,
+    contentEn,
+    setContentEn,
+    readingTime,
+    setReadingTime,
+    media,
+    addMedia,
+    removeMedia,
+    updateMedia,
     handleSubmit,
   };
 }
@@ -102,6 +126,8 @@ export function useEditBlog(blogId: number) {
   const [type, setType] = useState("OTHER");
   const [title, setTitle] = useState("");
   const [titleEn, setTitleEn] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [excerptEn, setExcerptEn] = useState("");
   const [content, setContent] = useState("");
   const [contentEn, setContentEn] = useState("");
   const [readingTime, setReadingTime] = useState(0);
@@ -111,11 +137,16 @@ export function useEditBlog(blogId: number) {
     if (!blogId) return;
     setIsLoading(true);
     getBlogByIdAction({ id: blogId }).then(({ success, data }) => {
-      if (!success || !data) { setIsLoading(false); return; }
+      if (!success || !data) {
+        setIsLoading(false);
+        return;
+      }
       setBlog(data);
       setType(data.type);
       setTitle(data.title);
       setTitleEn(data.titleEn ?? "");
+      setExcerpt(data.excerpt ?? "");
+      setExcerptEn(data.excerptEn ?? "");
       setContent(data.content);
       setContentEn(data.contentEn ?? "");
       setReadingTime(data.readingTime);
@@ -123,6 +154,7 @@ export function useEditBlog(blogId: number) {
         [...data.media]
           .sort((a, b) => a.order - b.order)
           .map((m) => ({
+            id: m.id,
             _key: uid(),
             url: m.url,
             cloudId: m.cloudId,
@@ -137,7 +169,13 @@ export function useEditBlog(blogId: number) {
   function addMedia() {
     setMedia((prev) => [
       ...prev,
-      { _key: uid(), url: "", cloudId: "", mode: "LIGHT", order: prev.length },
+      {
+        _key: uid(),
+        url: "",
+        cloudId: "",
+        mode: "LIGHT",
+        order: prev.length > 0 ? Math.max(...prev.map((x) => x.order)) + 1 : 1,
+      },
     ]);
   }
 
@@ -163,15 +201,19 @@ export function useEditBlog(blogId: number) {
           type,
           title,
           titleEn: titleEn || undefined,
+          excerpt: excerpt || undefined,
+          excerptEn: excerptEn || undefined,
           content,
           contentEn: contentEn || undefined,
           readingTime,
-          media: media.map((m, i) => ({
-            url: m.url,
-            cloudId: m.cloudId,
-            mode: m.mode,
-            order: i,
-          })),
+          media: media
+            .sort((a, b) => a.order - b.order)
+            .map((m) => ({
+              url: m.url,
+              cloudId: m.cloudId,
+              mode: m.mode,
+              order: m.order,
+            })),
         },
       });
       if (result.success) {
@@ -184,14 +226,29 @@ export function useEditBlog(blogId: number) {
   }
 
   return {
-    blog, isLoading, isPending,
-    type, setType,
-    title, setTitle,
-    titleEn, setTitleEn,
-    content, setContent,
-    contentEn, setContentEn,
-    readingTime, setReadingTime,
-    media, addMedia, removeMedia, updateMedia,
+    blog,
+    isLoading,
+    isPending,
+    type,
+    setType,
+    title,
+    setTitle,
+    titleEn,
+    setTitleEn,
+    excerpt,
+    setExcerpt,
+    excerptEn,
+    setExcerptEn,
+    content,
+    setContent,
+    contentEn,
+    setContentEn,
+    readingTime,
+    setReadingTime,
+    media,
+    addMedia,
+    removeMedia,
+    updateMedia,
     handleSubmit,
   };
 }

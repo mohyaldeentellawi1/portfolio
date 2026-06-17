@@ -115,7 +115,11 @@ export async function getBlogByIdAction({
   try {
     const result = await prisma.blogPost.findUnique({
       where: { id },
-      include: { media: true },
+      include: {
+        media: {
+          orderBy: { order: "asc" },
+        },
+      },
     });
 
     if (!result) {
@@ -148,6 +152,8 @@ export async function addNewBlogAction({
     titleEn?: string;
     content: string;
     contentEn?: string;
+    excerpt?: string;
+    excerptEn?: string;
     readingTime: number;
     media: { url: string; cloudId: string; mode: string; order: number }[];
   };
@@ -159,6 +165,8 @@ export async function addNewBlogAction({
         type: input.type as BlogType,
         title: input.title,
         titleEn: input.titleEn || null,
+        excerpt: input.excerpt || null,
+        excerptEn: input.excerptEn || null,
         content: input.content,
         contentEn: input.contentEn || null,
         readingTime: input.readingTime,
@@ -189,6 +197,8 @@ export async function updateBlogAction({
     type: string;
     title: string;
     titleEn?: string;
+    excerpt?: string;
+    excerptEn?: string;
     content: string;
     contentEn?: string;
     readingTime: number;
@@ -203,6 +213,8 @@ export async function updateBlogAction({
         type: input.type as BlogType,
         title: input.title,
         titleEn: input.titleEn || null,
+        excerpt: input.excerpt || null,
+        excerptEn: input.excerptEn || null,
         content: input.content,
         contentEn: input.contentEn || null,
         readingTime: input.readingTime,
