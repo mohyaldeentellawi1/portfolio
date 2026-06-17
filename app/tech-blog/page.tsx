@@ -28,7 +28,6 @@ const CATEGORIES = [
   "PRODUCT_DEVELOPMENT",
   "CAREER",
   "CASE_STUDY",
-  "OTHER",
 ];
 
 export default function TechBlogPage() {
